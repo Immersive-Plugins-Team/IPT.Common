@@ -56,7 +56,7 @@ namespace IPT.Common.User.Settings
         }
 
         /// <summary>
-        /// Saves the value;
+        /// Saves the value.
         /// </summary>
         /// <param name="ini">The INI object used to save the value.</param>
         public override void Save(InitializationFile ini)
