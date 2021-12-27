@@ -1,0 +1,78 @@
+﻿using System;
+using Rage;
+
+namespace IPT.Common.Fibers
+{
+    /// <summary>
+    /// An abstract class for defining a start/stoppable long-running fiber.
+    /// </summary>
+    public abstract class GenericFiber
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericFiber"/> class.
+        /// </summary>
+        /// <param name="interval">How long the fiber should sleep between executions.</param>
+        protected GenericFiber(int interval)
+        {
+            this.IsRunning = false;
+            this.Interval = interval;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the fiber is currently running.
+        /// </summary>
+        protected bool IsRunning { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating the time between executions.
+        /// </summary>
+        protected int Interval { get; private set; }
+
+        /// <summary>
+        /// Starts the fiber.
+        /// </summary>
+        protected virtual void Start()
+        {
+            if (this.IsRunning)
+            {
+                return;
+            }
+
+            GameFiber.StartNew(this.Run, $"{Guid.NewGuid()}");
+        }
+
+        /// <summary>
+        /// Stops the fiber.
+        /// </summary>
+        protected virtual void Stop()
+        {
+            this.IsRunning = false;
+        }
+
+        /// <summary>
+        /// This method is executing on each fiber execution.
+        /// </summary>
+        protected abstract void DoSomething();
+
+        /// <summary>
+        /// This is the void method used to start the fiber.
+        /// </summary>
+        protected virtual void Run()
+        {
+            this.IsRunning = true;
+            while (this.IsRunning)
+            {
+                if (this.Interval == 0)
+                {
+                    GameFiber.Yield();
+                }
+                else
+                {
+                    GameFiber.Sleep(this.Interval);
+                }
+
+                this.DoSomething();
+            }
+        }
+    }
+}
