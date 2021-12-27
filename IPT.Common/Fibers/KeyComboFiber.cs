@@ -1,14 +1,24 @@
-﻿using Rage;
+﻿using IPT.Common.User.Inputs;
 
-namespace IPT.Common.User
+namespace IPT.Common.Fibers
 {
+    /// <summary>
+    /// A fiber for monitoring key changes.
+    /// </summary>
     public class KeyComboFiber : ComboFiber
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeyComboFiber"/> class.
+        /// </summary>
+        /// <param name="combo">The key combination to monitor.</param>
         public KeyComboFiber(KeyCombo combo)
             : base(combo)
         {
         }
 
+        /// <summary>
+        /// Gets a value for the key combination.
+        /// </summary>
         public KeyCombo KeyCombo
         {
             get
@@ -19,47 +29,6 @@ namespace IPT.Common.User
                 }
 
                 return null;
-            }
-        }
-
-        protected override void Check()
-        {
-            if (!Game.IsPaused && !Rage.Native.NativeFunction.Natives.IS_PAUSE_MENU_ACTIVE<bool>())
-            {
-                var state = Game.GetKeyboardState();
-                switch (this.KeyCombo.IsPressed)
-                {
-                    case true:
-                        if (!state.PressedKeys.Contains(this.KeyCombo.PrimaryKey))
-                        {
-                            this.KeyCombo.Toggle();
-                        }
-
-                        break;
-                    case false:
-                        if (state.PressedKeys.Contains(this.KeyCombo.PrimaryKey))
-                        {
-                            switch (this.KeyCombo.HasSecondary)
-                            {
-                                case true:
-                                    if (state.PressedKeys.Contains(this.KeyCombo.SecondaryKey))
-                                    {
-                                        this.KeyCombo.Toggle();
-                                    }
-
-                                    break;
-                                case false:
-                                    if (state.PressedKeys.Count == 1)
-                                    {
-                                        this.KeyCombo.Toggle();
-                                    }
-
-                                    break;
-                            }
-                        }
-
-                        break;
-                }
             }
         }
     }

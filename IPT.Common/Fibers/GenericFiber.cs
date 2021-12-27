@@ -12,16 +12,23 @@ namespace IPT.Common.Fibers
         /// Initializes a new instance of the <see cref="GenericFiber"/> class.
         /// </summary>
         /// <param name="interval">How long the fiber should sleep between executions.</param>
-        protected GenericFiber(int interval)
+        /// <param name="name">A descriptive name for the fiber.  Does not need to be unique.</param>
+        protected GenericFiber(string name, int interval)
         {
+            this.Name = name;
             this.IsRunning = false;
             this.Interval = interval;
         }
 
         /// <summary>
+        /// Gets the name of the fiber.
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether or not the fiber is currently running.
         /// </summary>
-        protected bool IsRunning { get; private set; }
+        public bool IsRunning { get; private set; }
 
         /// <summary>
         /// Gets a value indicating the time between executions.
@@ -29,22 +36,23 @@ namespace IPT.Common.Fibers
         protected int Interval { get; private set; }
 
         /// <summary>
-        /// Starts the fiber.
+        /// Starts the fiber.  It is not recommended to use this method directly.
+        /// Use the FiberManager class instead.
         /// </summary>
-        protected virtual void Start()
+        internal virtual void Start()
         {
             if (this.IsRunning)
             {
                 return;
             }
 
-            GameFiber.StartNew(this.Run, $"{Guid.NewGuid()}");
+            GameFiber.StartNew(this.Run, $"{this.Name.ToUpper()}-{Guid.NewGuid()}");
         }
 
         /// <summary>
         /// Stops the fiber.
         /// </summary>
-        protected virtual void Stop()
+        internal virtual void Stop()
         {
             this.IsRunning = false;
         }

@@ -64,7 +64,7 @@
     <Compile Include="Fibers\ButtonComboFiber.cs" />
     <Compile Include="User\Inputs\GenericCombo.cs" />
     <Compile Include="Fibers\ComboFiber.cs" />
-    <Compile Include="Fibers\Deconflicter.cs" />
+    <Compile Include="Fibers\FiberManager.cs" />
     <Compile Include="User\Inputs\KeyCombo.cs" />
     <Compile Include="Fibers\KeyComboFiber.cs" />
     <Compile Include="User\Settings\Setting.cs" />

@@ -1,5 +1,4 @@
-﻿using System;
-using IPT.Common.User.Inputs;
+﻿using IPT.Common.User.Inputs;
 using Rage;
 
 namespace IPT.Common.Fibers
@@ -14,7 +13,7 @@ namespace IPT.Common.Fibers
         /// </summary>
         /// <param name="combo">The key or button combination being monitored.</param>
         protected ComboFiber(GenericCombo combo)
-            : base(0)
+            : base($"{combo}-{combo}", 0)
         {
             this.Combo = combo;
         }
@@ -25,18 +24,13 @@ namespace IPT.Common.Fibers
         protected GenericCombo Combo { get; }
 
         /// <summary>
-        /// Starts the Combo monitoring fiber.
+        /// Checks every tick to see if the combo has changed its status.
         /// </summary>
-        protected override void Start()
+        protected override void DoSomething()
         {
-            if (this.IsRunning)
+            if (!Game.IsPaused && !Rage.Native.NativeFunction.Natives.IS_PAUSE_MENU_ACTIVE<bool>())
             {
-                return;
-            }
-
-            if (Deconflicter.Add(this.Combo))
-            {
-                GameFiber.StartNew(this.Run, $"COMBO-{this.Combo.ToString().ToUpper()}-{Guid.NewGuid()}");
+                this.Combo.Check();
             }
         }
     }

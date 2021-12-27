@@ -4,7 +4,7 @@ using Rage;
 namespace IPT.Common.User.Inputs
 {
     /// <summary>
-    /// A combination of buttons.
+    /// A combination of one or two controller buttons.
     /// </summary>
     public sealed class ButtonCombo : GenericCombo, IEquatable<ButtonCombo>
     {

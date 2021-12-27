@@ -1,5 +1,4 @@
 ﻿using IPT.Common.User.Inputs;
-using Rage;
 
 namespace IPT.Common.Fibers
 {
@@ -30,17 +29,6 @@ namespace IPT.Common.Fibers
                 }
 
                 return null;
-            }
-        }
-
-        /// <summary>
-        /// Checks every tick to see if the button status has changed.
-        /// </summary>
-        protected override void DoSomething()
-        {
-            if (!Game.IsPaused && !Rage.Native.NativeFunction.Natives.IS_PAUSE_MENU_ACTIVE<bool>())
-            {
-                this.Combo.Check();
             }
         }
     }
