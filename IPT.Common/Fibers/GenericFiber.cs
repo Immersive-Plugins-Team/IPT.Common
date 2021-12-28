@@ -36,10 +36,9 @@ namespace IPT.Common.Fibers
         protected int Interval { get; private set; }
 
         /// <summary>
-        /// Starts the fiber.  It is not recommended to use this method directly.
-        /// Use the FiberManager class instead.
+        /// Starts the fiber.
         /// </summary>
-        internal virtual void Start()
+        public virtual void Start()
         {
             if (this.IsRunning)
             {
@@ -52,7 +51,7 @@ namespace IPT.Common.Fibers
         /// <summary>
         /// Stops the fiber.
         /// </summary>
-        internal virtual void Stop()
+        public virtual void Stop()
         {
             this.IsRunning = false;
         }

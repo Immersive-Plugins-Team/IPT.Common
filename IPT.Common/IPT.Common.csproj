@@ -35,6 +35,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <CodeAnalysisRuleSet>
     </CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Release\IPT.Common.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LSPD First Response">
@@ -59,12 +60,14 @@
     <Compile Include="API\Logging.cs" />
     <Compile Include="API\Math.cs" />
     <Compile Include="Fibers\GenericFiber.cs" />
+    <Compile Include="Handlers\IHandler.cs" />
+    <Compile Include="Handlers\InputHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User\Configuration.cs" />
     <Compile Include="User\Inputs\ButtonCombo.cs" />
     <Compile Include="Fibers\ButtonComboFiber.cs" />
     <Compile Include="User\Inputs\GenericCombo.cs" />
     <Compile Include="Fibers\ComboFiber.cs" />
-    <Compile Include="Fibers\FiberManager.cs" />
     <Compile Include="User\Inputs\KeyCombo.cs" />
     <Compile Include="Fibers\KeyComboFiber.cs" />
     <Compile Include="User\Settings\Setting.cs" />
@@ -84,4 +87,7 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y $(TargetPath) "C:\Users\puska\Documents\GitHub\Dependencies\"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using IPT.Common.User.Settings;
 using Rage;
 
 namespace IPT.Common.API
@@ -10,9 +11,16 @@ namespace IPT.Common.API
     /// </summary>
     public enum LoggingLevel
     {
+        /// <summary>The most verbose level, logs everything.</summary>
         DEBUG,
+
+        /// <summary>A standard logging level.</summary>
         INFO,
+
+        /// <summary>Not quite errors but also not normal.</summary>
         WARNING,
+
+        /// <summary>Used for exception handling.</summary>
         ERROR,
     }
 
@@ -36,6 +44,23 @@ namespace IPT.Common.API
         public static void Register(Assembly assembly, LoggingLevel level)
         {
             _assemblies[assembly] = level;
+        }
+
+        /// <summary>
+        /// Generates a SettingsInt object to include in your Settings class.
+        /// </summary>
+        /// <param name="defaultLevel">The default logging level.</param>
+        /// <returns>A SettingsInt object.</returns>
+        public static SettingInt GetLogLevelSetting(LoggingLevel defaultLevel = LoggingLevel.DEBUG)
+        {
+            return new SettingInt(
+                "Advanced",
+                "LogLevel",
+                "The logging level",
+                (int)defaultLevel,
+                (int)LoggingLevel.DEBUG,
+                (int)LoggingLevel.ERROR,
+                1);
         }
 
         /// <summary>

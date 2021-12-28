@@ -21,7 +21,7 @@ namespace IPT.Common.User.Settings
         }
 
         /// <summary>
-        /// Gets the value.
+        /// Gets a value indicating whether the value is true or false.
         /// </summary>
         public bool Value { get; private set; }
 

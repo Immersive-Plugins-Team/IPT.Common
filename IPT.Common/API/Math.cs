@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="value">The value to be clamped.</param>
         /// <param name="min">The minimum value.</param>
-        /// <param name="max">This maximum value</param>
+        /// <param name="max">This maximum value.</param>
         /// <returns>A float that exists between the min and max.</returns>
         public static float Clamp(float value, float min, float max)
         {
