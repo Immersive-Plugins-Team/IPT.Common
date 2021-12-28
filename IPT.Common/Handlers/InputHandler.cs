@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
-using IPT.Common.API;
 using IPT.Common.Fibers;
 using IPT.Common.User;
-using IPT.Common.User.Inputs;
 
 namespace IPT.Common.Handlers
 {
     /// <summary>
     /// A handler for managing user input.
     /// </summary>
-    public class InputHandler : IHandler
+    public class InputHandler
     {
         private readonly Configuration _config;
         private readonly List<GenericFiber> _fibers;
@@ -25,27 +23,30 @@ namespace IPT.Common.Handlers
         }
 
         /// <summary>
+        /// Gets a list of fibers managed by the handler.
+        /// </summary>
+        public List<GenericFiber> Fibers
+        {
+            get
+            {
+                return this._fibers;
+            }
+        }
+
+        /// <summary>
         /// Starts the input handler.
         /// </summary>
-        public void Start()
+        /// <returns>The number of fibers started.</returns>
+        public int Start()
         {
             foreach (var combo in this._config.GetInputCombos())
             {
-                if (combo is ButtonCombo buttonCombo)
-                {
-                    Logging.Debug($"starting new fiber for button combo: {buttonCombo}");
-                    var fiber = new ButtonComboFiber(buttonCombo);
-                    fiber.Start();
-                    this._fibers.Add(fiber);
-                }
-                else if (combo is KeyCombo keyCombo)
-                {
-                    Logging.Debug($"starting new fiber for key combo: {keyCombo}");
-                    var fiber = new KeyComboFiber(keyCombo);
-                    fiber.Start();
-                    this._fibers.Add(fiber);
-                }
+                var fiber = new ComboFiber(combo);
+                fiber.Start();
+                this._fibers.Add(fiber);
             }
+
+            return this._fibers.Count;
         }
 
         /// <summary>

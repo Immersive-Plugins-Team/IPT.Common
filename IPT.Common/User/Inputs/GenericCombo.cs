@@ -57,7 +57,7 @@ namespace IPT.Common.User.Inputs
         /// <returns>A string that represents the combination.</returns>
         public override string ToString()
         {
-            return $"{this.Primary}" + (this.HasSecondary ? $"+{this.Secondary}" : string.Empty);
+            return (this.HasSecondary ? $"{this.Secondary}+" : string.Empty) + this.Primary.ToString();
         }
 
         /// <summary>

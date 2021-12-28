@@ -60,16 +60,14 @@
     <Compile Include="API\Logging.cs" />
     <Compile Include="API\Math.cs" />
     <Compile Include="Fibers\GenericFiber.cs" />
-    <Compile Include="Handlers\IHandler.cs" />
     <Compile Include="Handlers\InputHandler.cs" />
+    <Compile Include="CommonPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User\Configuration.cs" />
     <Compile Include="User\Inputs\ButtonCombo.cs" />
-    <Compile Include="Fibers\ButtonComboFiber.cs" />
     <Compile Include="User\Inputs\GenericCombo.cs" />
     <Compile Include="Fibers\ComboFiber.cs" />
     <Compile Include="User\Inputs\KeyCombo.cs" />
-    <Compile Include="Fibers\KeyComboFiber.cs" />
     <Compile Include="User\Settings\Setting.cs" />
     <Compile Include="User\Settings\SettingBool.cs" />
     <Compile Include="User\Settings\SettingButtonCombo.cs" />

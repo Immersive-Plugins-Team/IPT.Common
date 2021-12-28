@@ -29,6 +29,17 @@ namespace IPT.Common.User
         }
 
         /// <summary>
+        /// Gets a list of all settings objects.
+        /// </summary>
+        public List<Setting> AllSettings
+        {
+            get
+            {
+                return this._allSettings;
+            }
+        }
+
+        /// <summary>
         /// Gets a list of generic combos defined in the settings.
         /// </summary>
         /// <returns>A list of combos.</returns>
@@ -57,43 +68,20 @@ namespace IPT.Common.User
         /// <param name="filename">The filename of the INI file.  Expects path relative to the GTAV folder.</param>
         protected void LoadINI(string filename)
         {
-            Logging.Info($"loading settings from {filename}...");
             var ini = new InitializationFile(filename);
             if (ini.Exists())
             {
                 foreach (var setting in this._allSettings)
                 {
-                    try
-                    {
-                        setting.Load(ini);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Error($"could not load setting for {setting.Name}", ex);
-                    }
+                    setting.Load(ini);
                 }
-            }
-            else
-            {
-                Logging.Warning($"cannot find settings file, skipping");
             }
         }
 
         /// <summary>
         /// Logs all of the settings.
         /// </summary>
-        protected void Log()
-        {
-            Logging.Info("================================================================================");
-            Logging.Info("                         CalloutInterface Settings                              ");
-            Logging.Info("================================================================================");
-            foreach (var entry in this._allSettings)
-            {
-                Logging.Info($"{entry.Name,-30} = {entry.GetValue()}");
-            }
 
-            Logging.Info("================================================================================");
-        }
 
         private List<Setting> GetAllSettings()
         {

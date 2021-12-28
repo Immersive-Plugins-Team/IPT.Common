@@ -68,8 +68,7 @@ namespace IPT.Common.User.Inputs
         /// <returns>True if the key combination is pressed.</returns>
         protected override bool CheckGameIsPressed()
         {
-            var state = Game.GetKeyboardState();
-            return state.PressedKeys.Contains(this.PrimaryKey) && (!this.HasSecondary || state.PressedKeys.Contains(this.SecondaryKey));
+            return Game.IsKeyDownRightNow(this.PrimaryKey) && (!this.HasSecondary || Game.IsKeyDownRightNow(this.SecondaryKey));
         }
     }
 }

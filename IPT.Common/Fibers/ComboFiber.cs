@@ -6,14 +6,14 @@ namespace IPT.Common.Fibers
     /// <summary>
     /// A fiber for monitoring keyboard and controller inputs.
     /// </summary>
-    public abstract class ComboFiber : GenericFiber
+    public class ComboFiber : GenericFiber
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ComboFiber"/> class.
         /// </summary>
         /// <param name="combo">The key or button combination being monitored.</param>
-        protected ComboFiber(GenericCombo combo)
-            : base($"{combo}-{combo}", 0)
+        public ComboFiber(GenericCombo combo)
+            : base($"combo-{combo}", 0)
         {
             this.Combo = combo;
         }
@@ -21,7 +21,7 @@ namespace IPT.Common.Fibers
         /// <summary>
         /// Gets the key or button combination being monitored.
         /// </summary>
-        protected GenericCombo Combo { get; }
+        public GenericCombo Combo { get; }
 
         /// <summary>
         /// Checks every tick to see if the combo has changed its status.
