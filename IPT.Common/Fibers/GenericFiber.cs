@@ -15,7 +15,7 @@ namespace IPT.Common.Fibers
         /// <param name="name">A descriptive name for the fiber.  Does not need to be unique.</param>
         protected GenericFiber(string name, int interval)
         {
-            this.Name = name;
+            this.Name = $"{name.ToUpper()}-{Guid.NewGuid()}";
             this.IsRunning = false;
             this.Interval = interval;
         }
@@ -45,7 +45,7 @@ namespace IPT.Common.Fibers
                 return;
             }
 
-            GameFiber.StartNew(this.Run, $"{this.Name.ToUpper()}-{Guid.NewGuid()}");
+            GameFiber.StartNew(this.Run, this.Name);
         }
 
         /// <summary>

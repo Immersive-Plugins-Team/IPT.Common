@@ -44,7 +44,6 @@ namespace IPT.Common.API
         public static void Register(Assembly assembly, LoggingLevel level)
         {
             _assemblies[assembly] = level;
-            Info($"registered {assembly.GetName().Name} with level {Enum.GetName(typeof(LoggingLevel), level)}");
         }
 
         /// <summary>

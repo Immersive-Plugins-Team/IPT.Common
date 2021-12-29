@@ -46,7 +46,7 @@ namespace IPT.Common.User
         public List<GenericCombo> GetInputCombos()
         {
             var combos = new List<GenericCombo>();
-            foreach (var setting in this._allSettings)
+            foreach (var setting in this.AllSettings)
             {
                 if (setting.GetValue() is GenericCombo combo)
                 {
@@ -63,6 +63,22 @@ namespace IPT.Common.User
         public abstract void Load();
 
         /// <summary>
+        /// Logs all of the settings.
+        /// </summary>
+        public void Log()
+        {
+            Logging.Info("============================================================");
+            Logging.Info($"    {Assembly.GetCallingAssembly().GetName().Name} Configuration");
+            Logging.Info("============================================================");
+            foreach (var entry in this.AllSettings)
+            {
+                Logging.Info($"{entry.Name,-30} = {entry.GetValue()}");
+            }
+
+            Logging.Info("============================================================");
+        }
+
+        /// <summary>
         /// Loads settings from INI file.
         /// </summary>
         /// <param name="filename">The filename of the INI file.  Expects path relative to the GTAV folder.</param>
@@ -71,17 +87,19 @@ namespace IPT.Common.User
             var ini = new InitializationFile(filename);
             if (ini.Exists())
             {
-                foreach (var setting in this._allSettings)
+                foreach (var setting in this.AllSettings)
                 {
-                    setting.Load(ini);
+                    try
+                    {
+                        setting.Load(ini);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Warning($"could not load setting {setting.Name}: {ex.Message}");
+                    }
                 }
             }
         }
-
-        /// <summary>
-        /// Logs all of the settings.
-        /// </summary>
-
 
         private List<Setting> GetAllSettings()
         {

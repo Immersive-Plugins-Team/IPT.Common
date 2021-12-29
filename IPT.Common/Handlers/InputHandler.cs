@@ -36,8 +36,7 @@ namespace IPT.Common.Handlers
         /// <summary>
         /// Starts the input handler.
         /// </summary>
-        /// <returns>The number of fibers started.</returns>
-        public int Start()
+        public void Start()
         {
             foreach (var combo in this._config.GetInputCombos())
             {
@@ -45,8 +44,6 @@ namespace IPT.Common.Handlers
                 fiber.Start();
                 this._fibers.Add(fiber);
             }
-
-            return this._fibers.Count;
         }
 
         /// <summary>
