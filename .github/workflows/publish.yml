@@ -1,0 +1,26 @@
+name: publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+      name: Release
+      runs-on: windows-latest
+      steps:
+        - uses: actions/checkout@v1
+        
+        - name: Add msbuild to PATH
+          uses: microsoft/setup-msbuild@v1.0.2
+          
+        - name: Build
+          run: |
+            msbuild IPT.Common/IPT.Common.sln /t:restore
+            msbuild IPT.Common/IPT.Common.sln /p:Configuration=Release /p:Platform=x64
+        
+        - name: Artifact
+          uses: actions/upload-artifact@v1
+          with:
+            name: IPT.Common-Release
+            path: IPT.Common/bin/Release
