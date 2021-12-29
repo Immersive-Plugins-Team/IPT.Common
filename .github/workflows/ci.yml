@@ -9,26 +9,18 @@ jobs:
       name: Release
       runs-on: windows-latest
       steps:
-        - name: Checkout
-          uses: actions/checkout@v1
+        - uses: actions/checkout@v1
         
-        - name: Setup dotnet
-          uses: actions/setup-dotnet@v1
-          with:
-            dotnet-version: 3.1.101
+        - name: Add msbuild to PATH
+          uses: microsoft/setup-msbuild@v1.0.2
           
         - name: Build
-          shell: bash
           run: |
-            tag=$(git describe --tags --abbrev=0)
-            release-name="IPT.Common-$tag"
-            dotnet publish  IPT.Common/IPT.Common.csproj --framework net48 --runtime win-x64 -c Release -o $release-name
-            7z a -tzip "${release_name}.zip" "$release_name"
-            rm -r "$release_name"
+            msbuild IPT.Common/IPT.Common.sln /t:restore
+            msbuild IPT.Common/IPT.Common.sln /p:Configuration=Release /p:Platform=x64
         
-        - name: Publish
-          uses: softprops/action-gh-release@v1
+        - name: Artifact
+          uses: actions/upload-artifact@v1
           with:
-            files: "IPT.Common*"
-          env:
-            GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
+            name: IPT.Common-Release
+            path: IPT.Common/bin/Release
