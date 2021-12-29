@@ -86,6 +86,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y $(TargetPath) "C:\Users\puska\Documents\GitHub\Dependencies\"</PostBuildEvent>
+    <PostBuildEvent>del IPT.Common.pdb
+del "LSPD First Response.dll"
+del RagePluginHookSDK.dll
+del RagePluginHookSDK.xml
+del EasyHook.dll
+del Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</PostBuildEvent>
   </PropertyGroup>
 </Project>
