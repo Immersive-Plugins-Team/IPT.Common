@@ -16,8 +16,8 @@ jobs:
           
         - name: Build
           run: |
-            msbuild IPT.Common/IPT.Common.sln /t:restore
-            msbuild IPT.Common/IPT.Common.sln /p:Configuration=Release /p:Platform=x64
+            msbuild IPT.Common.sln /t:restore
+            msbuild IPT.Common.sln /p:Configuration=Release /p:Platform=x64
         
         - name: Artifact
           uses: actions/upload-artifact@v1
