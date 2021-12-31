@@ -101,6 +101,25 @@ namespace IPT.Common.User
             }
         }
 
+        /// <summary>
+        /// Saves settings to the INI file.
+        /// </summary>
+        /// <param name="filename">The filename of the INI file.  Expects path relative to the GTAV folder.</param>
+        protected void SaveINI(string filename)
+        {
+            InitializationFile ini = new InitializationFile(filename);
+            if (ini.Exists())
+            {
+                ini.Delete();
+            }
+
+            ini.Create();
+            foreach (var entry in this.AllSettings)
+            {
+                entry.Save(ini);
+            }
+        }
+
         private List<Setting> GetAllSettings()
         {
             var settings = new List<Setting>();
