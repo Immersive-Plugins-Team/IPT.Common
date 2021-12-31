@@ -78,7 +78,9 @@
     <Compile Include="API\Events.cs" />
     <Compile Include="API\Logging.cs" />
     <Compile Include="API\Math.cs" />
+    <Compile Include="Callouts.cs" />
     <Compile Include="Fibers\GenericFiber.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Handlers\InputHandler.cs" />
     <Compile Include="CommonPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -97,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />

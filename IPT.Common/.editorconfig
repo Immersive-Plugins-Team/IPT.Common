@@ -116,12 +116,13 @@ csharp_space_between_method_call_empty_parameter_list_parentheses = false
 # Wrapping preferences
 csharp_preserve_single_line_statements = true
 csharp_preserve_single_line_blocks = true
-dotnet_diagnostic.SA1309.severity=silent
-dotnet_diagnostic.SA1200.severity=silent
-dotnet_diagnostic.SA1633.severity=silent
+dotnet_diagnostic.SA1309.severity=warning
+dotnet_diagnostic.SA1200.severity=warning
+dotnet_diagnostic.SA1633.severity=warning
 dotnet_diagnostic.SA1600.severity=warning
-dotnet_diagnostic.SA1601.severity=silent
-dotnet_diagnostic.SA1602.severity=silent
+dotnet_diagnostic.SA1601.severity=warning
+dotnet_diagnostic.SA1602.severity=warning
+dotnet_diagnostic.SA1119_p.severity=warning
 ###############################
 # VB Coding Conventions       #
 ###############################
