@@ -60,6 +60,9 @@
     <Reference Include="LSPD First Response">
       <HintPath>..\..\Dependencies\LSPD First Response.dll</HintPath>
     </Reference>
+    <Reference Include="RAGENativeUI">
+      <HintPath>..\..\Dependencies\RAGENativeUI.dll</HintPath>
+    </Reference>
     <Reference Include="RagePluginHookSDK">
       <HintPath>..\..\Dependencies\RagePluginHookSDK.dll</HintPath>
     </Reference>
@@ -96,6 +99,8 @@
     <Compile Include="User\Settings\SettingInt.cs" />
     <Compile Include="User\Settings\SettingKeyCombo.cs" />
     <Compile Include="User\Settings\SettingString.cs" />
+    <Compile Include="UX\UXMenu.cs" />
+    <Compile Include="UX\UXMenuItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
