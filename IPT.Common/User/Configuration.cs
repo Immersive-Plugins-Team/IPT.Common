@@ -18,14 +18,14 @@ namespace IPT.Common.User
         public SettingInt LogLevel = Logging.GetLogLevelSetting();
         #pragma warning restore S1104, SA1401, CS1591, SA1600
 
-        private readonly List<Setting> _allSettings;
+        private readonly List<Setting> allSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Configuration"/> class.
         /// </summary>
         protected Configuration()
         {
-            this._allSettings = this.GetAllSettings();
+            this.allSettings = this.GetAllSettings();
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace IPT.Common.User
         {
             get
             {
-                return this._allSettings;
+                return this.allSettings;
             }
         }
 
@@ -98,6 +98,25 @@ namespace IPT.Common.User
                         Logging.Warning($"could not load setting {setting.Name}: {ex.Message}");
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Saves settings to the INI file.
+        /// </summary>
+        /// <param name="filename">The filename of the INI file.  Expects path relative to the GTAV folder.</param>
+        protected void SaveINI(string filename)
+        {
+            InitializationFile ini = new InitializationFile(filename);
+            if (ini.Exists())
+            {
+                ini.Delete();
+            }
+
+            ini.Create();
+            foreach (var entry in this.AllSettings)
+            {
+                entry.Save(ini);
             }
         }
 
