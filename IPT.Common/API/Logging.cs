@@ -29,7 +29,7 @@ namespace IPT.Common.API
     /// </summary>
     public static class Logging
     {
-        private static Dictionary<Assembly, LoggingLevel> _assemblies = new Dictionary<Assembly, LoggingLevel>();
+        private static readonly Dictionary<Assembly, LoggingLevel> Assemblies = new Dictionary<Assembly, LoggingLevel>();
 
         /// <summary>
         /// Register an assembly (plugin) to set its specific logging level.
@@ -43,7 +43,7 @@ namespace IPT.Common.API
         /// <param name="level">The minimum logging level.  Logging calls below this level will not be used.</param>
         public static void Register(Assembly assembly, LoggingLevel level)
         {
-            _assemblies[assembly] = level;
+            Assemblies[assembly] = level;
         }
 
         /// <summary>
@@ -105,9 +105,9 @@ namespace IPT.Common.API
 
         private static LoggingLevel GetLoggingLevel(Assembly assembly)
         {
-            if (_assemblies.ContainsKey(assembly))
+            if (Assemblies.ContainsKey(assembly))
             {
-                return _assemblies[assembly];
+                return Assemblies[assembly];
             }
 
             return LoggingLevel.DEBUG;

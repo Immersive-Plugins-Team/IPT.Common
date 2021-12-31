@@ -9,8 +9,8 @@ namespace IPT.Common.Handlers
     /// </summary>
     public class InputHandler
     {
-        private readonly Configuration _config;
-        private readonly List<GenericFiber> _fibers;
+        private readonly Configuration config;
+        private readonly List<GenericFiber> fibers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InputHandler"/> class.
@@ -18,8 +18,8 @@ namespace IPT.Common.Handlers
         /// <param name="config">The configuration object for the plugin.</param>
         public InputHandler(Configuration config)
         {
-            this._config = config;
-            this._fibers = new List<GenericFiber>();
+            this.config = config;
+            this.fibers = new List<GenericFiber>();
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace IPT.Common.Handlers
         {
             get
             {
-                return this._fibers;
+                return this.fibers;
             }
         }
 
@@ -38,11 +38,11 @@ namespace IPT.Common.Handlers
         /// </summary>
         public void Start()
         {
-            foreach (var combo in this._config.GetInputCombos())
+            foreach (var combo in this.config.GetInputCombos())
             {
                 var fiber = new ComboFiber(combo);
                 fiber.Start();
-                this._fibers.Add(fiber);
+                this.fibers.Add(fiber);
             }
         }
 
@@ -51,12 +51,12 @@ namespace IPT.Common.Handlers
         /// </summary>
         public void Stop()
         {
-            foreach (var fiber in this._fibers)
+            foreach (var fiber in this.fibers)
             {
                 fiber.Stop();
             }
 
-            this._fibers.Clear();
+            this.fibers.Clear();
         }
     }
 }
