@@ -10,4 +10,4 @@ IPT.Common is a utility library for writing [LSPDFR](https://www.lcpdfr.com/lspd
 * [User Input](https://github.com/Immersive-Plugins-Team/IPT.Common/wiki/User-Input)
 
 ### Contributions
-Special thanks to [HazyTube](https://github.com/hazyTube) for the callout list generation. 
+Special thanks to [HazyTube](https://github.com/hazyTube) for help with the callout list generation. 
