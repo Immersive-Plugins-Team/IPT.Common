@@ -1,7 +1,7 @@
 # Changelog
 _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/)._
 
-## [1.1.1] - 2021-01-01
+## [1.1.1] - 2022-01-01
 
 ### Changed
 - Minor tweak to the GetAllSettings method in Configuration class
