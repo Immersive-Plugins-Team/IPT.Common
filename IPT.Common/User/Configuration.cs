@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using IPT.Common.API;
 using IPT.Common.User.Inputs;
@@ -123,16 +122,11 @@ namespace IPT.Common.User
         private List<Setting> GetAllSettings()
         {
             var settings = new List<Setting>();
-            foreach (var field in this.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance).Where(
-                x => x.FieldType.BaseType == typeof(Setting)))
+            foreach (var field in this.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
             {
-                try
+                if (field.GetValue(this) is Setting setting)
                 {
-                    settings.Add((Setting)field.GetValue(this));
-                }
-                catch (Exception ex)
-                {
-                    Logging.Error($"could not retrieve setting: {field.Name}", ex);
+                    settings.Add(setting);
                 }
             }
 
