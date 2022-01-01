@@ -1,4 +1,4 @@
-# IPT.Common
+# IPT.Common [![Discord](https://img.shields.io/badge/discord-join-7289DA.svg)](https://discord.gg/AuJCUag)
 
 IPT.Common is a utility library for writing [LSPDFR](https://www.lcpdfr.com/lspdfr) plugins.
 
