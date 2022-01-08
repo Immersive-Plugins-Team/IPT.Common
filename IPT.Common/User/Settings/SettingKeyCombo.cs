@@ -61,7 +61,11 @@ namespace IPT.Common.User.Settings
         /// <param name="ini">The INI object used to save the value.</param>
         public override void Save(InitializationFile ini)
         {
-            ini.Write(this.Section, this.Name, this.Value);
+            ini.Write(this.Section, this.Name, this.Value.PrimaryKey.ToString());
+            if (this.Value.HasSecondary)
+            {
+                ini.Write(this.Section, $"{this.Name}Modifier", this.Value.SecondaryKey.ToString());
+            }
         }
 
         private static Keys GetKeysFromString(string keyString, Keys defaultKeys)

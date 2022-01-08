@@ -61,7 +61,10 @@ namespace IPT.Common.User.Settings
         public override void Save(InitializationFile ini)
         {
             ini.Write(this.Section, this.Name, this.Value.PrimaryButton.ToString());
-            ini.Write(this.Section, $"{this.Name}Modifier", this.Value.SecondaryButton.ToString());
+            if (this.Value.HasSecondary)
+            {
+                ini.Write(this.Section, $"{this.Name}Modifier", this.Value.SecondaryButton.ToString());
+            }
         }
     }
 }
