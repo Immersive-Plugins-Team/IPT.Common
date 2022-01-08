@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using IPT.Common.User.Settings;
 using Rage;
 
@@ -67,6 +68,7 @@ namespace IPT.Common.API
         /// Send a DEBUG level log messsage.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void Debug(string message)
         {
             Log(LoggingLevel.DEBUG, Assembly.GetCallingAssembly(), message);
@@ -77,6 +79,7 @@ namespace IPT.Common.API
         /// </summary>
         /// <param name="message">The message to be sent.</param>
         /// <param name="ex">The Exception raised.</param>
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void Error(string message, Exception ex)
         {
             var assembly = Assembly.GetCallingAssembly();
@@ -89,6 +92,7 @@ namespace IPT.Common.API
         /// Send an INFO level log message.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void Info(string message)
         {
             Log(LoggingLevel.INFO, Assembly.GetCallingAssembly(), message);
@@ -98,6 +102,7 @@ namespace IPT.Common.API
         /// Send a WARNING level log message.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void Warning(string message)
         {
             Log(LoggingLevel.WARNING, Assembly.GetCallingAssembly(), message);
