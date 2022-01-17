@@ -1,6 +1,18 @@
 # Changelog
 _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/)._
 
+## [1.2.0] - 2022-01-17
+
+### Added
+IsGamePaused
+NoInlining where appropriate
+
+### Changed
+Minor adjustment to GenericFiber
+
+### Fixed
+Fixed INI writing for key/controller
+
 ## [1.1.1] - 2022-01-01
 
 ### Changed
