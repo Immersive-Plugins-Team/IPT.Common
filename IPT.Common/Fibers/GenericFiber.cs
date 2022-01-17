@@ -45,6 +45,7 @@ namespace IPT.Common.Fibers
                 return;
             }
 
+            this.IsRunning = true;
             GameFiber.StartNew(this.Run, this.Name);
         }
 
@@ -66,7 +67,6 @@ namespace IPT.Common.Fibers
         /// </summary>
         protected virtual void Run()
         {
-            this.IsRunning = true;
             while (this.IsRunning)
             {
                 if (this.Interval == 0)
