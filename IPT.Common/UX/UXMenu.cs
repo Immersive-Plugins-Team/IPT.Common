@@ -12,9 +12,16 @@
         /// </summary>
         /// <param name="title">The title of the UIMenu.</param>
         /// <param name="subtitle">The subtitle of the UIMenu.</param>
-        public UXMenu(string title, string subtitle)
+        /// <param name="isMouseDisabled">When true, the mouse will be disabled.</param>
+        public UXMenu(string title, string subtitle, bool isMouseDisabled = false)
             : base(title, subtitle)
         {
+            if (isMouseDisabled)
+            {
+                this.AllowCameraMovement = true;
+                this.InstructionalButtonsEnabled = false;
+                this.MouseControlsEnabled = false;
+            }
         }
 
         /// <summary>
