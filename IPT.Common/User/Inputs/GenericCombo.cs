@@ -20,9 +20,9 @@ namespace IPT.Common.User.Inputs
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the key or button is currently marked as being pressed.
+        /// Gets or sets a value indicating whether or not the key or button is currently marked as being pressed.
         /// </summary>
-        public bool IsPressed { get; private set; }
+        public bool IsPressed { get; protected set; }
 
         /// <summary>
         /// Gets a value indicating whether or not the combination has a secondary key or button.

@@ -14,9 +14,21 @@ namespace IPT.Common.API
         public delegate void UserInputChangedEventHandler(GenericCombo combo);
 
         /// <summary>
-        /// Even for user input changes.
+        /// Delegate event handler for holdable user inputs.
+        /// </summary>
+        /// <param name="combo">The holdable key or controller combo.</param>
+        /// <param name="isLongPress">True if it was a long press, otherwise false.</param>
+        public delegate void HoldableUserInputEventHandler(HoldableCombo combo, bool isLongPress);
+
+        /// <summary>
+        /// Event for user input changes.
         /// </summary>
         public static event UserInputChangedEventHandler OnUserInputChanged;
+
+        /// <summary>
+        ///  Event for holdable user inputs.
+        /// </summary>
+        public static event HoldableUserInputEventHandler OnHoldableUserInput;
 
         /// <summary>
         /// Fires an event for a user input change.
@@ -25,6 +37,16 @@ namespace IPT.Common.API
         internal static void FireUserInputChanged(GenericCombo combo)
         {
             OnUserInputChanged?.Invoke(combo);
+        }
+
+        /// <summary>
+        /// Fires an event for a holdable user input.
+        /// </summary>
+        /// <param name="combo">The key or controller combo.</param>
+        /// <param name="isLongPress">True if it was a long press, otherwise false.</param>
+        internal static void FireHoldableUserInput(HoldableCombo combo, bool isLongPress)
+        {
+            OnHoldableUserInput?.Invoke(combo, isLongPress);
         }
     }
 }

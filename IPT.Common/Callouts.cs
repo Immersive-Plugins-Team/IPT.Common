@@ -16,11 +16,21 @@ namespace IPT.Common
         /// <returns>A Callout object contained within the LHandle.</returns>
         public static LSPD_First_Response.Mod.Callouts.Callout GetCalloutFromHandle(LSPD_First_Response.Mod.API.LHandle handle)
         {
-            foreach (var props in handle.GetType().GetRuntimeProperties())
+            if (handle != null)
             {
-                if (props.GetValue(handle) is LSPD_First_Response.Mod.Callouts.Callout callout)
+                try
                 {
-                    return callout;
+                    foreach (var props in handle.GetType().GetRuntimeProperties())
+                    {
+                        if (props.GetValue(handle) is LSPD_First_Response.Mod.Callouts.Callout callout)
+                        {
+                            return callout;
+                        }
+                    }
+                }
+                catch
+                {
+                    // just return null
                 }
             }
 

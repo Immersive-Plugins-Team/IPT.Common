@@ -92,11 +92,16 @@
     <Compile Include="User\Inputs\ButtonCombo.cs" />
     <Compile Include="User\Inputs\GenericCombo.cs" />
     <Compile Include="Fibers\ComboFiber.cs" />
+    <Compile Include="User\Inputs\HoldableButtonCombo.cs" />
+    <Compile Include="User\Inputs\HoldableCombo.cs" />
+    <Compile Include="User\Inputs\HoldableKeyCombo.cs" />
     <Compile Include="User\Inputs\KeyCombo.cs" />
     <Compile Include="User\Settings\Setting.cs" />
     <Compile Include="User\Settings\SettingBool.cs" />
     <Compile Include="User\Settings\SettingButtonCombo.cs" />
     <Compile Include="User\Settings\SettingFloat.cs" />
+    <Compile Include="User\Settings\SettingHoldableButtonCombo.cs" />
+    <Compile Include="User\Settings\SettingHoldableKeyCombo.cs" />
     <Compile Include="User\Settings\SettingInt.cs" />
     <Compile Include="User\Settings\SettingKeyCombo.cs" />
     <Compile Include="User\Settings\SettingString.cs" />

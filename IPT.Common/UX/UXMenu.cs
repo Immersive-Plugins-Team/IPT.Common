@@ -13,8 +13,25 @@
         /// <param name="title">The title of the UIMenu.</param>
         /// <param name="subtitle">The subtitle of the UIMenu.</param>
         public UXMenu(string title, string subtitle)
+            : this(title, subtitle, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UXMenu"/> class.
+        /// </summary>
+        /// <param name="title">The title of the UIMenu.</param>
+        /// <param name="subtitle">The subtitle of the UIMenu.</param>
+        /// <param name="isMouseDisabled">When true, the mouse will be disabled.</param>
+        public UXMenu(string title, string subtitle, bool isMouseDisabled)
             : base(title, subtitle)
         {
+            if (isMouseDisabled)
+            {
+                this.AllowCameraMovement = true;
+                this.InstructionalButtonsEnabled = false;
+                this.MouseControlsEnabled = false;
+            }
         }
 
         /// <summary>
