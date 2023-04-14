@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using IPT.Common.API;
-using IPT.Common.GUI;
 using Rage;
 using Rage.Native;
 
@@ -16,26 +15,20 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     private bool isPaused;
 
     private List<TextureFrame> frames = new List<TextureFrame>();
-    private List<TextureFrameData> frameData;
     private TextureFrame mousedFrame;
     private Cursor cursor;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BaseFrame"/> class.
     /// </summary>
-    /// <param name="frameData">A list of frames data to manage.</param>
-    public BaseFrame(List<TextureFrameData> frameData)
+    public BaseFrame()
         : base("baseframe", 100)
     {
-        this.frameData = frameData;
         this.mousedFrame = null;
         this.resolution = default;
         this.isEditing = false;
         this.isPaused = false;
         this.cursor = new Cursor();
-
-        Logging.Info("Loading texture frames");
-        this.LoadTextureFrames();
     }
 
     /// <summary>
@@ -44,9 +37,50 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     public bool IsVisible { get; set; } = false;
 
     /// <summary>
+    /// Adds a texture frame to the base frame.
+    /// </summary>
+    /// <param name="frame">The frame to add.</param>
+    public void AddFrame(TextureFrame frame)
+    {
+        this.frames.Add(frame);
+    }
+
+    /// <summary>
+    /// Moves any frames matching the given name.
+    /// </summary>
+    /// <param name="name">The name of the frame.</param>
+    /// <param name="position">The new position of the frame.</param>
+    public void MoveFrame(string name, Point position)
+    {
+        foreach (var entry in this.frames)
+        {
+            if (entry.Name == name)
+            {
+                entry.Position = position;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Rescales any frames matching the given name.
+    /// </summary>
+    /// <param name="name">The name of the frame.</param>
+    /// <param name="scale">The new scale of the frame.</param>
+    public void RescaleFrame(string name, int scale)
+    {
+        foreach (var entry in this.frames)
+        {
+            if (entry.Name == name)
+            {
+                entry.Scale = scale;
+            }
+        }
+    }
+
+    /// <summary>
     /// Changes into an edit mode where the textures can be respositioned and resized.
     /// </summary>
-    public void Edit()
+    public void EditMode()
     {
         this.isEditing = true;
         Game.IsPaused = true;
@@ -57,12 +91,18 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     /// </summary>
     public override void Start()
     {
-        // Logging.Info("Loading texture frames");
-        // this.LoadTextureFrames();
         Logging.Info("Starting base frame");
-        Game.FrameRender += this.Game_FrameRender;
-        Game.RawFrameRender += this.Game_RawFrameRender;
-        base.Start();
+        if (this.frames.Count == 0)
+        {
+            Logging.Warning("there are no texture frames to manage!");
+        }
+        else
+        {
+            Logging.Info("Starting base frame");
+            Game.FrameRender += this.Game_FrameRender;
+            Game.RawFrameRender += this.Game_RawFrameRender;
+            base.Start();
+        }
     }
 
     /// <summary>
@@ -73,6 +113,7 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         Logging.Info("stopping base frame");
         Game.FrameRender -= this.Game_FrameRender;
         Game.RawFrameRender -= this.Game_RawFrameRender;
+        base.Stop();
     }
 
     /// <summary>
@@ -115,20 +156,6 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         foreach (var frame in this.frames)
         {
             frame.Draw(g);
-        }
-    }
-
-    private void LoadTextureFrames()
-    {
-        // we have to load textures at start because they don't load correctly during instantiation
-        this.frames.Clear();
-        foreach (var frame in this.frameData)
-        {
-            var texture = Functions.LoadTexture(frame.Filename);
-            if (texture != null)
-            {
-                this.frames.Add(new TextureFrame(texture, frame.Position, frame.Scale));
-            }
         }
     }
 

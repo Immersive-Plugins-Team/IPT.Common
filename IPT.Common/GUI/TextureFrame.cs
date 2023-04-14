@@ -10,25 +10,62 @@ public class TextureFrame
     private int scale = 100;
     private RectangleF frameRect = default;
     private Point cursorOffset = new Point(0, 0);
+    private Point position = new Point(0, 0);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextureFrame"/> class.
     /// </summary>
+    /// <param name="name">A name that the frame can be called.</param>
     /// <param name="texture">The underlying texture to be drawn.</param>
     /// <param name="position">The starting position of the texture.</param>
     /// <param name="scale">The scale (25-150).</param>
-    public TextureFrame(Texture texture, Point position, int scale)
+    public TextureFrame(string name, Texture texture, Point position = default, int scale = 100)
     {
+        this.Name = name;
         this.texture = texture;
         this.Position = position;
-        this.scale = IPT.Common.API.Math.Clamp(scale, 25, 150);
+        this.Scale = scale;
         this.Refresh();
     }
 
     /// <summary>
-    /// Gets the coordinates of the frame on a 1920 x 1080 canvas.
+    /// Gets a value indicating the name of the frame.
     /// </summary>
-    public Point Position { get; private set; } = new Point(0, 0);
+    public string Name { get; private set; }
+
+    /// <summary>
+    /// Gets or sets the coordinates of the frame on a 1920 x 1080 canvas.
+    /// </summary>
+    public Point Position
+    {
+        get
+        {
+            return this.position;
+        }
+
+        set
+        {
+            this.position = value;
+            this.Refresh();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the scale from 10-300%.
+    /// </summary>
+    public int Scale
+    {
+        get
+        {
+            return this.scale;
+        }
+
+        set
+        {
+            this.scale = IPT.Common.API.Math.Clamp(value, 10, 300);
+            this.Refresh();
+        }
+    }
 
     /// <summary>
     /// Draws the texture to the graphics object.
@@ -90,7 +127,7 @@ public class TextureFrame
         var xOffset = 1920 - this.Position.X - this.texture.Size.Width;
         var x = xOffset > 960 ? this.Position.X * xScale : resolution.Width - (xOffset * xScale) - size.Width;
         var y = this.Position.Y * yScale;
-        var scale = this.scale / 100f;
+        var scale = this.Scale / 100f;
         this.frameRect = new RectangleF(new PointF(x, y), new SizeF(size.Width * scale, size.Height * scale));
     }
 
@@ -100,11 +137,6 @@ public class TextureFrame
     /// <param name="offset">The amount to offset the scale.</param>
     internal void Rescale(int offset)
     {
-        var newScale = this.scale + offset;
-        if (newScale >= 25 && newScale <= 150)
-        {
-            this.scale = newScale;
-            this.Refresh();
-        }
+        this.Scale += offset;
     }
 }
