@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using IPT.Common.API;
 using Rage;
 using Rage.Native;
@@ -9,14 +10,13 @@ using Rage.Native;
 /// </summary>
 public class BaseFrame : IPT.Common.Fibers.GenericFiber
 {
-    private Size resolution;
+    private readonly List<TextureFrame> frames = new List<TextureFrame>();
+    private readonly Cursor cursor;
 
+    private Size resolution;
     private bool isEditing;
     private bool isPaused;
-
-    private List<TextureFrame> frames = new List<TextureFrame>();
     private TextureFrame mousedFrame;
-    private Cursor cursor;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BaseFrame"/> class.
@@ -216,6 +216,12 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
                 this.isEditing = false;
                 Game.IsPaused = false;
             }
+
+            if (!this.isEditing)
+            {
+                // drop all frames just in case
+                this.frames.ForEach(x => x.Drop());
+            }
         }
     }
 
@@ -235,13 +241,11 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         }
         else if (this.cursor.IsMouseDown)
         {
-            foreach (var frame in this.frames)
+            var frame = this.frames.FirstOrDefault(x => x.Contains(this.cursor));
+            if (frame != null)
             {
-                if (frame.Contains(this.cursor))
-                {
-                    this.mousedFrame = frame;
-                    this.mousedFrame.Lift(this.cursor);
-                }
+                this.mousedFrame = frame;
+                this.mousedFrame.Lift(this.cursor);
             }
         }
     }

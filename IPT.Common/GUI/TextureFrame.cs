@@ -11,6 +11,7 @@ public class TextureFrame
     private RectangleF frameRect = default;
     private Point cursorOffset = new Point(0, 0);
     private Point position = new Point(0, 0);
+    private bool isLifted = false;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextureFrame"/> class.
@@ -73,6 +74,11 @@ public class TextureFrame
     /// <param name="g">The Rage Graphics object.</param>
     internal void Draw(Rage.Graphics g)
     {
+        if (this.isLifted)
+        {
+            this.DrawBorder(g);
+        }
+
         g.DrawTexture(this.texture, this.frameRect);
     }
 
@@ -93,7 +99,7 @@ public class TextureFrame
     /// </summary>
     internal void Drop()
     {
-        // remove highlight around outside edge
+        this.isLifted = false;
     }
 
     /// <summary>
@@ -103,6 +109,7 @@ public class TextureFrame
     internal void Lift(Cursor cursor)
     {
         this.cursorOffset = new Point(cursor.Position.X - this.Position.X, cursor.Position.Y - this.Position.Y);
+        this.isLifted = true;
     }
 
     /// <summary>
@@ -138,5 +145,12 @@ public class TextureFrame
     internal void Rescale(int offset)
     {
         this.Scale += offset;
+    }
+
+    private void DrawBorder(Rage.Graphics g)
+    {
+        var borderRect = this.frameRect;
+        borderRect.Inflate(5f, 5f);
+        g.DrawRectangle(borderRect, Color.LimeGreen;
     }
 }
