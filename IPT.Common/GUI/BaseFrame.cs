@@ -172,7 +172,11 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     {
         if (this.cursor.Scale != 0)
         {
-            this.frames.FirstOrDefault(x => x.Contains(this.cursor)).Rescale(this.cursor.Scale);
+            var frame = this.frames.LastOrDefault(x => x.Contains(this.cursor));
+            if (frame != null)
+            {
+                frame.Rescale(this.cursor.Scale);
+            }
         }
     }
 
@@ -214,7 +218,7 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         }
         else if (this.cursor.IsMouseDown)
         {
-            var frame = this.frames.FirstOrDefault(x => x.Contains(this.cursor));
+            var frame = this.frames.LastOrDefault(x => x.Contains(this.cursor));
             if (frame != null)
             {
                 this.mousedFrame = frame;

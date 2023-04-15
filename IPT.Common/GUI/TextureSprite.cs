@@ -23,7 +23,7 @@ namespace IPT.Common.GUI
             this.Name = name;
             this.texture = texture;
             this.position = position;
-            this.Refresh(new PointF(0f, 0f), 100);
+            this.Refresh(new PointF(0f, 0f), 1f);
         }
 
         /// <summary>
@@ -50,6 +50,7 @@ namespace IPT.Common.GUI
         /// <param name="scale">The scale of the parent frame.</param>
         internal void Refresh(PointF framePosition, float scale)
         {
+            scale *= Game.Resolution.Height / 1080f;
             var size = new SizeF(this.texture.Size.Width * scale, this.texture.Size.Height * scale);
             this.spriteRect = new RectangleF(new PointF(framePosition.X + (this.position.X * scale), framePosition.Y + (this.position.Y * scale)), size);
         }

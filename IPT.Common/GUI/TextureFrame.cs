@@ -86,6 +86,14 @@ public class TextureFrame
     }
 
     /// <summary>
+    /// Toggles the visibility of the frame.
+    /// </summary>
+    public void Toggle()
+    {
+        this.IsVisible = !this.IsVisible;
+    }
+
+    /// <summary>
     /// Draws the texture to the graphics object.
     /// </summary>
     /// <param name="g">The Rage Graphics object.</param>
