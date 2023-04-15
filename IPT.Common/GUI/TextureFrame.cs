@@ -60,7 +60,7 @@ public class TextureFrame
     }
 
     /// <summary>
-    /// Gets or sets the scale from 10-300%.
+    /// Gets or sets the scale from 20-200%.
     /// </summary>
     public int Scale
     {
@@ -71,7 +71,7 @@ public class TextureFrame
 
         set
         {
-            this.scale = IPT.Common.API.Math.Clamp(value, 10, 300);
+            this.scale = IPT.Common.API.Math.Clamp(value, 20, 200);
             this.Refresh();
         }
     }
