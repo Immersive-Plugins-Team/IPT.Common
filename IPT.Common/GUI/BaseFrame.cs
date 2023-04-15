@@ -32,11 +32,6 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the frame is visible.
-    /// </summary>
-    public bool IsVisible { get; set; } = false;
-
-    /// <summary>
     /// Adds a texture frame to the base frame.
     /// </summary>
     /// <param name="frame">The frame to add.</param>
@@ -117,14 +112,6 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     }
 
     /// <summary>
-    /// Toggles the visibility of the frames.
-    /// </summary>
-    public void Toggle()
-    {
-        this.IsVisible = !this.IsVisible;
-    }
-
-    /// <summary>
     /// Fired during every fiber tick.
     /// </summary>
     protected override void DoSomething()
@@ -151,14 +138,6 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         g.DrawText("**EDIT MODE - RIGHT-CLICK ANYWHERE TO EXIT**", "Consolas", 50f * scale, new PointF(20, 20), Color.White);
     }
 
-    private void DrawFrames(Rage.Graphics g)
-    {
-        foreach (var frame in this.frames)
-        {
-            frame.Draw(g);
-        }
-    }
-
     private void ProcessEditingControls()
     {
         this.cursor.Update();
@@ -180,12 +159,12 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         if (this.isEditing)
         {
             this.DrawBorder(e.Graphics);
-            this.DrawFrames(e.Graphics);
+            this.frames.ForEach(x => x.Draw(e.Graphics));
             this.cursor.Draw(e.Graphics);
         }
-        else if (!this.isPaused && this.IsVisible)
+        else if (!this.isPaused)
         {
-            this.DrawFrames(e.Graphics);
+            this.frames.Where(x => x.IsVisible).ToList().ForEach(x => x.Draw(e.Graphics));
         }
     }
 
@@ -193,13 +172,7 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     {
         if (this.cursor.Scale != 0)
         {
-            foreach (var frame in this.frames)
-            {
-                if (frame.Contains(this.cursor))
-                {
-                    frame.Rescale(this.cursor.Scale);
-                }
-            }
+            this.frames.FirstOrDefault(x => x.Contains(this.cursor)).Rescale(this.cursor.Scale);
         }
     }
 

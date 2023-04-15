@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using IPT.Common.GUI;
 using Rage;
 
 /// <summary>
@@ -12,6 +14,7 @@ public class TextureFrame
     private Point cursorOffset = new Point(0, 0);
     private Point position = new Point(0, 0);
     private bool isLifted = false;
+    private List<TextureSprite> sprites = new List<TextureSprite>();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextureFrame"/> class.
@@ -33,6 +36,11 @@ public class TextureFrame
     /// Gets a value indicating the name of the frame.
     /// </summary>
     public string Name { get; private set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the frame is visible.
+    /// </summary>
+    public bool IsVisible { get; set; } = false;
 
     /// <summary>
     /// Gets or sets the coordinates of the frame on a 1920 x 1080 canvas.
@@ -69,6 +77,15 @@ public class TextureFrame
     }
 
     /// <summary>
+    /// Adds a sprite to the texture frame.
+    /// </summary>
+    /// <param name="sprite">The sprite to add.</param>
+    public void AddSprite(TextureSprite sprite)
+    {
+        this.sprites.Add(sprite);
+    }
+
+    /// <summary>
     /// Draws the texture to the graphics object.
     /// </summary>
     /// <param name="g">The Rage Graphics object.</param>
@@ -80,6 +97,7 @@ public class TextureFrame
         }
 
         g.DrawTexture(this.texture, this.frameRect);
+        this.sprites.ForEach(x => x.Draw(g));
     }
 
     /// <summary>
@@ -136,6 +154,7 @@ public class TextureFrame
         var y = this.Position.Y * yScale;
         var scale = this.Scale / 100f;
         this.frameRect = new RectangleF(new PointF(x, y), new SizeF(size.Width * scale, size.Height * scale));
+        this.sprites.ForEach(sprite => sprite.Refresh(this.frameRect.Location, scale));
     }
 
     /// <summary>
@@ -151,6 +170,6 @@ public class TextureFrame
     {
         var borderRect = this.frameRect;
         borderRect.Inflate(5f, 5f);
-        g.DrawRectangle(borderRect, Color.LimeGreen;
+        g.DrawRectangle(borderRect, Color.LimeGreen);
     }
 }

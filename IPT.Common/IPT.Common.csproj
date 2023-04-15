@@ -88,6 +88,7 @@
     <Compile Include="GUI\BaseFrame.cs" />
     <Compile Include="GUI\Cursor.cs" />
     <Compile Include="GUI\TextureFrame.cs" />
+    <Compile Include="GUI\TextureSprite.cs" />
     <Compile Include="Handlers\InputHandler.cs" />
     <Compile Include="CommonPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
