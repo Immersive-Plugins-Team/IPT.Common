@@ -83,6 +83,7 @@
     <Compile Include="API\Logging.cs" />
     <Compile Include="API\Math.cs" />
     <Compile Include="Callouts.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Fibers\GenericFiber.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="GUI\BaseFrame.cs" />

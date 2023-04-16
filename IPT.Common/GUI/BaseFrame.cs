@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using IPT.Common;
 using IPT.Common.API;
 using Rage;
 using Rage.Native;
@@ -107,13 +108,13 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         if (this.resolution != Game.Resolution)
         {
             this.resolution = Game.Resolution;
-            this.frames.foreach(frame => frame.Refresh());
+            this.frames.ForEach(frame => frame.Refresh());
         }
     }
 
     private void DrawBorder(Rage.Graphics g)
     {
-        var scale = Game.Resolution.Height / 1080f;
+        var scale = Game.Resolution.Height / Constants.CanvasHeight;
         var width = scale * 10f;
         g.DrawRectangle(new RectangleF(0, 0, Game.Resolution.Width, width), Color.Green);
         g.DrawRectangle(new RectangleF(0, Game.Resolution.Height - width + 2, Game.Resolution.Width, width), Color.Green);

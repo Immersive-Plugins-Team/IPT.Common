@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using IPT.Common;
 using Rage;
 using Rage.Native;
 
@@ -8,7 +9,7 @@ using Rage.Native;
 public class Cursor
 {
     /// <summary>
-    /// Gets the location of the cursor on a 1920 x 1080 canvas.
+    /// Gets the location of the cursor on the canvas.
     /// </summary>
     public Point Position { get; private set; } = new Point(0, 0);
 
@@ -28,8 +29,8 @@ public class Cursor
     /// <param name="g">The Rage.Graphics object to draw against.</param>
     public void Draw(Rage.Graphics g)
     {
-        var xScale = Game.Resolution.Width / 1920f;
-        var yScale = Game.Resolution.Height / 1080f;
+        var xScale = Game.Resolution.Width / Constants.CanvasWidth;
+        var yScale = Game.Resolution.Height / Constants.CanvasHeight;
         g.DrawFilledCircle(new Vector2(this.Position.X * xScale, this.Position.Y * yScale), 10f, Color.Green);
     }
 
@@ -40,7 +41,7 @@ public class Cursor
     {
         var x = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, (int)GameControl.CursorX);
         var y = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, (int)GameControl.CursorY);
-        this.Position = new Point((int)System.Math.Round(x * 1920), (int)System.Math.Round(y * 1080));
+        this.Position = new Point((int)System.Math.Round(x * Constants.CanvasWidth), (int)System.Math.Round(y * Constants.CanvasHeight));
 
         if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.Attack) != this.IsMouseDown)
         {

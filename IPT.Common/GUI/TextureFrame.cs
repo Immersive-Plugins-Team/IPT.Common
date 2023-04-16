@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using IPT.Common;
 using IPT.Common.GUI;
 using Rage;
 
@@ -43,7 +44,7 @@ public class TextureFrame
     public bool IsVisible { get; set; } = false;
 
     /// <summary>
-    /// Gets or sets the coordinates of the frame on a 1920 x 1080 canvas.
+    /// Gets or sets the coordinates of the frame on the canvas.
     /// </summary>
     public Point Position
     {
@@ -71,7 +72,7 @@ public class TextureFrame
 
         set
         {
-            this.scale = IPT.Common.API.Math.Clamp(value, 20, 200);
+            this.scale = IPT.Common.API.Math.Clamp(value, Constants.MinScale, Constants.MaxScale);
             this.Refresh();
         }
     }
@@ -116,7 +117,7 @@ public class TextureFrame
     internal bool Contains(Cursor cursor)
     {
         var resolution = Game.Resolution;
-        var cursorPosition = new PointF(cursor.Position.X * (resolution.Width / 1920f), cursor.Position.Y * (resolution.Height / 1080f));
+        var cursorPosition = new PointF(cursor.Position.X * (resolution.Width / Constants.CanvasWidth), cursor.Position.Y * (resolution.Height / Constants.CanvasHeight));
         return this.frameRect.Contains(cursorPosition);
     }
 
@@ -154,11 +155,11 @@ public class TextureFrame
     internal void Refresh()
     {
         var resolution = Game.Resolution;
-        var xScale = resolution.Width / 1920f;
-        var yScale = resolution.Height / 1080f;
+        var xScale = resolution.Width / Constants.CanvasWidth;
+        var yScale = resolution.Height / Constants.CanvasHeight;
         var size = new SizeF(this.texture.Size.Width * yScale, this.texture.Size.Height * yScale);
-        var xOffset = 1920 - this.Position.X - this.texture.Size.Width;
-        var x = xOffset > 960 ? this.Position.X * xScale : resolution.Width - (xOffset * xScale) - size.Width;
+        var xOffset = Constants.CanvasWidth - this.Position.X - this.texture.Size.Width;
+        var x = xOffset > (Constants.CanvasWidth / 2) ? this.Position.X * xScale : resolution.Width - (xOffset * xScale) - size.Width;
         var y = this.Position.Y * yScale;
         var scale = this.Scale / 100f;
         this.frameRect = new RectangleF(new PointF(x, y), new SizeF(size.Width * scale, size.Height * scale));
