@@ -47,13 +47,7 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     /// <param name="position">The new position of the frame.</param>
     public void MoveFrame(string name, Point position)
     {
-        foreach (var entry in this.frames)
-        {
-            if (entry.Name == name)
-            {
-                entry.Position = position;
-            }
-        }
+        this.frames.Where(frame => frame.Name == name).ToList().ForEach(frame => frame.Position = position);
     }
 
     /// <summary>
@@ -63,13 +57,7 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     /// <param name="scale">The new scale of the frame.</param>
     public void RescaleFrame(string name, int scale)
     {
-        foreach (var entry in this.frames)
-        {
-            if (entry.Name == name)
-            {
-                entry.Scale = scale;
-            }
-        }
+        this.frames.Where(frame => frame.Name == name).ToList().ForEach((frame) => frame.Scale = scale);
     }
 
     /// <summary>
@@ -120,10 +108,7 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         if (this.resolution != Game.Resolution)
         {
             this.resolution = Game.Resolution;
-            foreach (var frame in this.frames)
-            {
-                frame.Refresh();
-            }
+            this.frames.foreach(frame => frame.Refresh());
         }
     }
 
@@ -172,11 +157,7 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     {
         if (this.cursor.Scale != 0)
         {
-            var frame = this.frames.LastOrDefault(x => x.Contains(this.cursor));
-            if (frame != null)
-            {
-                frame.Rescale(this.cursor.Scale);
-            }
+            this.frames.LastOrDefault(frame => frame.Contains(this.cursor))?.Rescale(this.cursor.Scale);
         }
     }
 
