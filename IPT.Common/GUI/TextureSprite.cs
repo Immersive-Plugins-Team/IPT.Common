@@ -8,8 +8,8 @@ namespace IPT.Common.GUI
     /// </summary>
     public class TextureSprite
     {
-        private Texture texture;
-        private Point position;
+        private readonly Texture texture;
+        private readonly Point position;
         private RectangleF spriteRect;
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace IPT.Common.GUI
         /// <param name="scale">The scale of the parent frame.</param>
         internal void Refresh(PointF framePosition, float scale)
         {
-            scale *= Game.Resolution.Height / 1080f;
+            scale *= Game.Resolution.Height / Constants.CanvasHeight;
             var size = new SizeF(this.texture.Size.Width * scale, this.texture.Size.Height * scale);
             this.spriteRect = new RectangleF(new PointF(framePosition.X + (this.position.X * scale), framePosition.Y + (this.position.Y * scale)), size);
         }
