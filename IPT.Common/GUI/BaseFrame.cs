@@ -81,7 +81,6 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         }
         else
         {
-            Logging.Info("Starting base frame");
             Game.FrameRender += this.Game_FrameRender;
             Game.RawFrameRender += this.Game_RawFrameRender;
             base.Start();
