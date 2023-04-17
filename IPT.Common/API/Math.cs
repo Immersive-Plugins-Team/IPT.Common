@@ -143,7 +143,7 @@ namespace IPT.Common.API
         /// <returns>A float value representing the heading angle in degrees between the two points.</returns>
         public static double CalculateAngle(Vector3 origin, Vector3 target)
         {
-            var radians = System.Math.Atan2(origin.Y - target.Y, target.X - origin.Y);
+            var radians = System.Math.Atan2(target.Y - origin.Y, target.X - origin.X);
             var degrees = ConvertRadiansToDegrees(radians) - 90.0;
             return degrees >= 0.0 ? degrees : degrees + 360.0;
         }
