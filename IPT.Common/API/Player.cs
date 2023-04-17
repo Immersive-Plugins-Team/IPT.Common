@@ -54,7 +54,7 @@ namespace IPT.Common.API
                 }
 
                 var distance = player.DistanceTo2D(ped);
-                if (distance <= maxDistance && distance > minDistance)
+                if (distance <= maxDistance && distance < minDistance)
                 {
                     if (System.Math.Abs(GetAngleOffset(ped, frontOffset)) <= maxAngle)
                     {
