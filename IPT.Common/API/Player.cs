@@ -3,28 +3,19 @@
 namespace IPT.Common.API
 {
     /// <summary>
-    /// A helpful wrapper around the Rage.Player class.
+    /// Helpful player functions.
     /// </summary>
-    public class PlayerPed : Ped
+    public static class Player
     {
-        /// <summary>
-        /// Gets and instance of the player ped from the player's character.
-        /// </summary>
-        /// <returns>A PlayerPed object.</returns>
-        public static PlayerPed GetCharacter()
-        {
-            return (PlayerPed)Game.LocalPlayer.Character;
-        }
-
         /// <summary>
         /// Gets the cartesian (inverted y-axis) angle between the player and the entity where due north is zero degrees.
         /// </summary>
         /// <param name="entity">The target entity.</param>
         /// <param name="frontOffset">The amount to offset from the front of the player when calculating angles.</param>
         /// <returns>The angle in degrees.</returns>
-        public double GetAngleTo(Entity entity, float frontOffset = 0f)
+        public static double GetAngleTo(Entity entity, float frontOffset = 0f)
         {
-            return Math.CalculateAngle(this.GetOffsetPositionFront(frontOffset), entity.Position);
+            return Math.CalculateAngle(Game.LocalPlayer.Character.GetOffsetPositionFront(frontOffset), entity.Position);
         }
 
         /// <summary>
@@ -33,9 +24,10 @@ namespace IPT.Common.API
         /// <param name="entity">The target entity.</param>
         /// <param name="frontOffset">The amount to offset from the front of the player when calculating angles.</param>
         /// <returns>The angle offset in degrees where positive values are counter-clockwise.</returns>
-        public double GetAngleOffset(Entity entity, float frontOffset = 0f)
+        public static double GetAngleOffset(Entity entity, float frontOffset = 0f)
         {
-            return Math.CalculateAngleOffset(this.GetOffsetPositionFront(frontOffset), entity.Position, this.Heading);
+            var player = Game.LocalPlayer.Character;
+            return Math.CalculateAngleOffset(player.GetOffsetPositionFront(frontOffset), entity.Position, player.Heading);
         }
 
         /// <summary>
@@ -47,24 +39,24 @@ namespace IPT.Common.API
         /// <param name="includePolice">Indicate whether or not to include police in the search.</param>
         /// <param name="includeDead">Indicate whether or not to include dead peds in the search.</param>
         /// <returns>The nearest ped if one is nearby otherwise null.</returns>
-        public Ped GetNearestPed(float maxDistance, float maxAngle = 180f, float frontOffset = 0f, bool includePolice = true, bool includeDead = true)
+        public static Ped GetNearestPed(float maxDistance, float maxAngle = 180f, float frontOffset = 0f, bool includePolice = true, bool includeDead = true)
         {
             var peds = World.GetAllPeds();
+            var player = Game.LocalPlayer.Character;
             Ped nearestPed = null;
             float minDistance = float.MaxValue;
 
             foreach (var ped in peds)
             {
-                if (ped.IsPlayer || (!includePolice && ped.RelationshipGroup == "COP") || (!includeDead && !ped.IsAlive))
+                if (!ped || ped.IsPlayer || (!includePolice && ped.RelationshipGroup == "COP") || (!includeDead && !ped.IsAlive))
                 {
                     continue;
                 }
 
-                var distance = this.DistanceTo2D(ped);
-                if (distance <= maxDistance)
+                var distance = player.DistanceTo2D(ped);
+                if (distance <= maxDistance && distance > minDistance)
                 {
-                    var angle = System.Math.Abs(this.GetAngleOffset(ped, frontOffset));
-                    if (angle <= maxAngle && distance < minDistance)
+                    if (System.Math.Abs(GetAngleOffset(ped, frontOffset)) <= maxAngle)
                     {
                         nearestPed = ped;
                         minDistance = distance;
