@@ -8,6 +8,11 @@ namespace IPT.Common.API
     public static class Math
     {
         /// <summary>
+        /// A value used for converting radians to degrees.
+        /// </summary>
+        public static readonly double Rad2Deg = 180 / System.Math.PI;
+
+        /// <summary>
         /// Clamps a float between two (inclusive) values.
         /// </summary>
         /// <param name="value">The value to be clamped.</param>
@@ -89,12 +94,34 @@ namespace IPT.Common.API
         /// </summary>
         /// <param name="origin">The origin entity.</param>
         /// <param name="target">The target entity.</param>
+        /// <param name="originHeading">The heading of the origin in degrees.</param>
         /// <returns>A float value representing the smallest angle in degrees between the origin and the target.</returns>
-        public static float CalculateAngleToTarget(Entity origin, Entity target)
+        public static double CalculateAngleOffset(Vector3 origin, Vector3 target, float originHeading)
         {
-            var heading = CalculateHeading(origin.Position, target.Position);
-            var offset = System.Math.Abs(origin.Heading - heading);
-            return offset <= 180 ? offset : 360 - offset;
+            double offset = originHeading - CalculateAngle(origin, target);
+            if (offset < -180.0)
+            {
+                offset += 360.0;
+            }
+            else if (offset > 180.0)
+            {
+                offset -= 360.0;
+            }
+
+            return offset;
+        }
+
+        /// <summary>
+        /// Calculates the cartesian distance between two entities in 2D space.
+        /// </summary>
+        /// <param name="origin">The origin entity.</param>
+        /// <param name="target">The target entity.</param>
+        /// <returns>A double value representing the smallest angle in degrees between the origin and the target.</returns>
+        public static double CalculateCartesianDistance(Vector3 origin, Vector3 target)
+        {
+            var dX = target.X - origin.X;
+            var dY = target.Y - origin.Y;
+            return System.Math.Sqrt((dX * dX) + (dY * dY));
         }
 
         /// <summary>
@@ -109,11 +136,11 @@ namespace IPT.Common.API
         /// <param name="origin">The origin point.</param>
         /// <param name="target">The target point.</param>
         /// <returns>A float value representing the heading angle in degrees between the two points.</returns>
-        public static float CalculateHeading(Vector3 origin, Vector3 target)
+        public static double CalculateAngle(Vector3 origin, Vector3 target)
         {
-            var radians = System.Math.Atan2(target.Y - origin.Y, target.X - origin.X);
+            var radians = System.Math.Atan2(origin.Y - target.Y, target.X - origin.Y);
             var degrees = ConvertRadiansToDegrees(radians) - 90.0;
-            return (float)(degrees >= 0 ? degrees : degrees + 360.0);
+            return degrees >= 0.0 ? degrees : degrees + 360.0;
         }
 
         /// <summary>
@@ -123,7 +150,7 @@ namespace IPT.Common.API
         /// <returns>A double value reprensting the radians in degrees.</returns>
         public static double ConvertRadiansToDegrees(double radians)
         {
-            return radians * (180 / System.Math.PI);
+            return radians * Rad2Deg;
         }
     }
 }
