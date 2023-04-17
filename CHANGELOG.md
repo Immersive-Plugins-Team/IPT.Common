@@ -1,10 +1,12 @@
 # Changelog
 _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/)._
 
-## [1.4] - 2023-04-16
+## [1.4] - 2023-04-17
 
 ### Added
 - GUI classes (BaseFrame, Cursor, TextureFrame, TextureSprite)
+- New functions in Math class to handle some trig
+- New static Player class to interact with aforementioned functions
 
 ## [1.3] - 2022-01-31
 
