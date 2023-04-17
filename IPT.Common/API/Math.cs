@@ -10,7 +10,12 @@ namespace IPT.Common.API
         /// <summary>
         /// A value used for converting radians to degrees.
         /// </summary>
-        public static readonly double Rad2Deg = 180 / System.Math.PI;
+        public static readonly double Rad2Deg = 180.0 / System.Math.PI;
+
+        /// <summary>
+        /// A value used for converting degrees to radians.
+        /// </summary>
+        public static readonly double Deg2Rad = System.Math.PI / 180.0;
 
         /// <summary>
         /// Clamps a float between two (inclusive) values.
@@ -147,10 +152,20 @@ namespace IPT.Common.API
         /// Converts radians into degrees.
         /// </summary>
         /// <param name="radians">The initial value in radians.</param>
-        /// <returns>A double value reprensting the radians in degrees.</returns>
+        /// <returns>A double value representing the radians in degrees.</returns>
         public static double ConvertRadiansToDegrees(double radians)
         {
             return radians * Rad2Deg;
+        }
+
+        /// <summary>
+        /// Converts degrees into radians.
+        /// </summary>
+        /// <param name="degrees">The initial value in degrees.</param>
+        /// <returns>A double value representing the degrees in radians.</returns>
+        public static double ConvertDegreesToRadians(double degrees)
+        {
+            return degrees * Deg2Rad;
         }
     }
 }
