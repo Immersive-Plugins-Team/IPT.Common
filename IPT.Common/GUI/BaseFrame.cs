@@ -10,7 +10,7 @@ namespace IPT.Common.GUI
     /// <summary>
     /// A class for managing one or more texture frames.
     /// </summary>
-    public abstract class BaseFrame : Fibers.GenericFiber
+    public class BaseFrame : Fibers.GenericFiber
     {
         private Size resolution;
         private bool isInteractive;
@@ -156,9 +156,20 @@ namespace IPT.Common.GUI
         }
 
         /// <summary>
+        /// Called on the RawFrameRender event while in interactive mode.
+        /// </summary>
+        /// <param name="g">The Rage.Graphics object to draw on.</param>
+        protected virtual void DrawInteractiveGraphics(Rage.Graphics g)
+        {
+            this.DrawBorder(g, Color.Green);
+            this.Frames.ForEach(x => x.Draw(g));
+            this.Cursor.Draw(g);
+        }
+
+        /// <summary>
         /// Called when the base frame is in interactive mode.
         /// </summary>
-        protected void ProcessInteractiveControls()
+        protected virtual void ProcessInteractiveControls()
         {
             this.Cursor.Update();
             this.UpdateMousedFrame();
@@ -188,9 +199,7 @@ namespace IPT.Common.GUI
         {
             if (this.isInteractive)
             {
-                this.DrawBorder(e.Graphics, Color.Green);
-                this.Frames.ForEach(x => x.Draw(e.Graphics));
-                this.Cursor.Draw(e.Graphics);
+                this.DrawInteractiveGraphics(e.Graphics);
             }
             else if (!this.isPaused)
             {
