@@ -29,7 +29,7 @@ public class TextureFrame : TextureItem
         this.position = position;
         this.scale = scale;
         this.RectF = default;
-        this.IsVisible = true;
+        this.IsVisible = false;
         this.Refresh();
     }
 

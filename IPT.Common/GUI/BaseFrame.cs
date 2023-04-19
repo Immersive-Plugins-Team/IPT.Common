@@ -168,9 +168,9 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
 
     private void RescaleFrames()
     {
-        if (this.cursor.Scale != 0)
+        if (this.cursor.RescaleFactor != 0)
         {
-            this.frames.LastOrDefault(frame => frame.Contains(this.cursor))?.Rescale(this.cursor.Scale);
+            this.frames.LastOrDefault(frame => frame.Contains(this.cursor))?.Rescale(this.cursor.RescaleFactor);
         }
     }
 

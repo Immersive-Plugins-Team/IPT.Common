@@ -19,9 +19,9 @@ public class Cursor
     public bool IsMouseDown { get; private set; } = false;
 
     /// <summary>
-    /// Gets the scaling factor applied by the user.
+    /// Gets the rescaling factor applied by the user.
     /// </summary>
-    public int Scale { get; private set; }
+    public int RescaleFactor { get; private set; }
 
     /// <summary>
     /// Draws the cursor.
@@ -50,15 +50,15 @@ public class Cursor
 
         if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.WeaponWheelNext))
         {
-            this.Scale = -1;
+            this.RescaleFactor = -1;
         }
         else if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.WeaponWheelPrev))
         {
-            this.Scale = 1;
+            this.RescaleFactor = 1;
         }
         else
         {
-            this.Scale = 0;
+            this.RescaleFactor = 0;
         }
     }
 }

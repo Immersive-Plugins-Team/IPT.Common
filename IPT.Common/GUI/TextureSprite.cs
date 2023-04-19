@@ -19,7 +19,6 @@ namespace IPT.Common.GUI
             this.Name = name;
             this.Texture = texture;
             this.Position = position;
-            this.RectF = default;
             this.Refresh(new PointF(0f, 0f), 1f);
             this.IsVisible = false;
         }
@@ -43,9 +42,12 @@ namespace IPT.Common.GUI
         /// <param name="scale">The scale of the parent frame.</param>
         public void Refresh(PointF framePosition, float scale)
         {
-            scale *= Game.Resolution.Height / Constants.CanvasHeight;
-            var size = new SizeF(this.Texture.Size.Width * scale, this.Texture.Size.Height * scale);
-            this.RectF = new RectangleF(new PointF(framePosition.X + (this.Position.X * scale), framePosition.Y + (this.Position.Y * scale)), size);
+            if (this.Texture != null)
+            {
+                scale *= Game.Resolution.Height / Constants.CanvasHeight;
+                var size = new SizeF(this.Texture.Size.Width * scale, this.Texture.Size.Height * scale);
+                this.RectF = new RectangleF(new PointF(framePosition.X + (this.Position.X * scale), framePosition.Y + (this.Position.Y * scale)), size);
+            }
         }
     }
 }
