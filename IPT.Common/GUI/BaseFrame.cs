@@ -64,10 +64,14 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     /// <summary>
     /// Changes into an edit mode where the textures can be respositioned and resized.
     /// </summary>
-    public void EditMode()
+    /// <param name="isPaused">Whether or not to pause them game when entering edit mode.</param>
+    public void EditMode(bool isPaused = true)
     {
-        this.isEditing = true;
-        Game.IsPaused = true;
+        if (!Functions.IsGamePaused())
+        {
+            this.isEditing = true;
+            Game.IsPaused = isPaused;
+        }
     }
 
     /// <summary>
@@ -104,7 +108,7 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     /// </summary>
     protected override void DoSomething()
     {
-        this.isPaused = IPT.Common.API.Functions.IsGamePaused();
+        this.isPaused = Functions.IsGamePaused();
         if (this.resolution != Game.Resolution)
         {
             this.resolution = Game.Resolution;
@@ -169,10 +173,14 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
             {
                 this.isEditing = false;
             }
-            else if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.CellphoneCancel))
+            else if (Functions.IsGamePaused() && NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.CellphoneCancel))
             {
                 this.isEditing = false;
                 Game.IsPaused = false;
+            }
+            else if (!Functions.IsGamePaused() && NativeFunction.Natives.IS_CONTROL_PRESSED<bool>(0, (int)GameControl.CellphoneCancel))
+            {
+                this.isEditing = false;
             }
 
             if (!this.isEditing)
