@@ -17,6 +17,8 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     private Size resolution;
     private bool isEditing;
     private bool isPaused;
+    private bool isBlurred;
+    private bool isControlsEnabled;
     private TextureFrame mousedFrame;
 
     /// <summary>
@@ -29,6 +31,8 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         this.resolution = default;
         this.isEditing = false;
         this.isPaused = false;
+        this.isBlurred = false;
+        this.isControlsEnabled = true;
         this.cursor = new Cursor();
     }
 
@@ -64,13 +68,25 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
     /// <summary>
     /// Changes into an edit mode where the textures can be respositioned and resized.
     /// </summary>
-    /// <param name="isPaused">Whether or not to pause them game when entering edit mode.</param>
-    public void EditMode(bool isPaused = true)
+    /// <param name="pause">Whether or not to pause the game when edit mode is activated.</param>
+    /// <param name="blur">Whether or not to blur the game when edit mode is activated.</param>
+    public void EditMode(bool pause, bool blur)
     {
-        if (!Functions.IsGamePaused())
+        if (!Functions.IsGamePaused() && !this.isEditing)
         {
             this.isEditing = true;
-            Game.IsPaused = isPaused;
+            if (pause)
+            {
+                Game.IsPaused = true;
+            }
+            else
+            {
+                this.SetPlayerControls(false);
+                if (blur)
+                {
+                    this.BlurScreen(true);
+                }
+            }
         }
     }
 
@@ -113,6 +129,20 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         {
             this.resolution = Game.Resolution;
             this.frames.ForEach(frame => frame.Refresh());
+        }
+    }
+
+    private void BlurScreen(bool blur)
+    {
+        if (blur)
+        {
+            NativeFunction.Natives.x2206bf9a37b7f724("MinigameTransitionIn", 0, true);
+            this.isBlurred = true;
+        }
+        else if (this.isBlurred)
+        {
+            NativeFunction.Natives.x068E835A1D0DC0E3("MinigameTransitionIn");
+            this.isBlurred = false;
         }
     }
 
@@ -165,6 +195,15 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         }
     }
 
+    private void SetPlayerControls(bool isEnabled)
+    {
+        if (isEnabled != this.isControlsEnabled)
+        {
+            NativeFunction.Natives.x8D32347D6D4C40A2(Game.LocalPlayer, isEnabled, 0);
+            this.isControlsEnabled = isEnabled;
+        }
+    }
+
     private void UpdateEditingStatus()
     {
         if (this.isEditing)
@@ -173,20 +212,17 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
             {
                 this.isEditing = false;
             }
-            else if (Functions.IsGamePaused() && NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.CellphoneCancel))
-            {
-                this.isEditing = false;
-                Game.IsPaused = false;
-            }
-            else if (!Functions.IsGamePaused() && NativeFunction.Natives.IS_CONTROL_PRESSED<bool>(0, (int)GameControl.CellphoneCancel))
+            else if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.CellphoneCancel))
             {
                 this.isEditing = false;
             }
 
             if (!this.isEditing)
             {
-                // drop all frames just in case
                 this.frames.ForEach(x => x.Drop());
+                Game.IsPaused = false;
+                this.BlurScreen(false);
+                this.SetPlayerControls(true);
             }
         }
     }
