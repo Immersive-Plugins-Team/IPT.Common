@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using IPT.Common.API;
 using Rage;
 using Rage.Native;
 
@@ -17,18 +18,18 @@ namespace IPT.Common.GUI
         /// <summary>
         /// Gets a value indicating whether or not the mouse is currently down.
         /// </summary>
-        public bool IsMouseDown { get; private set; } = false;
+        public MouseStatus MouseStatus { get; private set; } = MouseStatus.Up;
 
         /// <summary>
-        /// Gets the rescaling factor applied by the user.
+        /// Gets the current value of the scroll wheel.
         /// </summary>
-        public int RescaleFactor { get; private set; }
+        public ScrollWheelStatus ScrollWheelStatus { get; private set; } = ScrollWheelStatus.None;
 
         /// <summary>
         /// Draws the cursor.
         /// </summary>
         /// <param name="g">The Rage.Graphics object to draw against.</param>
-        public void Draw(Rage.Graphics g)
+        public virtual void Draw(Rage.Graphics g)
         {
             var xScale = Game.Resolution.Width / Constants.CanvasWidth;
             var yScale = Game.Resolution.Height / Constants.CanvasHeight;
@@ -44,22 +45,26 @@ namespace IPT.Common.GUI
             var y = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, (int)GameControl.CursorY);
             this.Position = new Point((int)System.Math.Round(x * Constants.CanvasWidth), (int)System.Math.Round(y * Constants.CanvasHeight));
 
-            if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.Attack) != this.IsMouseDown)
+            if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.Attack))
             {
-                this.IsMouseDown = !this.IsMouseDown;
+                this.MouseStatus = MouseStatus.Down;
+            }
+            else
+            {
+                this.MouseStatus = MouseStatus.Up;
             }
 
             if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.WeaponWheelNext))
             {
-                this.RescaleFactor = -1;
+                this.ScrollWheelStatus = ScrollWheelStatus.Up;
             }
             else if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.WeaponWheelPrev))
             {
-                this.RescaleFactor = 1;
+                this.ScrollWheelStatus = ScrollWheelStatus.Down;
             }
             else
             {
-                this.RescaleFactor = 0;
+                this.ScrollWheelStatus = ScrollWheelStatus.None;
             }
         }
     }

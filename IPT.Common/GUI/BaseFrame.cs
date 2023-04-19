@@ -212,9 +212,10 @@ namespace IPT.Common.GUI
         /// </summary>
         protected void RescaleFrames()
         {
-            if (this.Cursor.RescaleFactor != 0)
+            // if (this.Cursor.RescaleFactor != 0)
+            if (this.Cursor.ScrollWheelStatus != ScrollWheelStatus.None)
             {
-                this.Frames.LastOrDefault(frame => frame.Contains(this.Cursor))?.Rescale(this.Cursor.RescaleFactor);
+                this.Frames.LastOrDefault(frame => frame.Contains(this.Cursor))?.Rescale(this.Cursor.ScrollWheelStatus == ScrollWheelStatus.Up ? 1 : -1);
             }
         }
 
@@ -263,7 +264,7 @@ namespace IPT.Common.GUI
         {
             if (this.mousedFrame != null)
             {
-                if (this.Cursor.IsMouseDown)
+                if (this.Cursor.MouseStatus == MouseStatus.Down)
                 {
                     this.mousedFrame.MoveTo(this.Cursor);
                 }
@@ -273,7 +274,7 @@ namespace IPT.Common.GUI
                     this.mousedFrame = null;
                 }
             }
-            else if (this.Cursor.IsMouseDown)
+            else if (this.Cursor.MouseStatus == MouseStatus.Down)
             {
                 var frame = this.Frames.LastOrDefault(x => x.Contains(this.Cursor));
                 if (frame != null)

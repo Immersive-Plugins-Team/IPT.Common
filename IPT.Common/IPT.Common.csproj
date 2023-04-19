@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Enums.cs" />
     <Compile Include="API\Events.cs" />
     <Compile Include="API\Functions.cs" />
     <Compile Include="API\Logging.cs" />
