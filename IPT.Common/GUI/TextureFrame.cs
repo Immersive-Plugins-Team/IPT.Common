@@ -7,14 +7,12 @@ using Rage;
 /// <summary>
 /// A frame for drawing a single texture.
 /// </summary>
-public class TextureFrame
+public class TextureFrame : TextureItem
 {
-    private Texture texture;
-    private int scale = 100;
-    private RectangleF frameRect = default;
-    private Point cursorOffset = new Point(0, 0);
-    private Point position = new Point(0, 0);
+    private Point position;
+    private int scale;
     private bool isLifted = false;
+    private Point cursorOffset = new Point(0, 0);
     private List<TextureSprite> sprites = new List<TextureSprite>();
 
     /// <summary>
@@ -27,33 +25,23 @@ public class TextureFrame
     public TextureFrame(string name, Texture texture, Point position = default, int scale = 100)
     {
         this.Name = name;
-        this.texture = texture;
-        this.Position = position;
-        this.Scale = scale;
+        this.Texture = texture;
+        this.position = position;
+        this.scale = scale;
+        this.RectF = default;
+        this.IsVisible = true;
         this.Refresh();
     }
 
-    /// <summary>
-    /// Gets a value indicating the name of the frame.
-    /// </summary>
-    public string Name { get; private set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the frame is visible.
-    /// </summary>
-    public bool IsVisible { get; set; } = false;
-
-    /// <summary>
-    /// Gets or sets the coordinates of the frame on the canvas.
-    /// </summary>
-    public Point Position
+    /// <inheritdoc/>
+    public override Point Position
     {
         get
         {
             return this.position;
         }
 
-        set
+        protected set
         {
             this.position = value;
             this.Refresh();
@@ -61,7 +49,7 @@ public class TextureFrame
     }
 
     /// <summary>
-    /// Gets or sets the scale from 20-200%.
+    /// Gets or sets the scale.
     /// </summary>
     public int Scale
     {
@@ -87,25 +75,17 @@ public class TextureFrame
     }
 
     /// <summary>
-    /// Toggles the visibility of the frame.
-    /// </summary>
-    public void Toggle()
-    {
-        this.IsVisible = !this.IsVisible;
-    }
-
-    /// <summary>
     /// Draws the texture to the graphics object.
     /// </summary>
     /// <param name="g">The Rage Graphics object.</param>
-    internal void Draw(Rage.Graphics g)
+    public override void Draw(Rage.Graphics g)
     {
         if (this.isLifted)
         {
-            this.DrawBorder(g);
+            this.DrawBorder(g, Color.LimeGreen);
         }
 
-        g.DrawTexture(this.texture, this.frameRect);
+        g.DrawTexture(this.Texture, this.RectF);
         this.sprites.ForEach(x => x.Draw(g));
     }
 
@@ -114,17 +94,17 @@ public class TextureFrame
     /// </summary>
     /// <param name="cursor">The cursor to evaluate.</param>
     /// <returns>A value indicating whether or not the cursor is positioned within the frame.</returns>
-    internal bool Contains(Cursor cursor)
+    public bool Contains(Cursor cursor)
     {
         var resolution = Game.Resolution;
         var cursorPosition = new PointF(cursor.Position.X * (resolution.Width / Constants.CanvasWidth), cursor.Position.Y * (resolution.Height / Constants.CanvasHeight));
-        return this.frameRect.Contains(cursorPosition);
+        return this.RectF.Contains(cursorPosition);
     }
 
     /// <summary>
     /// Drops the frame.
     /// </summary>
-    internal void Drop()
+    public void Drop()
     {
         this.isLifted = false;
     }
@@ -133,52 +113,67 @@ public class TextureFrame
     /// Lifts the frame.
     /// </summary>
     /// <param name="cursor">The cursor.</param>
-    internal void Lift(Cursor cursor)
+    public void Lift(Cursor cursor)
     {
         this.cursorOffset = new Point(cursor.Position.X - this.Position.X, cursor.Position.Y - this.Position.Y);
         this.isLifted = true;
     }
 
     /// <summary>
-    /// Moves the frame.
+    /// Moves the frame to the cursor.
     /// </summary>
     /// <param name="cursor">The cursor.</param>
-    internal void Move(Cursor cursor)
+    public void MoveTo(Cursor cursor)
     {
         this.Position = new Point(cursor.Position.X - this.cursorOffset.X, cursor.Position.Y - this.cursorOffset.Y);
         this.Refresh();
     }
 
     /// <summary>
-    /// Refreshes the underlying frame rectangle based on resolution and scale.
+    /// Moves the frame to the given position which should be coordinates on the base canvas.
     /// </summary>
-    internal void Refresh()
+    /// <param name="position">The position.</param>
+    public override void MoveTo(Point position)
+    {
+        this.Position = new Point(position.X, position.Y);
+        this.Refresh();
+    }
+
+    /// <summary>
+    /// Refreshes the underlying frame rectangle based on resolution and scale.  This should be called when the resolution changes.
+    /// </summary>
+    public void Refresh()
     {
         var resolution = Game.Resolution;
         var xScale = resolution.Width / Constants.CanvasWidth;
         var yScale = resolution.Height / Constants.CanvasHeight;
-        var size = new SizeF(this.texture.Size.Width * yScale, this.texture.Size.Height * yScale);
-        var xOffset = Constants.CanvasWidth - this.Position.X - this.texture.Size.Width;
+        var size = new SizeF(this.Texture.Size.Width * yScale, this.Texture.Size.Height * yScale);
+        var xOffset = Constants.CanvasWidth - this.Position.X - this.Texture.Size.Width;
         var x = xOffset > (Constants.CanvasWidth / 2) ? this.Position.X * xScale : resolution.Width - (xOffset * xScale) - size.Width;
         var y = this.Position.Y * yScale;
         var scale = this.Scale / 100f;
-        this.frameRect = new RectangleF(new PointF(x, y), new SizeF(size.Width * scale, size.Height * scale));
-        this.sprites.ForEach(sprite => sprite.Refresh(this.frameRect.Location, scale));
+        this.RectF = new RectangleF(new PointF(x, y), new SizeF(size.Width * scale, size.Height * scale));
+        this.sprites.ForEach(sprite => sprite.Refresh(this.RectF.Location, scale));
     }
 
     /// <summary>
     /// Rescales the frame based on the given offset.
     /// </summary>
     /// <param name="offset">The amount to offset the scale.</param>
-    internal void Rescale(int offset)
+    public void Rescale(int offset)
     {
         this.Scale += offset;
     }
 
-    private void DrawBorder(Rage.Graphics g)
+    /// <summary>
+    /// Draws a border around the texture.
+    /// </summary>
+    /// <param name="g">The Rage.Graphics object to draw on.</param>
+    /// <param name="color">The color of the border.</param>
+    protected void DrawBorder(Rage.Graphics g, Color color)
     {
-        var borderRect = this.frameRect;
+        var borderRect = this.RectF;
         borderRect.Inflate(5f, 5f);
-        g.DrawRectangle(borderRect, Color.LimeGreen);
+        g.DrawRectangle(borderRect, color);
     }
 }
