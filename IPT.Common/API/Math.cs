@@ -95,57 +95,16 @@ namespace IPT.Common.API
         }
 
         /// <summary>
-        /// Calculate the angle in degrees from the front of the origin entity to the target entity.
+        /// Gets the angle (0-180 degrees) between the source and target entities.
         /// </summary>
-        /// <param name="origin">The origin entity.</param>
+        /// <param name="source">The source entity.</param>
         /// <param name="target">The target entity.</param>
-        /// <param name="originHeading">The heading of the origin in degrees.</param>
-        /// <returns>A float value representing the smallest angle in degrees between the origin and the target.</returns>
-        public static double CalculateAngleOffset(Vector3 origin, Vector3 target, float originHeading)
+        /// <returns>A double indicating the angle in degrees.</returns>
+        public static double GetVectorAngle(Entity source, Entity target)
         {
-            double offset = originHeading - CalculateAngle(origin, target);
-            if (offset < -180.0)
-            {
-                offset += 360.0;
-            }
-            else if (offset > 180.0)
-            {
-                offset -= 360.0;
-            }
-
-            return offset;
-        }
-
-        /// <summary>
-        /// Calculates the cartesian distance between two entities in 2D space.
-        /// </summary>
-        /// <param name="origin">The origin entity.</param>
-        /// <param name="target">The target entity.</param>
-        /// <returns>A double value representing the smallest angle in degrees between the origin and the target.</returns>
-        public static double CalculateCartesianDistance(Vector3 origin, Vector3 target)
-        {
-            var dX = target.X - origin.X;
-            var dY = target.Y - origin.Y;
-            return System.Math.Sqrt((dX * dX) + (dY * dY));
-        }
-
-        /// <summary>
-        /// Calculates the heading angle in degrees from the origin point to the target point in 2D space.
-        /// The angle is measured counterclockwise from the positive Y-axis such that:
-        ///     North = 0
-        ///     East = 270
-        ///     South = 180
-        ///     West = 90
-        /// The positive-Y axis is used as zero because that is what Rage uses for entity headings.
-        /// </summary>
-        /// <param name="origin">The origin point.</param>
-        /// <param name="target">The target point.</param>
-        /// <returns>A float value representing the heading angle in degrees between the two points.</returns>
-        public static double CalculateAngle(Vector3 origin, Vector3 target)
-        {
-            var radians = System.Math.Atan2(target.Y - origin.Y, target.X - origin.X);
-            var degrees = ConvertRadiansToDegrees(radians) - 90.0;
-            return degrees >= 0.0 ? degrees : degrees + 360.0;
+            var targetVector = target.Position - source.Position;
+            var dotProduct = Vector3.Dot(source.ForwardVector.ToNormalized(), targetVector.ToNormalized());
+            return ConvertRadiansToDegrees(System.Math.Acos(dotProduct));
         }
 
         /// <summary>
