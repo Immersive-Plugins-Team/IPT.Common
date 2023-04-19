@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using IPT.Common;
 using IPT.Common.API;
 using Rage;
 using Rage.Native;
@@ -11,12 +10,10 @@ namespace IPT.Common.GUI
     /// <summary>
     /// A class for managing one or more texture frames.
     /// </summary>
-    public class BaseFrame : IPT.Common.Fibers.GenericFiber
+    public abstract class BaseFrame : Fibers.GenericFiber
     {
-        private readonly List<TextureFrame> frames = new List<TextureFrame>();
-
         private Size resolution;
-        private bool isEditing;
+        private bool isInteractive;
         private bool isPaused;
         private bool isControlsEnabled;
         private TextureFrame mousedFrame;
@@ -29,10 +26,11 @@ namespace IPT.Common.GUI
         {
             this.mousedFrame = null;
             this.resolution = default;
-            this.isEditing = false;
+            this.isInteractive = false;
             this.isPaused = false;
             this.isControlsEnabled = true;
             this.Cursor = new Cursor();
+            this.Frames = new List<TextureFrame>();
         }
 
         /// <summary>
@@ -41,12 +39,17 @@ namespace IPT.Common.GUI
         public Cursor Cursor { get; protected set; }
 
         /// <summary>
+        /// Gets or sets a list of texture frames on the base frame.  They are drawn in order such that the last frame in the list will be on top.
+        /// </summary>
+        public List<TextureFrame> Frames { get; protected set; }
+
+        /// <summary>
         /// Adds a texture frame to the base frame.
         /// </summary>
         /// <param name="frame">The frame to add.</param>
         public void AddFrame(TextureFrame frame)
         {
-            this.frames.Add(frame);
+            this.Frames.Add(frame);
         }
 
         /// <summary>
@@ -56,7 +59,7 @@ namespace IPT.Common.GUI
         /// <param name="position">The new position of the frame.</param>
         public void MoveFrame(string name, Point position)
         {
-            this.frames.Where(frame => frame.Name == name).ToList().ForEach(frame => frame.MoveTo(position));
+            this.Frames.Where(frame => frame.Name == name).ToList().ForEach(frame => frame.MoveTo(position));
         }
 
         /// <summary>
@@ -66,18 +69,18 @@ namespace IPT.Common.GUI
         /// <param name="scale">The new scale of the frame.</param>
         public void RescaleFrame(string name, int scale)
         {
-            this.frames.Where(frame => frame.Name == name).ToList().ForEach((frame) => frame.Scale = scale);
+            this.Frames.Where(frame => frame.Name == name).ToList().ForEach((frame) => frame.Scale = scale);
         }
 
         /// <summary>
-        /// Changes into an edit mode where the textures can be respositioned and resized.
+        /// Changes into an interactive mode where the textures can be interacted with.
         /// </summary>
-        /// <param name="pause">Whether or not to pause the game when edit mode is activated.</param>
-        public void EditMode(bool pause)
+        /// <param name="pause">Whether or not to pause the game when interactive mode is activated.</param>
+        public void Interact(bool pause)
         {
-            if (!Functions.IsGamePaused() && !this.isEditing)
+            if (!Functions.IsGamePaused() && !this.isInteractive)
             {
-                this.isEditing = true;
+                this.isInteractive = true;
                 if (pause)
                 {
                     Game.IsPaused = true;
@@ -95,7 +98,7 @@ namespace IPT.Common.GUI
         public override void Start()
         {
             Logging.Info("Starting base frame");
-            if (this.frames.Count == 0)
+            if (this.Frames.Count == 0)
             {
                 Logging.Warning("there are no texture frames to manage!");
             }
@@ -127,7 +130,7 @@ namespace IPT.Common.GUI
             if (this.resolution != Game.Resolution)
             {
                 this.resolution = Game.Resolution;
-                this.frames.ForEach(frame => frame.Refresh());
+                this.Frames.ForEach(frame => frame.Refresh());
             }
         }
 
@@ -135,21 +138,27 @@ namespace IPT.Common.GUI
         /// Draws a border around the screen.
         /// </summary>
         /// <param name="g">The graphics object.</param>
-        protected void DrawBorder(Rage.Graphics g)
+        /// <param name="color">The border color.</param>
+        /// <param name="thickness">The border thickness.</param>
+        /// <param name="showMessage">Whether or not to show the edit mode message.</param>
+        protected void DrawBorder(Rage.Graphics g, Color color, float thickness = 10f, bool showMessage = true)
         {
             var scale = Game.Resolution.Height / Constants.CanvasHeight;
-            var width = scale * 10f;
-            g.DrawRectangle(new RectangleF(0, 0, Game.Resolution.Width, width), Color.Green);
-            g.DrawRectangle(new RectangleF(0, Game.Resolution.Height - width + 2, Game.Resolution.Width, width), Color.Green);
-            g.DrawRectangle(new RectangleF(0, 0, width, Game.Resolution.Height), Color.Green);
-            g.DrawRectangle(new RectangleF(Game.Resolution.Width - width + 1, 0, width, Game.Resolution.Height), Color.Green);
-            g.DrawText("**EDIT MODE - RIGHT-CLICK ANYWHERE TO EXIT**", "Consolas", 50f * scale, new PointF(20, 20), Color.White);
+            thickness *= scale;
+            g.DrawRectangle(new RectangleF(0, 0, Game.Resolution.Width, thickness), color);
+            g.DrawRectangle(new RectangleF(0, Game.Resolution.Height - thickness + 2, Game.Resolution.Width, thickness), color);
+            g.DrawRectangle(new RectangleF(0, 0, thickness, Game.Resolution.Height), color);
+            g.DrawRectangle(new RectangleF(Game.Resolution.Width - thickness + 1, 0, thickness, Game.Resolution.Height), color);
+            if (showMessage)
+            {
+                g.DrawText("**EDIT MODE - RIGHT-CLICK ANYWHERE TO EXIT**", "Consolas", 50f * scale, new PointF(20, 20), Color.White);
+            }
         }
 
         /// <summary>
-        /// Called when the base frame is in editing mode.
+        /// Called when the base frame is in interactive mode.
         /// </summary>
-        protected void ProcessEditingControls()
+        protected void ProcessInteractiveControls()
         {
             this.Cursor.Update();
             this.UpdateMousedFrame();
@@ -163,10 +172,10 @@ namespace IPT.Common.GUI
         /// <param name="e">The event args.</param>
         protected void Game_FrameRender(object sender, GraphicsEventArgs e)
         {
-            this.UpdateEditingStatus();
-            if (this.isEditing)
+            this.UpdateInteractiveStatus();
+            if (this.isInteractive)
             {
-                this.ProcessEditingControls();
+                this.ProcessInteractiveControls();
             }
         }
 
@@ -177,15 +186,15 @@ namespace IPT.Common.GUI
         /// <param name="e">The event args.</param>
         protected void Game_RawFrameRender(object sender, GraphicsEventArgs e)
         {
-            if (this.isEditing)
+            if (this.isInteractive)
             {
-                this.DrawBorder(e.Graphics);
-                this.frames.ForEach(x => x.Draw(e.Graphics));
+                this.DrawBorder(e.Graphics, Color.Green);
+                this.Frames.ForEach(x => x.Draw(e.Graphics));
                 this.Cursor.Draw(e.Graphics);
             }
             else if (!this.isPaused)
             {
-                this.frames.Where(x => x.IsVisible).ToList().ForEach(x => x.Draw(e.Graphics));
+                this.Frames.Where(x => x.IsVisible).ToList().ForEach(x => x.Draw(e.Graphics));
             }
         }
 
@@ -196,7 +205,7 @@ namespace IPT.Common.GUI
         {
             if (this.Cursor.RescaleFactor != 0)
             {
-                this.frames.LastOrDefault(frame => frame.Contains(this.Cursor))?.Rescale(this.Cursor.RescaleFactor);
+                this.Frames.LastOrDefault(frame => frame.Contains(this.Cursor))?.Rescale(this.Cursor.RescaleFactor);
             }
         }
 
@@ -214,24 +223,24 @@ namespace IPT.Common.GUI
         }
 
         /// <summary>
-        /// Called during the FrameRender event.
+        /// Call this during the FrameRender event.
         /// </summary>
-        protected void UpdateEditingStatus()
+        protected void UpdateInteractiveStatus()
         {
-            if (this.isEditing)
+            if (this.isInteractive)
             {
                 if (Game.Console.IsOpen)
                 {
-                    this.isEditing = false;
+                    this.isInteractive = false;
                 }
                 else if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.CellphoneCancel))
                 {
-                    this.isEditing = false;
+                    this.isInteractive = false;
                 }
 
-                if (!this.isEditing)
+                if (!this.isInteractive)
                 {
-                    this.frames.ForEach(x => x.Drop());
+                    this.Frames.ForEach(x => x.Drop());
                     Game.IsPaused = false;
                     this.SetPlayerControls(true);
                 }
@@ -257,7 +266,7 @@ namespace IPT.Common.GUI
             }
             else if (this.Cursor.IsMouseDown)
             {
-                var frame = this.frames.LastOrDefault(x => x.Contains(this.Cursor));
+                var frame = this.Frames.LastOrDefault(x => x.Contains(this.Cursor));
                 if (frame != null)
                 {
                     this.mousedFrame = frame;
