@@ -12,7 +12,6 @@ using Rage.Native;
 public class BaseFrame : IPT.Common.Fibers.GenericFiber
 {
     private readonly List<TextureFrame> frames = new List<TextureFrame>();
-    private readonly Cursor cursor;
 
     private Size resolution;
     private bool isEditing;
@@ -31,8 +30,13 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         this.isEditing = false;
         this.isPaused = false;
         this.isControlsEnabled = true;
-        this.cursor = new Cursor();
+        this.Cursor = new Cursor();
     }
+
+    /// <summary>
+    /// Gets or sets the cursor.
+    /// </summary>
+    public Cursor Cursor { get; protected set; }
 
     /// <summary>
     /// Adds a texture frame to the base frame.
@@ -125,7 +129,11 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         }
     }
 
-    private void DrawBorder(Rage.Graphics g)
+    /// <summary>
+    /// Draws a border around the screen.
+    /// </summary>
+    /// <param name="g">The graphics object.</param>
+    protected void DrawBorder(Rage.Graphics g)
     {
         var scale = Game.Resolution.Height / Constants.CanvasHeight;
         var width = scale * 10f;
@@ -136,14 +144,22 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         g.DrawText("**EDIT MODE - RIGHT-CLICK ANYWHERE TO EXIT**", "Consolas", 50f * scale, new PointF(20, 20), Color.White);
     }
 
-    private void ProcessEditingControls()
+    /// <summary>
+    /// Called when the base frame is in editing mode.
+    /// </summary>
+    protected void ProcessEditingControls()
     {
-        this.cursor.Update();
+        this.Cursor.Update();
         this.UpdateMousedFrame();
         this.RescaleFrames();
     }
 
-    private void Game_FrameRender(object sender, GraphicsEventArgs e)
+    /// <summary>
+    /// Called by the FrameRender event.
+    /// </summary>
+    /// <param name="sender">The event sender.</param>
+    /// <param name="e">The event args.</param>
+    protected void Game_FrameRender(object sender, GraphicsEventArgs e)
     {
         this.UpdateEditingStatus();
         if (this.isEditing)
@@ -152,13 +168,18 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         }
     }
 
-    private void Game_RawFrameRender(object sender, GraphicsEventArgs e)
+    /// <summary>
+    /// Called by the RawFrameRender event.
+    /// </summary>
+    /// <param name="sender">The event sender.</param>
+    /// <param name="e">The event args.</param>
+    protected void Game_RawFrameRender(object sender, GraphicsEventArgs e)
     {
         if (this.isEditing)
         {
             this.DrawBorder(e.Graphics);
             this.frames.ForEach(x => x.Draw(e.Graphics));
-            this.cursor.Draw(e.Graphics);
+            this.Cursor.Draw(e.Graphics);
         }
         else if (!this.isPaused)
         {
@@ -166,15 +187,22 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         }
     }
 
-    private void RescaleFrames()
+    /// <summary>
+    /// When the user scrolls the mouse, this applies a rescaling factor to the frames.
+    /// </summary>
+    protected void RescaleFrames()
     {
-        if (this.cursor.RescaleFactor != 0)
+        if (this.Cursor.RescaleFactor != 0)
         {
-            this.frames.LastOrDefault(frame => frame.Contains(this.cursor))?.Rescale(this.cursor.RescaleFactor);
+            this.frames.LastOrDefault(frame => frame.Contains(this.Cursor))?.Rescale(this.Cursor.RescaleFactor);
         }
     }
 
-    private void SetPlayerControls(bool isEnabled)
+    /// <summary>
+    /// Enables or disables the player controls.
+    /// </summary>
+    /// <param name="isEnabled">A value indicating whether to enable or disable the controls.</param>
+    protected void SetPlayerControls(bool isEnabled)
     {
         if (isEnabled != this.isControlsEnabled)
         {
@@ -183,7 +211,10 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         }
     }
 
-    private void UpdateEditingStatus()
+    /// <summary>
+    /// Called during the FrameRender event.
+    /// </summary>
+    protected void UpdateEditingStatus()
     {
         if (this.isEditing)
         {
@@ -205,13 +236,16 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
         }
     }
 
-    private void UpdateMousedFrame()
+    /// <summary>
+    /// Updates the frame currently under the mouse control.
+    /// </summary>
+    protected void UpdateMousedFrame()
     {
         if (this.mousedFrame != null)
         {
-            if (this.cursor.IsMouseDown)
+            if (this.Cursor.IsMouseDown)
             {
-                this.mousedFrame.MoveTo(this.cursor);
+                this.mousedFrame.MoveTo(this.Cursor);
             }
             else
             {
@@ -219,13 +253,13 @@ public class BaseFrame : IPT.Common.Fibers.GenericFiber
                 this.mousedFrame = null;
             }
         }
-        else if (this.cursor.IsMouseDown)
+        else if (this.Cursor.IsMouseDown)
         {
-            var frame = this.frames.LastOrDefault(x => x.Contains(this.cursor));
+            var frame = this.frames.LastOrDefault(x => x.Contains(this.Cursor));
             if (frame != null)
             {
                 this.mousedFrame = frame;
-                this.mousedFrame.Lift(this.cursor);
+                this.mousedFrame.Lift(this.Cursor);
             }
         }
     }
