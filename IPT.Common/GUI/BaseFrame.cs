@@ -78,7 +78,7 @@ namespace IPT.Common.GUI
         /// Changes into an interactive mode where the textures can be interacted with.
         /// </summary>
         /// <param name="pause">Whether or not to pause the game when interactive mode is activated.</param>
-        public void Interact(bool pause)
+        public virtual void Interact(bool pause)
         {
             if (!Functions.IsGamePaused() && !this.isInteractive)
             {
