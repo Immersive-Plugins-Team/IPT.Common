@@ -30,6 +30,15 @@ namespace IPT.Common.GUI
         public ScrollWheelStatus ScrollWheelStatus { get; private set; } = ScrollWheelStatus.None;
 
         /// <summary>
+        /// Sets the cursor position.
+        /// </summary>
+        /// <param name="position">The position using ranges 0.0 - 1.0</param>
+        public void SetPosition(PointF position)
+        {
+            NativeFunction.Natives.xFC695459D4D0E219(position.X, position.Y);
+        }
+
+        /// <summary>
         /// Draws the cursor.
         /// </summary>
         /// <param name="g">The Rage.Graphics object to draw against.</param>

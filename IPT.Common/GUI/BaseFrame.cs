@@ -83,6 +83,7 @@ namespace IPT.Common.GUI
             if (!Functions.IsGamePaused() && !this.isInteractive)
             {
                 this.isInteractive = true;
+                this.Cursor.SetPosition(new PointF(0.5f, 0.5f));
                 if (pause)
                 {
                     Game.IsPaused = true;
