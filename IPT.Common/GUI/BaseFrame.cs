@@ -10,7 +10,9 @@ namespace IPT.Common.GUI
     /// <summary>
     /// A class for managing one or more texture frames.
     /// </summary>
-    public class BaseFrame : Fibers.GenericFiber
+    /// <typeparam name="T">The Frame type.</typeparam>
+    public class BaseFrame<T> : Fibers.GenericFiber
+        where T : TextureFrame
     {
         private Size resolution;
         private bool isInteractive;
@@ -19,7 +21,7 @@ namespace IPT.Common.GUI
         private TextureFrame mousedFrame;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseFrame"/> class.
+        /// Initializes a new instance of the <see cref="BaseFrame{T}"/> class.
         /// </summary>
         public BaseFrame()
             : base("baseframe", 100)
@@ -30,7 +32,7 @@ namespace IPT.Common.GUI
             this.isPaused = false;
             this.isControlsEnabled = true;
             this.Cursor = new Cursor();
-            this.Frames = new List<TextureFrame>();
+            this.Frames = new List<T>();
         }
 
         /// <summary>
@@ -41,13 +43,13 @@ namespace IPT.Common.GUI
         /// <summary>
         /// Gets or sets a list of texture frames on the base frame.  They are drawn in order such that the last frame in the list will be on top.
         /// </summary>
-        public virtual List<TextureFrame> Frames { get; protected set; }
+        public virtual List<T> Frames { get; protected set; }
 
         /// <summary>
         /// Adds a texture frame to the base frame.
         /// </summary>
         /// <param name="frame">The frame to add.</param>
-        public void AddFrame(TextureFrame frame)
+        public void AddFrame(T frame)
         {
             this.Frames.Add(frame);
         }
