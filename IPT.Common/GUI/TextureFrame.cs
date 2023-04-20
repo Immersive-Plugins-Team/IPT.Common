@@ -142,7 +142,7 @@ namespace IPT.Common.GUI
         /// <summary>
         /// Refreshes the underlying frame rectangle based on resolution and scale.  This should be called when the resolution changes.
         /// </summary>
-        public void Refresh()
+        public virtual void Refresh()
         {
             var resolution = Game.Resolution;
             var xScale = resolution.Width / Constants.CanvasWidth;
