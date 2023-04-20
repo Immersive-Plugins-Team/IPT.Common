@@ -8,12 +8,16 @@ namespace IPT.Common.GUI
     /// <summary>
     /// A class for displaying and monitoring an on-screen cursor for editing a base frame.
     /// </summary>
-    public class Cursor
+    public class Cursor : TextureSprite
     {
         /// <summary>
-        /// Gets the location of the cursor on the canvas.
+        /// Initializes a new instance of the <see cref="Cursor"/> class.
         /// </summary>
-        public Point Position { get; private set; } = new Point(0, 0);
+        /// <param name="texture">An optional texture.</param>
+        public Cursor(Texture texture = null)
+            : base("cursor", texture, default)
+        {
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not the mouse is currently down.
@@ -29,11 +33,18 @@ namespace IPT.Common.GUI
         /// Draws the cursor.
         /// </summary>
         /// <param name="g">The Rage.Graphics object to draw against.</param>
-        public virtual void Draw(Rage.Graphics g)
+        public override void Draw(Rage.Graphics g)
         {
-            var xScale = Game.Resolution.Width / Constants.CanvasWidth;
-            var yScale = Game.Resolution.Height / Constants.CanvasHeight;
-            g.DrawFilledCircle(new Vector2(this.Position.X * xScale, this.Position.Y * yScale), 10f, Color.Green);
+            if (this.Texture == null)
+            {
+                var xScale = Game.Resolution.Width / Constants.CanvasWidth;
+                var yScale = Game.Resolution.Height / Constants.CanvasHeight;
+                g.DrawFilledCircle(new Vector2(this.Position.X * xScale, this.Position.Y * yScale), 10f, Color.Green);
+            }
+            else
+            {
+                g.DrawTexture(this.Texture, this.RectF);
+            }
         }
 
         /// <summary>
@@ -44,6 +55,7 @@ namespace IPT.Common.GUI
             var x = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, (int)GameControl.CursorX);
             var y = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, (int)GameControl.CursorY);
             this.Position = new Point((int)System.Math.Round(x * Constants.CanvasWidth), (int)System.Math.Round(y * Constants.CanvasHeight));
+            this.Refresh(new PointF(0f, 0f), 1f);
 
             if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.Attack))
             {
