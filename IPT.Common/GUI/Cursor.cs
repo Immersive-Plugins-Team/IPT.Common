@@ -32,10 +32,11 @@ namespace IPT.Common.GUI
         /// <summary>
         /// Sets the cursor position.
         /// </summary>
-        /// <param name="position">The position using ranges 0.0 - 1.0</param>
-        public void SetPosition(PointF position)
+        /// <param name="x">The x position using ranges 0.0 - 1.0.</param>
+        /// <param name="y">The y position using ranges 0.0 - 1.0.</param>
+        public void SetPosition(float x, float y)
         {
-            NativeFunction.Natives.xFC695459D4D0E219(position.X, position.Y);
+            NativeFunction.Natives.xFC695459D4D0E219(x, y);
         }
 
         /// <summary>
