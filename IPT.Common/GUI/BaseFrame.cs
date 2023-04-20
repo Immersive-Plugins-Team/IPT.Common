@@ -41,7 +41,7 @@ namespace IPT.Common.GUI
         /// <summary>
         /// Gets or sets a list of texture frames on the base frame.  They are drawn in order such that the last frame in the list will be on top.
         /// </summary>
-        public List<TextureFrame> Frames { get; protected set; }
+        public virtual List<TextureFrame> Frames { get; protected set; }
 
         /// <summary>
         /// Adds a texture frame to the base frame.
