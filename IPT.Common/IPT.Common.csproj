@@ -103,6 +103,7 @@
     <Compile Include="RawUI\Sprite.cs" />
     <Compile Include="RawUI\SpriteFrame.cs" />
     <Compile Include="RawUI\TextureElement.cs" />
+    <Compile Include="RawUI\TextureHandler.cs" />
     <Compile Include="User\Configuration.cs" />
     <Compile Include="User\Inputs\ButtonCombo.cs" />
     <Compile Include="User\Inputs\GenericCombo.cs" />

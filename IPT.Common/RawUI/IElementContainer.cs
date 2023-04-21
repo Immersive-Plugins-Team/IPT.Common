@@ -13,9 +13,9 @@ namespace IPT.Common.RawUI
         List<IElement> Elements { get; }
 
         /// <summary>
-        /// Gets or sets the scaling factor to be applied to the container and its child elements.
+        /// Gets the scaling factor to be applied to the container and its child elements.
         /// </summary>
-        float Scale { get; set; }
+        float Scale { get; }
 
         /// <summary>
         /// Adds an <see cref="IElement"/> child element to the container.

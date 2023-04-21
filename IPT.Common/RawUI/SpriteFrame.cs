@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using Rage;
 
 namespace IPT.Common.RawUI
@@ -11,6 +12,7 @@ namespace IPT.Common.RawUI
         where T : Sprite
     {
         private List<IElement> elements;
+        private int frameScale;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteFrame{T}"/> class.
@@ -21,6 +23,7 @@ namespace IPT.Common.RawUI
             : base(name, texture)
         {
             this.elements = new List<IElement>();
+            this.frameScale = 100;
         }
 
         /// <inheritdoc />
@@ -30,11 +33,30 @@ namespace IPT.Common.RawUI
             private set { this.elements = value; }
         }
 
-        /// <inheritdoc />
-        public float Scale
+        /// <summary>
+        /// Gets or sets the frame specific scale applied after the parent container's (e.g. canvas) scale.
+        /// </summary>
+        public virtual int FrameScale
         {
-            get => throw new System.NotImplementedException();
-            set => throw new System.NotImplementedException();
+            get
+            {
+                return this.frameScale;
+            }
+
+            set
+            {
+                this.frameScale = API.Math.Clamp(value, Constants.MinScale, Constants.MaxScale);
+                this.Update();
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual float Scale
+        {
+            get
+            {
+                return this.Parent.Scale * (this.frameScale / 100f);
+            }
         }
 
         /// <inheritdoc />
@@ -78,7 +100,9 @@ namespace IPT.Common.RawUI
         /// <inheritdoc />
         public override void Update()
         {
-            base.Update();
+            var screenPosition = new PointF((this.Parent.Position.X * this.Scale) + (this.Position.X * this.Scale), (this.Parent.Position.Y * this.Scale) + (this.Position.Y * this.Scale));
+            var size = new SizeF(this.Texture.Size.Width * this.Scale, this.Texture.Size.Height * this.Scale);
+            this.BoundingBox = new RectangleF(screenPosition, size);
 
             foreach (IElement element in this.elements)
             {

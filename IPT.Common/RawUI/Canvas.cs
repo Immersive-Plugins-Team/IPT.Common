@@ -55,7 +55,7 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc />
-        public float Scale { get; set; }
+        public float Scale { get; private set; }
 
         /// <inheritdoc />
         public void AddElement(IElement element)
