@@ -98,11 +98,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawUI\Canvas.cs" />
     <Compile Include="RawUI\Cursor.cs" />
-    <Compile Include="RawUI\IElement.cs" />
-    <Compile Include="RawUI\IElementContainer.cs" />
+    <Compile Include="RawUI\IDrawable.cs" />
+    <Compile Include="RawUI\IContainer.cs" />
     <Compile Include="RawUI\Sprite.cs" />
-    <Compile Include="RawUI\SpriteFrame.cs" />
-    <Compile Include="RawUI\TextureElement.cs" />
+    <Compile Include="RawUI\TextureFrame.cs" />
+    <Compile Include="RawUI\TextureItem.cs" />
     <Compile Include="RawUI\TextureHandler.cs" />
     <Compile Include="User\Configuration.cs" />
     <Compile Include="User\Inputs\ButtonCombo.cs" />

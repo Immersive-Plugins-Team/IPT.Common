@@ -11,7 +11,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// A canvas representing the screen area where elements can be added and positioned.
     /// </summary>
-    public class Canvas : GenericFiber, IElementContainer
+    public class Canvas : GenericFiber, IContainer
     {
         private readonly Point position = new Point(0, 0);
 
@@ -35,13 +35,13 @@ namespace IPT.Common.RawUI
         public Cursor Cursor { get; set; }
 
         /// <inheritdoc />
-        public List<IElement> Elements { get; private set; }
+        public List<IDrawable> Items { get; private set; }
 
         /// <inheritdoc />
         public bool IsVisible { get; set; }
 
         /// <inheritdoc />
-        public IElementContainer Parent
+        public IContainer Parent
         {
             get { return null; }
             set { }
@@ -58,21 +58,21 @@ namespace IPT.Common.RawUI
         public float Scale { get; private set; }
 
         /// <inheritdoc />
-        public void AddElement(IElement element)
+        public void AddItem(IDrawable element)
         {
-            this.Elements.Add(element);
+            this.Items.Add(element);
         }
 
         /// <inheritdoc />
-        public void ClearElements()
+        public void ClearItems()
         {
-            this.Elements.Clear();
+            this.Items.Clear();
         }
 
         /// <inheritdoc />
         public void Draw(Rage.Graphics g)
         {
-            this.Elements.Where(x => x.IsVisible).ToList().ForEach(x => x.Draw(g));
+            this.Items.Where(x => x.IsVisible).ToList().ForEach(x => x.Draw(g));
             if (this.isInteractive)
             {
                 this.Cursor.Draw(g);
@@ -100,15 +100,16 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc />
-        public void RemoveElement(IElement element)
+        public void RemoveItem(IDrawable element)
         {
-            this.Elements.Remove(element);
+            this.Items.Remove(element);
         }
 
         /// <inheritdoc />
         public override void Start()
         {
             base.Start();
+            this.Scale = this.resolution.Height / Constants.CanvasHeight;
             Game.FrameRender += this.Game_FrameRender;
             Game.RawFrameRender += this.Game_RawFrameRender;
         }
@@ -125,7 +126,7 @@ namespace IPT.Common.RawUI
         public void Update()
         {
             this.Scale = this.resolution.Height / Constants.CanvasHeight;
-            this.Elements.ForEach(x => x.Update());
+            this.Items.ForEach(x => x.Update());
             this.Cursor.Update();
         }
 

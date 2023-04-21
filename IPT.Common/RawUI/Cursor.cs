@@ -8,14 +8,14 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// A UI element representing the mouse cursor on the screen.
     /// </summary>
-    public class Cursor : TextureElement
+    public class Cursor : Sprite
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Cursor"/> class.
         /// </summary>
         /// <param name="texture">The cursor's texture.</param>
         public Cursor(Texture texture)
-            : base("cursor", texture)
+            : base(texture)
         {
             this.MouseStatus = MouseStatus.Up;
             this.ScrollWheelStatus = ScrollWheelStatus.None;

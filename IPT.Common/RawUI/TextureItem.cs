@@ -4,31 +4,24 @@ using Rage;
 namespace IPT.Common.RawUI
 {
     /// <summary>
-    /// Represents a sprite element that renders a texture to the screen.
+    /// Represents a drawable item that renders a texture to the screen.
     /// </summary>
-    public abstract class TextureElement : IElement
+    public abstract class TextureItem : IDrawable
     {
         private Point position;
         private Texture texture;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextureElement"/> class.
+        /// Initializes a new instance of the <see cref="TextureItem"/> class.
         /// </summary>
-        /// <param name="name">A name the sprite can be referred to as.</param>
         /// <param name="texture">The texture to be rendered.</param>
-        public TextureElement(string name, Texture texture)
+        public TextureItem(Texture texture)
         {
-            this.Name = name;
             this.Texture = texture;
         }
 
         /// <inheritdoc/>
         public virtual bool IsVisible { get; set; }
-
-        /// <summary>
-        /// Gets or sets a unique name to use for referencing the sprite.
-        /// </summary>
-        public virtual string Name { get; set; }
 
         /// <inheritdoc/>
         public virtual Point Position
@@ -63,7 +56,7 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc/>
-        public virtual IElementContainer Parent { get; set; }
+        public virtual IContainer Parent { get; set; }
 
         /// <summary>
         /// Gets or sets the value of the bounding box for drawing the texture.
@@ -76,7 +69,7 @@ namespace IPT.Common.RawUI
         /// <param name="g">The graphics object to draw onto.</param>
         public virtual void Draw(Rage.Graphics g)
         {
-            if (this.Texture != null && this.Parent != null)
+            if (this.Texture != null)
             {
                 g.DrawTexture(this.Texture, this.BoundingBox);
             }
