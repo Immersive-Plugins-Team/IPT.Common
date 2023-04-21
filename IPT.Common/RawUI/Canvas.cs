@@ -30,7 +30,10 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc />
-        public RectangleF Bounds { get { return new RectangleF(this.Position, new SizeF(this.resolution.Width, this.resolution.Height)); } }
+        public RectangleF Bounds
+        {
+            get { return new RectangleF(this.Position, new SizeF(this.resolution.Width, this.resolution.Height)); }
+        }
 
         /// <summary>
         /// Gets or sets the cursor belonging to the canvas.
