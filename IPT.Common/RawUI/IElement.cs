@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace IPT.Common.RUI
+namespace IPT.Common.RawUI
 {
     /// <summary>
     /// Represents an object that can be rendered to the screen.

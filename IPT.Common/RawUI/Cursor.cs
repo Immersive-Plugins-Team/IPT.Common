@@ -3,7 +3,7 @@ using IPT.Common.API;
 using Rage;
 using Rage.Native;
 
-namespace IPT.Common.RUI
+namespace IPT.Common.RawUI
 {
     /// <summary>
     /// A UI element representing the mouse cursor on the screen.

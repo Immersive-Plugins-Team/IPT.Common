@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using Rage;
 
-namespace IPT.Common.RUI
+namespace IPT.Common.RawUI
 {
     /// <summary>
     /// Represents a sprite element that renders a texture to the screen.
@@ -85,7 +85,7 @@ namespace IPT.Common.RUI
         /// <summary>
         /// Updates the RectangleF used to draw the texture based on the texture itself, the element's position, and the parent frame's scale.
         /// </summary>
-        public void Update()
+        public virtual void Update()
         {
             var screenPosition = new PointF((this.Parent.Position.X * this.Parent.Scale) + (this.Position.X * this.Parent.Scale), (this.Parent.Position.Y * this.Parent.Scale) + (this.Position.Y * this.Parent.Scale));
             var size = new SizeF(this.Texture.Size.Width * this.Parent.Scale, this.Texture.Size.Height * this.Parent.Scale);

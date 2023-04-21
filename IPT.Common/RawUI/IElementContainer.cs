@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IPT.Common.RUI
+namespace IPT.Common.RawUI
 {
     /// <summary>
     /// Represents a container that can contain multiple renderable elements.

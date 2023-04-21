@@ -6,7 +6,7 @@ using IPT.Common.Fibers;
 using Rage;
 using Rage.Native;
 
-namespace IPT.Common.RUI
+namespace IPT.Common.RawUI
 {
     /// <summary>
     /// A canvas representing the screen area where elements can be added and positioned.
