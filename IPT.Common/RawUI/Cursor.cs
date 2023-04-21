@@ -8,7 +8,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// A UI element representing the mouse cursor on the screen.
     /// </summary>
-    public class Cursor : Sprite
+    public class Cursor : TextureElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Cursor"/> class.

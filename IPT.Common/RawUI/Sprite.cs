@@ -5,7 +5,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// A drawable texture.
     /// </summary>
-    public class Sprite : TextureItem
+    public class Sprite : TextureElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Sprite"/> class.

@@ -29,6 +29,9 @@ namespace IPT.Common.RawUI
             this.Cursor = new Cursor(null);
         }
 
+        /// <inheritdoc />
+        public RectangleF Bounds { get { return new RectangleF(this.Position, new SizeF(this.resolution.Width, this.resolution.Height)); } }
+
         /// <summary>
         /// Gets or sets the cursor belonging to the canvas.
         /// </summary>
@@ -97,6 +100,12 @@ namespace IPT.Common.RawUI
                     this.SetPlayerControls(false);
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public void MoveTo(Point position)
+        {
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
