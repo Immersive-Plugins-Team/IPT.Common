@@ -9,9 +9,9 @@ using Rage.Native;
 namespace IPT.Common.RUI
 {
     /// <summary>
-    /// A canvas representing the screen area where RUIElements can be added and positioned.
+    /// A canvas representing the screen area where elements can be added and positioned.
     /// </summary>
-    public class Canvas : GenericFiber, IRenderableContainer
+    public class Canvas : GenericFiber, IElementContainer
     {
         private readonly Point position = new Point(0, 0);
 
@@ -35,13 +35,13 @@ namespace IPT.Common.RUI
         public Cursor Cursor { get; set; }
 
         /// <inheritdoc />
-        public List<IRenderable> Elements { get; private set; }
+        public List<IElement> Elements { get; private set; }
 
         /// <inheritdoc />
-        public bool IsVisible { get; private set; }
+        public bool IsVisible { get; set; }
 
         /// <inheritdoc />
-        public IRenderableContainer Parent
+        public IElementContainer Parent
         {
             get { return null; }
             set { }
@@ -58,7 +58,7 @@ namespace IPT.Common.RUI
         public float Scale { get; set; }
 
         /// <inheritdoc />
-        public void AddElement(IRenderable element)
+        public void AddElement(IElement element)
         {
             this.Elements.Add(element);
         }
@@ -100,7 +100,7 @@ namespace IPT.Common.RUI
         }
 
         /// <inheritdoc />
-        public void RemoveElement(IRenderable element)
+        public void RemoveElement(IElement element)
         {
             this.Elements.Remove(element);
         }
@@ -121,15 +121,24 @@ namespace IPT.Common.RUI
             Game.RawFrameRender -= this.Game_RawFrameRender;
         }
 
+        /// <inheritdoc />
+        public void Update()
+        {
+            this.Scale = this.resolution.Height / Constants.CanvasHeight;
+            this.Elements.ForEach(x => x.Update());
+            this.Cursor.Update();
+        }
+
         /// <summary>
         /// Executed every time the thread fires.
         /// </summary>
         protected override void DoSomething()
         {
+            this.isPaused = Functions.IsGamePaused();
             if (Game.Resolution != this.resolution)
             {
                 this.resolution = Game.Resolution;
-                this.Scale = this.resolution.Height / Constants.CanvasHeight;
+                this.Update();
             }
         }
 
@@ -143,7 +152,10 @@ namespace IPT.Common.RUI
 
         private void Game_RawFrameRender(object sender, GraphicsEventArgs e)
         {
-            this.Draw(e.Graphics);
+            if (!this.isPaused || this.isInteractive)
+            {
+                this.Draw(e.Graphics);
+            }
         }
 
         private void ProcessControls()
@@ -160,7 +172,7 @@ namespace IPT.Common.RUI
             }
             else
             {
-                this.Cursor.Update();
+                this.Cursor.UpdateStatus();
             }
         }
 

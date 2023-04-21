@@ -5,12 +5,12 @@ namespace IPT.Common.RUI
     /// <summary>
     /// Represents a container that can contain multiple renderable elements.
     /// </summary>
-    public interface IRenderableContainer : IRenderable
+    public interface IElementContainer : IElement
     {
         /// <summary>
         /// Gets the list of child elements contained within the container.
         /// </summary>
-        List<IRenderable> Elements { get; }
+        List<IElement> Elements { get; }
 
         /// <summary>
         /// Gets or sets the scaling factor to be applied to the container and its child elements.
@@ -18,16 +18,16 @@ namespace IPT.Common.RUI
         float Scale { get; set; }
 
         /// <summary>
-        /// Adds an <see cref="IRenderable"/> child element to the container.
+        /// Adds an <see cref="IElement"/> child element to the container.
         /// </summary>
         /// <param name="element">The child element to add.</param>
-        void AddElement(IRenderable element);
+        void AddElement(IElement element);
 
         /// <summary>
-        /// Removes an <see cref="IRenderable"/> child element from the container.
+        /// Removes an <see cref="IElement"/> child element from the container.
         /// </summary>
         /// <param name="element">The child element to remove.</param>
-        void RemoveElement(IRenderable element);
+        void RemoveElement(IElement element);
 
         /// <summary>
         /// Removes all child elements from the container.

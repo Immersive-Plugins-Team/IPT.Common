@@ -8,7 +8,7 @@ namespace IPT.Common.RUI
     /// <summary>
     /// A UI element representing the mouse cursor on the screen.
     /// </summary>
-    public class Cursor : Sprite
+    public class Cursor : TextureElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Cursor"/> class.
@@ -54,7 +54,7 @@ namespace IPT.Common.RUI
         /// <summary>
         /// Updates the position, mouse status, and scroll wheel status.
         /// </summary>
-        public void Update()
+        public void UpdateStatus()
         {
             this.UpdatePosition();
             this.UpdateMouseStatus();
