@@ -13,6 +13,11 @@ namespace IPT.Common.RUI
         List<IRenderable> Elements { get; }
 
         /// <summary>
+        /// Gets or sets the scaling factor to be applied to the container and its child elements.
+        /// </summary>
+        float Scale { get; set; }
+
+        /// <summary>
         /// Adds an <see cref="IRenderable"/> child element to the container.
         /// </summary>
         /// <param name="element">The child element to add.</param>

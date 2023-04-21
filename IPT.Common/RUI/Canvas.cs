@@ -13,6 +13,8 @@ namespace IPT.Common.RUI
     /// </summary>
     public class Canvas : GenericFiber, IRenderableContainer
     {
+        private readonly Point position = new Point(0, 0);
+
         private Size resolution;
         private bool isInteractive;
         private bool isPaused;
@@ -24,7 +26,13 @@ namespace IPT.Common.RUI
         public Canvas()
             : base("canvas", 100)
         {
+            this.Cursor = new Cursor(null);
         }
+
+        /// <summary>
+        /// Gets or sets the cursor belonging to the canvas.
+        /// </summary>
+        public Cursor Cursor { get; set; }
 
         /// <inheritdoc />
         public List<IRenderable> Elements { get; private set; }
@@ -38,6 +46,16 @@ namespace IPT.Common.RUI
             get { return null; }
             set { }
         }
+
+        /// <inheritdoc />
+        public Point Position
+        {
+            get { return this.position; }
+            set { }
+        }
+
+        /// <inheritdoc />
+        public float Scale { get; set; }
 
         /// <inheritdoc />
         public void AddElement(IRenderable element)
@@ -55,6 +73,10 @@ namespace IPT.Common.RUI
         public void Draw(Rage.Graphics g)
         {
             this.Elements.Where(x => x.IsVisible).ToList().ForEach(x => x.Draw(g));
+            if (this.isInteractive)
+            {
+                this.Cursor.Draw(g);
+            }
         }
 
         /// <summary>
@@ -89,7 +111,6 @@ namespace IPT.Common.RUI
             base.Start();
             Game.FrameRender += this.Game_FrameRender;
             Game.RawFrameRender += this.Game_RawFrameRender;
-
         }
 
         /// <inheritdoc />
@@ -108,6 +129,7 @@ namespace IPT.Common.RUI
             if (Game.Resolution != this.resolution)
             {
                 this.resolution = Game.Resolution;
+                this.Scale = this.resolution.Height / Constants.CanvasHeight;
             }
         }
 
@@ -138,7 +160,7 @@ namespace IPT.Common.RUI
             }
             else
             {
-                // check and handle mouse activity
+                this.Cursor.Update();
             }
         }
 

@@ -1,10 +1,17 @@
-﻿namespace IPT.Common.RUI
+﻿using System.Drawing;
+
+namespace IPT.Common.RUI
 {
     /// <summary>
     /// Represents an object that can be rendered to the screen.
     /// </summary>
     public interface IRenderable
     {
+        /// <summary>
+        /// Gets or sets the position of the object relative to its parent container.
+        /// </summary>
+        Point Position { get; set; }
+
         /// <summary>
         /// Gets or sets the parent container of this element.
         /// </summary>
