@@ -96,6 +96,10 @@
     <Compile Include="Handlers\InputHandler.cs" />
     <Compile Include="CommonPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RUI\Canvas.cs" />
+    <Compile Include="RUI\IRenderable.cs" />
+    <Compile Include="RUI\IRenderableContainer.cs" />
+    <Compile Include="RUI\RUIElement.cs" />
     <Compile Include="User\Configuration.cs" />
     <Compile Include="User\Inputs\ButtonCombo.cs" />
     <Compile Include="User\Inputs\GenericCombo.cs" />

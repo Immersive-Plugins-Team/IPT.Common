@@ -9,7 +9,7 @@ namespace IPT.Common.GUI
     public abstract class TextureItem
     {
         /// <summary>
-        /// Gets or sets a value indicating the name of the sprite.
+        /// Gets or sets a value indicating the name of the texture item.
         /// </summary>
         public virtual string Name { get; protected set; }
 
@@ -19,17 +19,17 @@ namespace IPT.Common.GUI
         public virtual bool IsVisible { get; set; }
 
         /// <summary>
-        /// Gets or sets the sprite's position relative to its parent frame.
+        /// Gets or sets the texture item's position.
         /// </summary>
         public virtual Point Position { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the sprite's RectF which is used to draw the texture.
+        /// Gets or sets the texture position's RectF which is used to draw the texture.
         /// </summary>
         public virtual RectangleF RectF { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the sprite's texture.
+        /// Gets or sets the texture.
         /// </summary>
         public virtual Texture Texture { get; protected set; }
 
