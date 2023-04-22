@@ -83,7 +83,7 @@ namespace IPT.Common.RawUI
         {
             var x = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, (int)GameControl.CursorX);
             var y = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, (int)GameControl.CursorY);
-            this.Position = new Point((int)System.Math.Round(x * Constants.CanvasWidth), (int)System.Math.Round(y * Constants.CanvasHeight));
+            this.Position = new Point((int)System.Math.Round(x * Game.Resolution.Width), (int)System.Math.Round(y * Game.Resolution.Height));
         }
 
         /// <summary>

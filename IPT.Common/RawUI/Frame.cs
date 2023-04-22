@@ -8,7 +8,7 @@ namespace IPT.Common.RawUI
     /// A frame containing multiple sprites.
     /// </summary>
     /// <typeparam name="T">The type of the sprites that the frame contains.</typeparam>
-    public class Frame<T> : TextureElement, IContainer
+    public class Frame<T> : TextureElement, IContainer, IInteractive
         where T : IElement
     {
         /// <summary>
@@ -20,6 +20,15 @@ namespace IPT.Common.RawUI
         {
             this.FrameScale = 100;
         }
+
+        /// <inheritdoc />
+        public bool IsEnabled { get; set; } = true;
+
+        /// <inheritdoc />
+        public bool IsHovered { get; set; } = false;
+
+        /// <inheritdoc />
+        public bool IsPressed { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the list of the items contained within the container.

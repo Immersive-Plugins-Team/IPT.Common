@@ -19,7 +19,8 @@ namespace IPT.Common.RawUI
         private bool isInteractive;
         private bool isPaused;
         private bool isControlsEnabled;
-        private IContainer activeContainer;
+        private IInteractive activeFrame = null;
+        private IInteractive hoveredFrame = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Canvas"/> class.
@@ -186,10 +187,23 @@ namespace IPT.Common.RawUI
                 this.isInteractive = false;
                 Game.IsPaused = false;
                 this.SetPlayerControls(true);
+                this.ReleaseInteractiveElements();
             }
             else
             {
                 this.Cursor.UpdateStatus();
+                this.UpdateInteractiveItems();
+            }
+        }
+
+        private void ReleaseInteractiveElements()
+        {
+            this.activeFrame = null;
+            this.hoveredFrame = null;
+            foreach (var item in this.Items.OfType<IInteractive>())
+            {
+                item.IsHovered = false;
+                item.IsPressed = false;
             }
         }
 
@@ -199,6 +213,29 @@ namespace IPT.Common.RawUI
             {
                 NativeFunction.Natives.x8D32347D6D4C40A2(Game.LocalPlayer, isEnabled, 0);
                 this.isControlsEnabled = isEnabled;
+            }
+        }
+
+        private void UpdateInteractiveItems()
+        {
+            bool hoveredFrameFound = false;
+
+            for (int i = this.Items.Count - 1; i >= 0; i--)
+            {
+                if (this.Items[i] is IInteractive interactiveItem)
+                {
+                    if (!hoveredFrameFound && interactiveItem.Bounds.Contains(this.Cursor.Position))
+                    {
+                        interactiveItem.IsHovered = true;
+                        interactiveItem.IsPressed = this.Cursor.MouseStatus == MouseStatus.Down;
+                        hoveredFrameFound = true;
+                    }
+                    else
+                    {
+                        interactiveItem.IsHovered = false;
+                        interactiveItem.IsPressed = false;
+                    }
+                }
             }
         }
     }
