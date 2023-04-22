@@ -15,7 +15,7 @@ namespace IPT.Common.RawUI
         /// <summary>
         /// Gets the offset between the mouse cursor and the top-left corner of the element.
         /// </summary>
-        Point DragOffset { get; }
+        PointF DragOffset { get; }
 
         /// <summary>
         /// Called when the element starts being dragged.

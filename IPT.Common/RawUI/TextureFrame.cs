@@ -8,17 +8,16 @@ namespace IPT.Common.RawUI
     /// A frame containing multiple sprites.
     /// </summary>
     /// <typeparam name="T">The type of the sprites that the frame contains.</typeparam>
-    public class Frame<T> : TextureElement, IContainer, IInteractive
+    public class TextureFrame<T> : TextureElement, IContainer, IInteractive
         where T : IElement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Frame{T}"/> class.
+        /// Initializes a new instance of the <see cref="TextureFrame{T}"/> class.
         /// </summary>
         /// <param name="texture">The underlying texture.</param>
-        public Frame(Texture texture)
+        public TextureFrame(Texture texture)
             : base(texture)
         {
-            this.FrameScale = 100;
         }
 
         /// <inheritdoc />
@@ -33,12 +32,12 @@ namespace IPT.Common.RawUI
         /// <summary>
         /// Gets or sets the list of the items contained within the container.
         /// </summary>
-        public List<IDrawable> Items { get; protected set; }
+        public List<IDrawable> Items { get; protected set; } = new List<IDrawable>();
 
         /// <summary>
-        /// Gets or sets the frame specific scale applied after the parent container's (e.g. canvas) scale.
+        /// Gets or sets the frame scale applied after the canvas scale.  Should always be 100 if parent is not the canvas.
         /// </summary>
-        public virtual int FrameScale { get; protected set; }
+        public virtual int FrameScale { get; protected set; } = 100;
 
         /// <inheritdoc />
         public virtual float Scale
@@ -94,17 +93,37 @@ namespace IPT.Common.RawUI
         /// <param name="scale">A scale as an integer where 100 = 1.0.</param>
         public virtual void SetFrameScale(int scale)
         {
-            this.FrameScale = API.Math.Clamp(scale, Constants.MinScale, Constants.MaxScale);
-            this.Update();
+            if (this.Parent is Canvas)
+            {
+                this.FrameScale = API.Math.Clamp(scale, Constants.MinScale, Constants.MaxScale);
+                this.Update();
+            }
         }
 
         /// <inheritdoc />
         public override void Update()
         {
-            // todo -- this isn't right, look at Refresh in TextureFrame.cs under GUI
-            var screenPosition = new PointF((this.Parent.Position.X * this.Scale) + (this.Position.X * this.Scale), (this.Parent.Position.Y * this.Scale) + (this.Position.Y * this.Scale));
-            var size = new SizeF(this.Texture.Size.Width * this.Scale, this.Texture.Size.Height * this.Scale);
-            this.Bounds = new RectangleF(screenPosition, size);
+            if (this.Parent is Canvas canvas)
+            {
+                var frameScale = this.FrameScale / 100f;
+                float x;
+                float y = this.Position.Y * this.Scale;
+                if (this.Position.X > (Constants.CanvasWidth / 2f))
+                {
+                    x = canvas.Resolution.Width - ((Constants.CanvasWidth - this.Position.X - (this.Texture.Size.Width * frameScale)) * (canvas.Resolution.Width / Constants.CanvasWidth)) + (this.Texture.Size.Width * this.Scale);
+                }
+                else
+                {
+                    x = this.Position.X * this.Scale;
+                }
+
+                var size = new SizeF(this.Texture.Size.Width * this.Scale, this.Texture.Size.Height * this.Scale);
+                this.Bounds = new RectangleF(new PointF(x, y), size);
+            }
+            else
+            {
+                base.Update();
+            }
 
             foreach (IDrawable item in this.Items)
             {

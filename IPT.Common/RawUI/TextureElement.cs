@@ -21,7 +21,7 @@ namespace IPT.Common.RawUI
         public virtual RectangleF Bounds { get; protected set; }
 
         /// <inheritdoc/>
-        public Point DragOffset { get; protected set; }
+        public PointF DragOffset { get; protected set; }
 
         /// <inheritdoc/>
         public bool IsDragging { get; protected set; }
@@ -43,7 +43,7 @@ namespace IPT.Common.RawUI
         /// <inheritdoc/>
         public void Drag(PointF mousePosition)
         {
-            throw new System.NotImplementedException();
+            this.MoveTo(new Point((int)System.Math.Round(mousePosition.X - this.DragOffset.X), (int)System.Math.Round(mousePosition.Y - this.DragOffset.Y)));
         }
 
         /// <summary>
@@ -54,6 +54,13 @@ namespace IPT.Common.RawUI
         {
             if (this.Texture != null)
             {
+                if (this.IsDragging)
+                {
+                    var highlight = this.Bounds;
+                    highlight.Inflate(2f * this.Parent.Scale, 2f * this.Parent.Scale);
+                    g.DrawRectangle(highlight, Constants.HighlightColor);
+                }
+
                 g.DrawTexture(this.Texture, this.Bounds);
             }
         }
@@ -61,7 +68,8 @@ namespace IPT.Common.RawUI
         /// <inheritdoc/>
         public void EndDrag()
         {
-            throw new System.NotImplementedException();
+            this.IsDragging = false;
+            this.DragOffset = default;
         }
 
         /// <inheritdoc/>
@@ -84,14 +92,14 @@ namespace IPT.Common.RawUI
         /// <inheritdoc/>
         public void StartDrag(PointF mousePosition)
         {
-            throw new System.NotImplementedException();
+            this.IsDragging = true;
+            this.DragOffset = new PointF(this.Position.X - mousePosition.X, this.Position.Y - mousePosition.Y);
         }
 
         /// <inheritdoc/>
         public virtual void Update()
         {
-            // todo = i dont' think this is right either, we need to be drawing relative to the parent's on screen position, not its canvas position
-            var screenPosition = new PointF((this.Parent.Position.X * this.Parent.Scale) + (this.Position.X * this.Parent.Scale), (this.Parent.Position.Y * this.Parent.Scale) + (this.Position.Y * this.Parent.Scale));
+            var screenPosition = new PointF(this.Parent.Bounds.X + (this.Position.X * this.Parent.Scale), this.Parent.Bounds.Y + (this.Position.Y * this.Parent.Scale));
             var size = new SizeF(this.Texture.Size.Width * this.Parent.Scale, this.Texture.Size.Height * this.Parent.Scale);
             this.Bounds = new RectangleF(screenPosition, size);
         }

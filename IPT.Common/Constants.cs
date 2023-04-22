@@ -1,4 +1,6 @@
-﻿namespace IPT.Common
+﻿using System.Drawing;
+
+namespace IPT.Common
 {
     /// <summary>
     /// A list of project wide constant values.
@@ -24,5 +26,10 @@
         /// The maximum allowable scaling factor (as a percentage).
         /// </summary>
         public const int MaxScale = 200;
+
+        /// <summary>
+        /// The color to use when highlighting graphical elements.
+        /// </summary>
+        public static readonly Color HighlightColor = Color.Yellow;
     }
 }

@@ -14,8 +14,6 @@ namespace IPT.Common.RawUI
     public class Canvas : GenericFiber, IContainer
     {
         private readonly Point position = new Point(0, 0);
-
-        private Size resolution;
         private bool isInteractive;
         private bool isPaused;
         private bool isControlsEnabled;
@@ -30,13 +28,11 @@ namespace IPT.Common.RawUI
         {
             this.Cursor = new Cursor(null);
             this.Items = new List<IDrawable>();
+            this.Update();
         }
 
         /// <inheritdoc />
-        public RectangleF Bounds
-        {
-            get { return new RectangleF(this.Position, new SizeF(this.resolution.Width, this.resolution.Height)); }
-        }
+        public RectangleF Bounds { get; protected set; }
 
         /// <summary>
         /// Gets or sets the cursor belonging to the canvas.
@@ -64,6 +60,11 @@ namespace IPT.Common.RawUI
             get { return this.position; }
             set { }
         }
+
+        /// <summary>
+        /// Gets the screen resolution.
+        /// </summary>
+        public Size Resolution { get; private set; }
 
         /// <inheritdoc />
         public float Scale { get; private set; }
@@ -127,7 +128,7 @@ namespace IPT.Common.RawUI
         public override void Start()
         {
             base.Start();
-            this.Scale = this.resolution.Height / Constants.CanvasHeight;
+            this.Scale = this.Resolution.Height / Constants.CanvasHeight;
             Game.FrameRender += this.Game_FrameRender;
             Game.RawFrameRender += this.Game_RawFrameRender;
         }
@@ -143,7 +144,10 @@ namespace IPT.Common.RawUI
         /// <inheritdoc />
         public void Update()
         {
-            this.Scale = this.resolution.Height / Constants.CanvasHeight;
+            this.Resolution = Game.Resolution;
+            this.Scale = this.Resolution.Height / Constants.CanvasHeight;
+            new RectangleF(this.Position, this.Resolution);
+            this.Bounds = new RectangleF(0, 0, this.Resolution.Width, this.Resolution.Height);
             this.Items.ForEach(x => x.Update());
             this.Cursor.Update();
         }
@@ -154,9 +158,8 @@ namespace IPT.Common.RawUI
         protected override void DoSomething()
         {
             this.isPaused = Functions.IsGamePaused();
-            if (Game.Resolution != this.resolution)
+            if (Game.Resolution != this.Resolution)
             {
-                this.resolution = Game.Resolution;
                 this.Update();
             }
         }
