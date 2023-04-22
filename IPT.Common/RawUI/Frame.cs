@@ -67,11 +67,12 @@ namespace IPT.Common.RawUI
         {
             if (item is T || item.GetType().IsSubclassOf(typeof(T)))
             {
+                item.Parent = this;
                 this.Items.Add(item);
             }
             else
             {
-                throw new System.ArgumentException("SpriteFrame only allows elements of type Sprite or its subclasses.", "element");
+                throw new System.ArgumentException("Frame only allows elements of type IElement or its subclasses.", "item");
             }
         }
 
@@ -100,6 +101,7 @@ namespace IPT.Common.RawUI
         /// <inheritdoc />
         public override void Update()
         {
+            // todo -- this isn't right, look at Refresh in TextureFrame.cs under GUI
             var screenPosition = new PointF((this.Parent.Position.X * this.Scale) + (this.Position.X * this.Scale), (this.Parent.Position.Y * this.Scale) + (this.Position.Y * this.Scale));
             var size = new SizeF(this.Texture.Size.Width * this.Scale, this.Texture.Size.Height * this.Scale);
             this.Bounds = new RectangleF(screenPosition, size);

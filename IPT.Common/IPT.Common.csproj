@@ -99,6 +99,7 @@
     <Compile Include="RawUI\Canvas.cs" />
     <Compile Include="RawUI\Cursor.cs" />
     <Compile Include="RawUI\Frame.cs" />
+    <Compile Include="RawUI\IDraggable.cs" />
     <Compile Include="RawUI\IDrawable.cs" />
     <Compile Include="RawUI\IContainer.cs" />
     <Compile Include="RawUI\IElement.cs" />

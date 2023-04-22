@@ -6,7 +6,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// Represents a drawable item that renders a texture to the screen.
     /// </summary>
-    public class TextureElement : IElement
+    public class TextureElement : IElement, IDraggable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureElement"/> class.
@@ -21,7 +21,13 @@ namespace IPT.Common.RawUI
         public virtual RectangleF Bounds { get; protected set; }
 
         /// <inheritdoc/>
-        public virtual bool IsVisible { get; set; }
+        public Point DragOffset { get; protected set; }
+
+        /// <inheritdoc/>
+        public bool IsDragging { get; protected set; }
+
+        /// <inheritdoc/>
+        public virtual bool IsVisible { get; set; } = true;
 
         /// <inheritdoc/>
         public virtual IContainer Parent { get; set; }
@@ -34,6 +40,12 @@ namespace IPT.Common.RawUI
         /// </summary>
         public virtual Texture Texture { get; protected set; } = null;
 
+        /// <inheritdoc/>
+        public void Drag(PointF mousePosition)
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <summary>
         /// Draws the element onto the specified graphics object.
         /// </summary>
@@ -44,6 +56,12 @@ namespace IPT.Common.RawUI
             {
                 g.DrawTexture(this.Texture, this.Bounds);
             }
+        }
+
+        /// <inheritdoc/>
+        public void EndDrag()
+        {
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc/>
@@ -64,8 +82,15 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc/>
+        public void StartDrag(PointF mousePosition)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc/>
         public virtual void Update()
         {
+            // todo = i dont' think this is right either, we need to be drawing relative to the parent's on screen position, not its canvas position
             var screenPosition = new PointF((this.Parent.Position.X * this.Parent.Scale) + (this.Position.X * this.Parent.Scale), (this.Parent.Position.Y * this.Parent.Scale) + (this.Position.Y * this.Parent.Scale));
             var size = new SizeF(this.Texture.Size.Width * this.Parent.Scale, this.Texture.Size.Height * this.Parent.Scale);
             this.Bounds = new RectangleF(screenPosition, size);

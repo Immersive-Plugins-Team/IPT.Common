@@ -71,6 +71,7 @@ namespace IPT.Common.RawUI
         /// <inheritdoc />
         public void Add(IDrawable item)
         {
+            item.Parent = this;
             this.Items.Add(item);
         }
 
