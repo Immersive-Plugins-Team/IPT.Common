@@ -8,7 +8,7 @@ namespace IPT.Common.RawUI
     public interface IContainer : IDrawable
     {
         /// <summary>
-        /// Gets the list of the items contained within the container.
+        /// Gets the list of items contained within the container.
         /// </summary>
         List<IDrawable> Items { get; }
 
@@ -18,20 +18,20 @@ namespace IPT.Common.RawUI
         float Scale { get; }
 
         /// <summary>
-        /// Adds an <see cref="IDrawable"/> item to the container.
+        /// Adds an item to the container.
         /// </summary>
         /// <param name="item">The item to add.</param>
-        void AddItem(IDrawable item);
+        void Add(IDrawable item);
 
         /// <summary>
-        /// Removes an <see cref="IDrawable"/> item from the container.
+        /// Removes an item from the container.
         /// </summary>
         /// <param name="item">The item to remove.</param>
-        void RemoveItem(IDrawable item);
+        void Remove(IDrawable item);
 
         /// <summary>
         /// Removes all items the container.
         /// </summary>
-        void ClearItems();
+        void Clear();
     }
 }

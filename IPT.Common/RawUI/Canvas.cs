@@ -19,6 +19,7 @@ namespace IPT.Common.RawUI
         private bool isInteractive;
         private bool isPaused;
         private bool isControlsEnabled;
+        private IContainer activeContainer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Canvas"/> class.
@@ -27,6 +28,7 @@ namespace IPT.Common.RawUI
             : base("canvas", 100)
         {
             this.Cursor = new Cursor(null);
+            this.Items = new List<IDrawable>();
         }
 
         /// <inheritdoc />
@@ -40,7 +42,9 @@ namespace IPT.Common.RawUI
         /// </summary>
         public Cursor Cursor { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the list of items contained within the container.
+        /// </summary>
         public List<IDrawable> Items { get; private set; }
 
         /// <inheritdoc />
@@ -64,13 +68,13 @@ namespace IPT.Common.RawUI
         public float Scale { get; private set; }
 
         /// <inheritdoc />
-        public void AddItem(IDrawable element)
+        public void Add(IDrawable item)
         {
-            this.Items.Add(element);
+            this.Items.Add(item);
         }
 
         /// <inheritdoc />
-        public void ClearItems()
+        public void Clear()
         {
             this.Items.Clear();
         }
@@ -112,7 +116,7 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc />
-        public void RemoveItem(IDrawable element)
+        public void Remove(IDrawable element)
         {
             this.Items.Remove(element);
         }

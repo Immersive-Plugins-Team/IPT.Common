@@ -54,7 +54,7 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc />
-        public void AddItem(IDrawable item)
+        public void Add(IDrawable item)
         {
             if (item is T || item.GetType().IsSubclassOf(typeof(T)))
             {
@@ -67,13 +67,13 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc />
-        public void RemoveItem(IDrawable item)
+        public void Remove(IDrawable item)
         {
             this.Items.Remove(item);
         }
 
         /// <inheritdoc />
-        public void ClearItems()
+        public void Clear()
         {
             this.Items.Clear();
         }
