@@ -7,7 +7,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// A frame containing multiple sprites.
     /// </summary>
-    public class TextureFrame : InteractiveTextureElement, IContainer<IElement>
+    public class TextureFrame : TextureWidget, IContainer<IElement>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureFrame"/> class.
