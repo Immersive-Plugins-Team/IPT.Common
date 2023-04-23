@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using IPT.Common.API;
 using Rage;
 
 namespace IPT.Common.RawUI
@@ -41,7 +42,11 @@ namespace IPT.Common.RawUI
         /// <inheritdoc />
         public override void Draw(Rage.Graphics g)
         {
-            base.Draw(g);
+            if (this.Texture != null)
+            {
+                base.Draw(g);
+            }
+
             foreach (var item in this.Items)
             {
                 if (item.IsVisible)
@@ -86,26 +91,29 @@ namespace IPT.Common.RawUI
         /// <inheritdoc />
         public override void UpdateBounds()
         {
-            if (this.Parent is Canvas canvas)
+            if (this.Texture != null)
             {
-                var frameScale = this.FrameScale / 100f;
-                float x;
-                float y = this.Position.Y * this.Scale.Height;
-                if (this.Position.X > (Constants.CanvasWidth / 2f))
+                if (this.Parent is Canvas canvas)
                 {
-                    x = canvas.Resolution.Width - ((Constants.CanvasWidth - this.Position.X - (this.Texture.Size.Width * frameScale)) * canvas.Scale.Width) + (this.Texture.Size.Width * this.Scale.Height);
+                    var frameScale = this.FrameScale / 100f;
+                    float x;
+                    float y = this.Position.Y * this.Scale.Height;
+                    if (this.Position.X > (Constants.CanvasWidth / 2f))
+                    {
+                        x = canvas.Resolution.Width - ((Constants.CanvasWidth - this.Position.X - (this.Texture.Size.Width * frameScale)) * canvas.Scale.Width) + (this.Texture.Size.Width * this.Scale.Height);
+                    }
+                    else
+                    {
+                        x = this.Position.X * this.Scale.Width;
+                    }
+
+                    var size = new SizeF(this.Texture.Size.Width * this.Scale.Height, this.Texture.Size.Height * this.Scale.Height);
+                    this.Bounds = new RectangleF(new PointF(x, y), size);
                 }
                 else
                 {
-                    x = this.Position.X * this.Scale.Width;
+                    base.UpdateBounds();
                 }
-
-                var size = new SizeF(this.Texture.Size.Width * this.Scale.Height, this.Texture.Size.Height * this.Scale.Height);
-                this.Bounds = new RectangleF(new PointF(x, y), size);
-            }
-            else
-            {
-                base.UpdateBounds();
             }
 
             foreach (IDrawable item in this.Items)

@@ -27,7 +27,7 @@ namespace IPT.Common.RawUI
         public virtual IParent Parent { get; set; }
 
         /// <inheritdoc/>
-        public virtual Point Position { get; protected set; }
+        public virtual Point Position { get; protected set; } = default;
 
         /// <summary>
         /// Gets or sets the texture drawn by the element.
@@ -66,7 +66,7 @@ namespace IPT.Common.RawUI
         /// <inheritdoc/>
         public virtual void UpdateBounds()
         {
-            if (this.Parent != null)
+            if (this.Parent != null && this.Texture != null)
             {
                 var screenPosition = new PointF(this.Parent.Bounds.X + (this.Position.X * this.Parent.Scale.Height), this.Parent.Bounds.Y + (this.Position.Y * this.Parent.Scale.Height));
                 var size = new SizeF(this.Texture.Size.Width * this.Parent.Scale.Height, this.Texture.Size.Height * this.Parent.Scale.Height);

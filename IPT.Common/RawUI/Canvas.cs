@@ -28,7 +28,7 @@ namespace IPT.Common.RawUI
             : base("canvas", 100)
         {
             this.Cursor = new Cursor(null);
-            this.Cursor.Parent = this;
+            this.Add(this.Cursor);
         }
 
         /// <inheritdoc />
@@ -151,7 +151,6 @@ namespace IPT.Common.RawUI
             new RectangleF(this.Position, this.Resolution);
             this.Bounds = new RectangleF(0, 0, this.Resolution.Width, this.Resolution.Height);
             this.Items.ForEach(x => x.UpdateBounds());
-            this.Cursor.UpdateBounds();
         }
 
         /// <summary>
