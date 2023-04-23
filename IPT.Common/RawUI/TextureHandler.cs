@@ -28,7 +28,9 @@ namespace IPT.Common.RawUI
                     var texture = Functions.LoadTexture(file);
                     if (texture != null)
                     {
-                        textures[GetRelativePath(path, file)] = texture;
+                        var name = GetRelativePath(path, file);
+                        textures[name] = texture;
+                        Logging.Debug($"loaded texture: {name}");
                     }
                     else
                     {
@@ -36,7 +38,9 @@ namespace IPT.Common.RawUI
                     }
                 }
 
-                TexturesByAssembly[Assembly.GetCallingAssembly()] = textures;
+                var assembly = Assembly.GetCallingAssembly();
+                TexturesByAssembly[assembly] = textures;
+                Logging.Info($"loaded {textures.Count} textures for {assembly.FullName}");
             }
             catch (IOException ex)
             {
@@ -55,7 +59,8 @@ namespace IPT.Common.RawUI
         /// <returns>The texture if it exists, otherwise null.</returns>
         public static Texture Get(string name)
         {
-            if (TexturesByAssembly.TryGetValue(Assembly.GetCallingAssembly(), out Dictionary<string, Texture> textures))
+            var assembly = Assembly.GetCallingAssembly();
+            if (TexturesByAssembly.TryGetValue(assembly, out Dictionary<string, Texture> textures))
             {
                 if (textures.TryGetValue(name, out Texture texture))
                 {
@@ -63,6 +68,7 @@ namespace IPT.Common.RawUI
                 }
             }
 
+            Logging.Warning($"could not load texture {name} for assembly {assembly.FullName}");
             return null;
         }
 
