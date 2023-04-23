@@ -36,6 +36,12 @@ namespace IPT.Common.RawUI
         public PointF ResizeOffset { get; protected set; } = new PointF(0, 0);
 
         /// <inheritdoc/>
+        public bool Contains(Cursor cursor)
+        {
+            return this.Bounds.Contains(cursor.Bounds.Location);
+        }
+
+        /// <inheritdoc/>
         public void Drag(PointF mousePosition)
         {
             this.MoveTo(new Point((int)System.Math.Round(mousePosition.X - this.DragOffset.X), (int)System.Math.Round(mousePosition.Y - this.DragOffset.Y)));
@@ -52,7 +58,7 @@ namespace IPT.Common.RawUI
                 if (this.IsDragging)
                 {
                     var highlight = this.Bounds;
-                    highlight.Inflate(2f * this.Parent.Scale, 2f * this.Parent.Scale);
+                    highlight.Inflate(2f * this.Parent.Scale.Height, 2f * this.Parent.Scale.Height);
                     g.DrawRectangle(highlight, Constants.HighlightColor);
                 }
 

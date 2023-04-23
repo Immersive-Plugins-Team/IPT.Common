@@ -66,8 +66,8 @@ namespace IPT.Common.RawUI
         /// <inheritdoc/>
         public virtual void UpdateBounds()
         {
-            var screenPosition = new PointF(this.Parent.Bounds.X + (this.Position.X * this.Parent.Scale), this.Parent.Bounds.Y + (this.Position.Y * this.Parent.Scale));
-            var size = new SizeF(this.Texture.Size.Width * this.Parent.Scale, this.Texture.Size.Height * this.Parent.Scale);
+            var screenPosition = new PointF(this.Parent.Bounds.X + (this.Position.X * this.Parent.Scale.Height), this.Parent.Bounds.Y + (this.Position.Y * this.Parent.Scale.Height));
+            var size = new SizeF(this.Texture.Size.Width * this.Parent.Scale.Height, this.Texture.Size.Height * this.Parent.Scale.Height);
             this.Bounds = new RectangleF(screenPosition, size);
         }
     }

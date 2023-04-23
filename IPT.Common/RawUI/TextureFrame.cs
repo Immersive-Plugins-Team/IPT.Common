@@ -29,11 +29,12 @@ namespace IPT.Common.RawUI
         public virtual int FrameScale { get; protected set; } = 100;
 
         /// <inheritdoc />
-        public virtual float Scale
+        public virtual SizeF Scale
         {
             get
             {
-                return this.Parent.Scale * (this.FrameScale / 100f);
+                var frameScale = this.FrameScale / 100f;
+                return new SizeF(this.Parent.Scale.Width * frameScale, this.Parent.Scale.Height * frameScale);
             }
         }
 
@@ -89,17 +90,17 @@ namespace IPT.Common.RawUI
             {
                 var frameScale = this.FrameScale / 100f;
                 float x;
-                float y = this.Position.Y * this.Scale;
+                float y = this.Position.Y * this.Scale.Height;
                 if (this.Position.X > (Constants.CanvasWidth / 2f))
                 {
-                    x = canvas.Resolution.Width - ((Constants.CanvasWidth - this.Position.X - (this.Texture.Size.Width * frameScale)) * (canvas.Resolution.Width / Constants.CanvasWidth)) + (this.Texture.Size.Width * this.Scale);
+                    x = canvas.Resolution.Width - ((Constants.CanvasWidth - this.Position.X - (this.Texture.Size.Width * frameScale)) * canvas.Scale.Width) + (this.Texture.Size.Width * this.Scale.Height);
                 }
                 else
                 {
-                    x = this.Position.X * this.Scale;
+                    x = this.Position.X * this.Scale.Width;
                 }
 
-                var size = new SizeF(this.Texture.Size.Width * this.Scale, this.Texture.Size.Height * this.Scale);
+                var size = new SizeF(this.Texture.Size.Width * this.Scale.Height, this.Texture.Size.Height * this.Scale.Height);
                 this.Bounds = new RectangleF(new PointF(x, y), size);
             }
             else

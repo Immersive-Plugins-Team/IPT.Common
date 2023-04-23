@@ -38,6 +38,13 @@ namespace IPT.Common.RawUI
         PointF ResizeOffset { get; }
 
         /// <summary>
+        /// Gets a value indicating whether or not the cursor resides within the bounds of the widget.
+        /// </summary>
+        /// <param name="cursor">The cursor object.</param>
+        /// <returns>True if the cursor resides within the bounds of the widget, otherwise false.</returns>
+        bool Contains(Cursor cursor);
+
+        /// <summary>
         /// Called when the element is being dragged.
         /// </summary>
         /// <param name="mousePosition">The current position of the mouse cursor.</param>

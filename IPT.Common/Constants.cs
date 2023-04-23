@@ -18,6 +18,11 @@ namespace IPT.Common
         public const float CanvasHeight = 1080f;
 
         /// <summary>
+        /// The duration in milliseconds of a long click.
+        /// </summary>
+        public const long LongClick = 500;
+
+        /// <summary>
         /// The minimum allowable scaling factor (as a percentage).
         /// </summary>
         public const int MinScale = 20;

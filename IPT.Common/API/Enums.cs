@@ -3,6 +3,16 @@
     #pragma warning disable 1591, SA1602
 
     /// <summary>
+    /// The cursor type.
+    /// </summary>
+    public enum CursorType
+    {
+        Default,
+        Pointing,
+        Resizing,
+    }
+
+    /// <summary>
     /// The mouse status.
     /// </summary>
     public enum MouseStatus

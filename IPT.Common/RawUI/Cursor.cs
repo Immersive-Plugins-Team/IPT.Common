@@ -13,16 +13,22 @@ namespace IPT.Common.RawUI
     {
         private readonly Stopwatch clickTimer = new Stopwatch();
         private bool isVisible;
+        private CursorTextureSet? textureSet = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Cursor"/> class.
         /// </summary>
-        /// <param name="texture">The cursor's texture.</param>
-        public Cursor(Texture texture)
-            : base(texture)
+        /// <param name="textureSet">The cursor's texture set.</param>
+        public Cursor(CursorTextureSet? textureSet = null)
+            : base(null)
         {
+            this.textureSet = textureSet;
             this.MouseStatus = MouseStatus.Up;
             this.ScrollWheelStatus = ScrollWheelStatus.None;
+            if (this.textureSet != null)
+            {
+                this.Texture = this.textureSet.Value.Default;
+            }
         }
 
         /// <summary>
@@ -48,6 +54,7 @@ namespace IPT.Common.RawUI
             {
                 this.isVisible = value;
                 this.clickTimer.Reset();
+                this.SetCursorType(CursorType.Default);
             }
         }
 
@@ -61,6 +68,32 @@ namespace IPT.Common.RawUI
         /// </summary>
         public ScrollWheelStatus ScrollWheelStatus { get; protected set; }
 
+        /// <summary>
+        /// Sets the cursor type.
+        /// </summary>
+        /// <param name="cursorType">The type of cursor (drag, pointer, resize).</param>
+        public void SetCursorType(CursorType cursorType)
+        {
+            if (this.textureSet != null)
+            {
+                Texture texture = null;
+                switch (cursorType)
+                {
+                    case CursorType.Default:
+                        texture = this.textureSet.Value.Default;
+                        break;
+                    case CursorType.Pointing:
+                        texture = this.textureSet.Value.Pointing;
+                        break;
+                    case CursorType.Resizing:
+                        texture = this.textureSet.Value.Resizing;
+                        break;
+                }
+
+                this.Texture = texture;
+            }
+        }
+
         /// <inheritdoc/>
         public override void Draw(Rage.Graphics g)
         {
@@ -72,6 +105,24 @@ namespace IPT.Common.RawUI
             {
                 // draw a crosshair instead
             }
+        }
+
+        /// <summary>
+        /// Sets the <see cref="CursorTextureSet"/> for the cursor.
+        /// </summary>
+        /// <param name="textureSet">The cursor's texture set.</param>
+        public void SetTextureSet(CursorTextureSet textureSet)
+        {
+            this.textureSet = textureSet;
+            this.SetCursorType(CursorType.Default);
+        }
+
+        /// <inheritdoc/>
+        public override void UpdateBounds()
+        {
+            var screenPosition = new PointF(this.Position.X * this.Parent.Scale.Width, this.Position.Y * this.Parent.Scale.Height);
+            var size = this.Texture == null ? new SizeF(0, 0) : new SizeF(this.Texture.Size.Width * this.Parent.Scale.Height, this.Texture.Size.Height * this.Parent.Scale.Height);
+            this.Bounds = new RectangleF(screenPosition, size);
         }
 
         /// <summary>
@@ -115,6 +166,7 @@ namespace IPT.Common.RawUI
             var x = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, (int)GameControl.CursorX);
             var y = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, (int)GameControl.CursorY);
             this.Position = new Point((int)System.Math.Round(x * Constants.CanvasWidth), (int)System.Math.Round(y * Constants.CanvasHeight));
+            this.UpdateBounds();
         }
 
         /// <summary>
@@ -134,6 +186,27 @@ namespace IPT.Common.RawUI
             {
                 this.ScrollWheelStatus = ScrollWheelStatus.None;
             }
+        }
+
+        /// <summary>
+        /// A struct that represents a set of textures for the cursor.
+        /// </summary>
+        public struct CursorTextureSet
+        {
+            /// <summary>
+            /// Gets or sets the texture for the default cursor.
+            /// </summary>
+            public Texture Default { get; set; }
+
+            /// <summary>
+            /// Gets or sets the texture used when the cursor is pointing.
+            /// </summary>
+            public Texture Pointing { get; set; }
+
+            /// <summary>
+            /// Gets or sets the texture used when the cursor is resizing a widget.
+            /// </summary>
+            public Texture Resizing { get; set; }
         }
     }
 }

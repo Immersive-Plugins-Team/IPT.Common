@@ -17,8 +17,9 @@ namespace IPT.Common.RawUI
         private bool isInteractive;
         private bool isPaused;
         private bool isControlsEnabled;
-        private IWidget hoveredItem = null;  // mouse is currently hovering over that item
-        private IWidget activeItem = null;   // mouse is currently clicked on that item
+        private IWidget hoveredWidget = null;  // mouse is currently hovering over that widget
+        private IWidget activeWidget = null;   // mouse is currently down on that widget
+        private MouseStatus mouseStatus = MouseStatus.Up;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Canvas"/> class.
@@ -66,7 +67,7 @@ namespace IPT.Common.RawUI
         public Size Resolution { get; private set; }
 
         /// <inheritdoc />
-        public float Scale { get; private set; }
+        public SizeF Scale { get; private set; }
 
         /// <inheritdoc />
         public void Add(IDrawable item)
@@ -101,6 +102,7 @@ namespace IPT.Common.RawUI
             {
                 this.isInteractive = true;
                 this.Cursor.IsVisible = true;
+                this.mouseStatus = MouseStatus.Up;
                 if (doPause)
                 {
                     Game.IsPaused = true;
@@ -128,9 +130,9 @@ namespace IPT.Common.RawUI
         public override void Start()
         {
             base.Start();
-            this.Scale = this.Resolution.Height / Constants.CanvasHeight;
             Game.FrameRender += this.Game_FrameRender;
             Game.RawFrameRender += this.Game_RawFrameRender;
+            this.UpdateBounds();
         }
 
         /// <inheritdoc />
@@ -145,7 +147,7 @@ namespace IPT.Common.RawUI
         public void UpdateBounds()
         {
             this.Resolution = Game.Resolution;
-            this.Scale = this.Resolution.Height / Constants.CanvasHeight;
+            this.Scale = new SizeF(this.Resolution.Width / Constants.CanvasWidth, this.Resolution.Height / Constants.CanvasHeight);
             new RectangleF(this.Position, this.Resolution);
             this.Bounds = new RectangleF(0, 0, this.Resolution.Width, this.Resolution.Height);
             this.Items.ForEach(x => x.UpdateBounds());
@@ -191,20 +193,22 @@ namespace IPT.Common.RawUI
                 this.isInteractive = false;
                 Game.IsPaused = false;
                 this.SetPlayerControls(true);
-                this.ReleaseInteractiveElements();
+                this.ReleaseWidgets();
                 this.Cursor.IsVisible = false;
             }
             else
             {
                 this.Cursor.UpdateStatus();
-                this.UpdateInteractiveItems();
+                this.UpdateWidgets();
+                this.mouseStatus = this.Cursor.MouseStatus;
             }
         }
 
-        private void ReleaseInteractiveElements()
+        private void ReleaseWidgets()
         {
-            this.hoveredItem = null;
-            this.activeItem = null;
+            this.Cursor.SetCursorType(CursorType.Default);
+            this.hoveredWidget = null;
+            this.hoveredWidget = null;
             foreach (var item in this.Items.OfType<IWidget>())
             {
                 item.IsHovered = false;
@@ -222,31 +226,97 @@ namespace IPT.Common.RawUI
             }
         }
 
-        private void UpdateInteractiveItems()
+        private void UpdateActiveWidget()
+        {
+            if (this.Cursor.MouseStatus == MouseStatus.Down)
+            {
+                if (this.mouseStatus == MouseStatus.Down)
+                {
+                    if (this.activeWidget != null)
+                    {
+                        if (this.activeWidget.IsDragging)
+                        {
+                            this.activeWidget.Drag(this.Cursor.Position);
+                        }
+                        else
+                        {
+                            if (this.activeWidget.Contains(this.Cursor))
+                            {
+                                if (this.Cursor.ClickDuration > Constants.LongClick)
+                                {
+                                    this.activeWidget.StartDrag(this.Cursor.Position);
+                                }
+                            }
+                            else
+                            {
+                                this.activeWidget = null;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (this.hoveredWidget != null)
+                    {
+                        this.activeWidget = this.hoveredWidget;
+                    }
+                }
+            }
+            else
+            {
+                if (this.mouseStatus != MouseStatus.Up)
+                {
+                    if (this.activeWidget != null)
+                    {
+                        if (this.activeWidget.IsDragging)
+                        {
+                            this.activeWidget.EndDrag();
+                        }
+                        else
+                        {
+                            if (this.activeWidget is IControl control)
+                            {
+                                control.Click();
+                            }
+                        }
+
+                        this.activeWidget = null;
+                    }
+                }
+            }
+        }
+
+        private void UpdateHoveredWidget()
         {
             bool hoveredItemFound = false;
 
             for (int i = this.Items.Count - 1; i >= 0; i--)
             {
-                if (this.Items[i] is IWidget interactiveItem)
+                if (this.Items[i] is IWidget widget)
                 {
-                    if (!hoveredItemFound && interactiveItem.Bounds.Contains(this.Cursor.Position))
+                    if (!hoveredItemFound && widget.Bounds.Contains(this.Cursor.Position))
                     {
-                        interactiveItem.IsHovered = true;
+                        widget.IsHovered = true;
                         hoveredItemFound = true;
-                        this.hoveredItem = interactiveItem;
+                        this.hoveredWidget = widget;
                     }
                     else
                     {
-                        interactiveItem.IsHovered = false;
+                        widget.IsHovered = false;
                     }
                 }
             }
 
             if (!hoveredItemFound)
             {
-                this.hoveredItem = null;
+                this.hoveredWidget = null;
             }
+        }
+
+        private void UpdateWidgets()
+        {
+            this.UpdateHoveredWidget();
+            this.UpdateActiveWidget();
         }
     }
 }
