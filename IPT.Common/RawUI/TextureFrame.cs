@@ -7,12 +7,10 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// A frame containing multiple sprites.
     /// </summary>
-    /// <typeparam name="T">The type of the sprites that the frame contains.</typeparam>
-    public class TextureFrame<T> : InteractiveTextureElement, IContainer
-        where T : IElement
+    public class TextureFrame : InteractiveTextureElement, IContainer<IElement>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextureFrame{T}"/> class.
+        /// Initializes a new instance of the <see cref="TextureFrame"/> class.
         /// </summary>
         /// <param name="texture">The underlying texture.</param>
         public TextureFrame(Texture texture)
@@ -23,7 +21,7 @@ namespace IPT.Common.RawUI
         /// <summary>
         /// Gets or sets the list of the items contained within the container.
         /// </summary>
-        public List<IDrawable> Items { get; protected set; } = new List<IDrawable>();
+        public List<IElement> Items { get; protected set; } = new List<IElement>();
 
         /// <summary>
         /// Gets or sets the frame scale applied after the canvas scale.  Should always be 100 if parent is not the canvas.
@@ -53,17 +51,10 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc />
-        public void Add(IDrawable item)
+        public void Add(IElement item)
         {
-            if (item is T || item.GetType().IsSubclassOf(typeof(T)))
-            {
-                item.Parent = this;
-                this.Items.Add(item);
-            }
-            else
-            {
-                throw new System.ArgumentException("Frame only allows elements of type IElement or its subclasses.", "item");
-            }
+            item.Parent = this;
+            this.Items.Add(item);
         }
 
         /// <inheritdoc />
@@ -72,7 +63,7 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc />
-        public void Remove(IDrawable item)
+        public void Remove(IElement item)
         {
             this.Items.Remove(item);
         }
@@ -92,12 +83,12 @@ namespace IPT.Common.RawUI
             if (this.Parent is Canvas)
             {
                 this.FrameScale = API.Math.Clamp(scale, Constants.MinScale, Constants.MaxScale);
-                this.Update();
+                this.UpdateBounds();
             }
         }
 
         /// <inheritdoc />
-        public override void Update()
+        public override void UpdateBounds()
         {
             if (this.Parent is Canvas canvas)
             {
@@ -118,12 +109,12 @@ namespace IPT.Common.RawUI
             }
             else
             {
-                base.Update();
+                base.UpdateBounds();
             }
 
             foreach (IDrawable item in this.Items)
             {
-                item.Update();
+                item.UpdateBounds();
             }
         }
     }

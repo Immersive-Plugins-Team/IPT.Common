@@ -24,7 +24,7 @@ namespace IPT.Common.RawUI
         public virtual bool IsVisible { get; set; } = true;
 
         /// <inheritdoc/>
-        public virtual IContainer Parent { get; set; }
+        public virtual IParent Parent { get; set; }
 
         /// <inheritdoc/>
         public virtual Point Position { get; protected set; }
@@ -50,7 +50,7 @@ namespace IPT.Common.RawUI
         public void MoveTo(Point position)
         {
             this.Position = position;
-            this.Update();
+            this.UpdateBounds();
         }
 
         /// <summary>
@@ -60,11 +60,11 @@ namespace IPT.Common.RawUI
         public void SetTexture(Texture texture)
         {
             this.Texture = texture;
-            this.Update();
+            this.UpdateBounds();
         }
 
         /// <inheritdoc/>
-        public virtual void Update()
+        public virtual void UpdateBounds()
         {
             var screenPosition = new PointF(this.Parent.Bounds.X + (this.Position.X * this.Parent.Scale), this.Parent.Bounds.Y + (this.Position.Y * this.Parent.Scale));
             var size = new SizeF(this.Texture.Size.Width * this.Parent.Scale, this.Texture.Size.Height * this.Parent.Scale);

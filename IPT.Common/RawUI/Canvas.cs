@@ -11,7 +11,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// A canvas representing the screen area where elements can be added and positioned.
     /// </summary>
-    public class Canvas : GenericFiber, IContainer
+    public class Canvas : GenericFiber, IContainer<IDrawable>
     {
         private readonly Point position = new Point(0, 0);
         private bool isInteractive;
@@ -27,8 +27,7 @@ namespace IPT.Common.RawUI
             : base("canvas", 100)
         {
             this.Cursor = new Cursor(null);
-            this.Items = new List<IDrawable>();
-            this.Update();
+            this.UpdateBounds();
         }
 
         /// <inheritdoc />
@@ -42,13 +41,13 @@ namespace IPT.Common.RawUI
         /// <summary>
         /// Gets the list of items contained within the container.
         /// </summary>
-        public List<IDrawable> Items { get; private set; }
+        public List<IDrawable> Items { get; private set; } = new List<IDrawable>();
 
         /// <inheritdoc />
         public bool IsVisible { get; set; }
 
         /// <inheritdoc />
-        public IContainer Parent
+        public IParent Parent
         {
             get { return null; }
             set { }
@@ -143,14 +142,14 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc />
-        public void Update()
+        public void UpdateBounds()
         {
             this.Resolution = Game.Resolution;
             this.Scale = this.Resolution.Height / Constants.CanvasHeight;
             new RectangleF(this.Position, this.Resolution);
             this.Bounds = new RectangleF(0, 0, this.Resolution.Width, this.Resolution.Height);
-            this.Items.ForEach(x => x.Update());
-            this.Cursor.Update();
+            this.Items.ForEach(x => x.UpdateBounds());
+            this.Cursor.UpdateBounds();
         }
 
         /// <summary>
@@ -161,7 +160,7 @@ namespace IPT.Common.RawUI
             this.isPaused = Functions.IsGamePaused();
             if (Game.Resolution != this.Resolution)
             {
-                this.Update();
+                this.UpdateBounds();
             }
         }
 
