@@ -120,9 +120,12 @@ namespace IPT.Common.RawUI
         /// <inheritdoc/>
         public override void UpdateBounds()
         {
-            var screenPosition = new PointF(this.Position.X * this.Parent.Scale.Width, this.Position.Y * this.Parent.Scale.Height);
-            var size = this.Texture == null ? new SizeF(0, 0) : new SizeF(this.Texture.Size.Width * this.Parent.Scale.Height, this.Texture.Size.Height * this.Parent.Scale.Height);
-            this.Bounds = new RectangleF(screenPosition, size);
+            if (this.Parent != null)
+            {
+                var screenPosition = new PointF(this.Position.X * this.Parent.Scale.Width, this.Position.Y * this.Parent.Scale.Height);
+                var size = this.Texture == null ? new SizeF(0, 0) : new SizeF(this.Texture.Size.Width * this.Parent.Scale.Height, this.Texture.Size.Height * this.Parent.Scale.Height);
+                this.Bounds = new RectangleF(screenPosition, size);
+            }
         }
 
         /// <summary>

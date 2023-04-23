@@ -28,7 +28,7 @@ namespace IPT.Common.RawUI
             : base("canvas", 100)
         {
             this.Cursor = new Cursor(null);
-            this.UpdateBounds();
+            this.Cursor.Parent = this;
         }
 
         /// <inheritdoc />
