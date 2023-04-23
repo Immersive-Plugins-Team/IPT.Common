@@ -17,8 +17,8 @@ namespace IPT.Common.RawUI
         private bool isInteractive;
         private bool isPaused;
         private bool isControlsEnabled;
-        private IInteractive hoveredItem = null;  // mouse is currently hovering over that item
-        private IInteractive activeItem = null;   // mouse is currently clicked on that item
+        private IWidget hoveredItem = null;  // mouse is currently hovering over that item
+        private IWidget activeItem = null;   // mouse is currently clicked on that item
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Canvas"/> class.
@@ -205,7 +205,7 @@ namespace IPT.Common.RawUI
         {
             this.hoveredItem = null;
             this.activeItem = null;
-            foreach (var item in this.Items.OfType<IInteractive>())
+            foreach (var item in this.Items.OfType<IWidget>())
             {
                 item.IsHovered = false;
                 item.EndDrag();
@@ -228,7 +228,7 @@ namespace IPT.Common.RawUI
 
             for (int i = this.Items.Count - 1; i >= 0; i--)
             {
-                if (this.Items[i] is IInteractive interactiveItem)
+                if (this.Items[i] is IWidget interactiveItem)
                 {
                     if (!hoveredItemFound && interactiveItem.Bounds.Contains(this.Cursor.Position))
                     {

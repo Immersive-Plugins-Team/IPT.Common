@@ -105,7 +105,7 @@
     <Compile Include="RawUI\IDrawable.cs" />
     <Compile Include="RawUI\IContainer.cs" />
     <Compile Include="RawUI\IElement.cs" />
-    <Compile Include="RawUI\IInteractive.cs" />
+    <Compile Include="RawUI\IWidget.cs" />
     <Compile Include="RawUI\Sprite.cs" />
     <Compile Include="RawUI\TextureElement.cs" />
     <Compile Include="RawUI\TextureHandler.cs" />

@@ -6,7 +6,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// Represents an interactive texture element.
     /// </summary>
-    public abstract class InteractiveTextureElement : TextureElement, IInteractive
+    public abstract class InteractiveTextureElement : TextureElement, IWidget
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractiveTextureElement"/> class.

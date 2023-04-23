@@ -5,7 +5,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// Represents an element that can be interacted with by the user.
     /// </summary>
-    public interface IInteractive : IDrawable
+    public interface IWidget : IDrawable
     {
         /// <summary>
         /// Gets the offset between the mouse cursor and the top-left corner of the element when being dragged.
