@@ -7,9 +7,9 @@ using Rage.Native;
 namespace IPT.Common.RawUI
 {
     /// <summary>
-    /// A UI element representing the mouse cursor on the screen.
+    /// A special sprite that represents the mouse cursor on the screen.
     /// </summary>
-    public class Cursor : TextureElement
+    public class Cursor : Sprite
     {
         private readonly Stopwatch clickTimer = new Stopwatch();
         private bool isVisible;

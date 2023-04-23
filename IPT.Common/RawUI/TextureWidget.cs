@@ -4,9 +4,9 @@ using Rage;
 namespace IPT.Common.RawUI
 {
     /// <summary>
-    /// Represents an interactive texture element.
+    /// Represents a texture drawable that can be resized and moved.
     /// </summary>
-    public abstract class TextureWidget : TextureElement, IWidget
+    public abstract class TextureWidget : TextureDrawable, IWidget
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureWidget"/> class.
@@ -34,9 +34,6 @@ namespace IPT.Common.RawUI
 
         /// <inheritdoc/>
         public PointF ResizeOffset { get; protected set; } = new PointF(0, 0);
-
-        /// <inheritdoc/>
-        public abstract void Click();
 
         /// <inheritdoc/>
         public void Drag(PointF mousePosition)

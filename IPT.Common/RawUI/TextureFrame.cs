@@ -5,7 +5,7 @@ using Rage;
 namespace IPT.Common.RawUI
 {
     /// <summary>
-    /// A frame containing multiple sprites.
+    /// An interactive frame with a texture background that contains IElement objects.
     /// </summary>
     public class TextureFrame : TextureWidget, IContainer<IElement>
     {
@@ -55,11 +55,6 @@ namespace IPT.Common.RawUI
         {
             item.Parent = this;
             this.Items.Add(item);
-        }
-
-        /// <inheritdoc />
-        public override void Click()
-        {
         }
 
         /// <inheritdoc />

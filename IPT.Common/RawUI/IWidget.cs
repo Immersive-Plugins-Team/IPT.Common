@@ -3,7 +3,7 @@
 namespace IPT.Common.RawUI
 {
     /// <summary>
-    /// Represents an element that can be interacted with by the user.
+    /// Represents an element that can be moved and resized.
     /// </summary>
     public interface IWidget : IDrawable
     {
@@ -36,11 +36,6 @@ namespace IPT.Common.RawUI
         /// Gets the offset between the mouse cursor and the corner of the element being used for the resize.
         /// </summary>
         PointF ResizeOffset { get; }
-
-        /// <summary>
-        /// Executed when the user clicks the item.
-        /// </summary>
-        void Click();
 
         /// <summary>
         /// Called when the element is being dragged.

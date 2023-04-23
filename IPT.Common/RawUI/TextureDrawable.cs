@@ -6,13 +6,13 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// Represents a drawable item that renders a texture to the screen.
     /// </summary>
-    public abstract class TextureElement : IElement
+    public abstract class TextureDrawable : IDrawable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextureElement"/> class.
+        /// Initializes a new instance of the <see cref="TextureDrawable"/> class.
         /// </summary>
         /// <param name="texture">The texture to be rendered.</param>
-        public TextureElement(Texture texture)
+        public TextureDrawable(Texture texture)
         {
             this.Texture = texture;
         }
