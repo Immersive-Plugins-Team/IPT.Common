@@ -74,7 +74,7 @@ namespace IPT.Common.RawUI
 
         private static string GetRelativePath(string rootPath, string fullPath)
         {
-            Uri rootUri = new Uri(rootPath);
+            Uri rootUri = new Uri($"{rootPath}/");
             Uri fullUri = new Uri(fullPath);
             return rootUri.MakeRelativeUri(fullUri).ToString();
         }
