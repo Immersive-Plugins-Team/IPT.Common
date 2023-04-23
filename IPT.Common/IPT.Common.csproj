@@ -99,6 +99,8 @@
     <Compile Include="RawUI\Canvas.cs" />
     <Compile Include="RawUI\Cursor.cs" />
     <Compile Include="RawUI\InteractiveTextureElement.cs" />
+    <Compile Include="RawUI\IParent.cs" />
+    <Compile Include="RawUI\ISpatial.cs" />
     <Compile Include="RawUI\TextureFrame.cs" />
     <Compile Include="RawUI\IDrawable.cs" />
     <Compile Include="RawUI\IContainer.cs" />

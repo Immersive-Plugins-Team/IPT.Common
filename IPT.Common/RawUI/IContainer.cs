@@ -5,6 +5,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// Represents a container that can contain items.
     /// </summary>
+    /// <typeparam name="T">The type of items held in the container.</typeparam>
     public interface IContainer : IDrawable
     {
         /// <summary>
