@@ -21,7 +21,7 @@ namespace IPT.Common.RawUI
         public PointF DragOffset { get; protected set; } = new PointF(0, 0);
 
         /// <inheritdoc/>
-        public bool IsDragging { get; protected set; }
+        public bool IsDragging { get; protected set; } = false;
 
         /// <inheritdoc/>
         public bool IsEnabled { get; set; } = true;

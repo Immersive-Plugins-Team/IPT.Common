@@ -209,12 +209,8 @@ namespace IPT.Common.RawUI
             foreach (var item in this.Items.OfType<IInteractive>())
             {
                 item.IsHovered = false;
-                item.IsPressed = false;
-            }
-
-            foreach (var item in this.Items.OfType<IDraggable>())
-            {
                 item.EndDrag();
+                item.EndResize();
             }
         }
 
@@ -229,30 +225,28 @@ namespace IPT.Common.RawUI
 
         private void UpdateInteractiveItems()
         {
-            bool hoveredFrameFound = false;
+            bool hoveredItemFound = false;
 
             for (int i = this.Items.Count - 1; i >= 0; i--)
             {
                 if (this.Items[i] is IInteractive interactiveItem)
                 {
-                    if (!hoveredFrameFound && interactiveItem.Bounds.Contains(this.Cursor.Position))
+                    if (!hoveredItemFound && interactiveItem.Bounds.Contains(this.Cursor.Position))
                     {
                         interactiveItem.IsHovered = true;
-                        interactiveItem.IsPressed = this.Cursor.MouseStatus == MouseStatus.Down;
-                        hoveredFrameFound = true;
-                        this.hoveredFrame = interactiveItem;
+                        hoveredItemFound = true;
+                        this.hoveredItem = interactiveItem;
                     }
                     else
                     {
                         interactiveItem.IsHovered = false;
-                        interactiveItem.IsPressed = false;
                     }
                 }
             }
 
-            if (!hoveredFrameFound)
+            if (!hoveredItemFound)
             {
-                this.hoveredFrame = null;
+                this.hoveredItem = null;
             }
         }
     }
