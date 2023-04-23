@@ -35,6 +35,6 @@ namespace IPT.Common
         /// <summary>
         /// The color to use when highlighting graphical elements.
         /// </summary>
-        public static readonly Color HighlightColor = Color.Yellow;
+        public static readonly Color HighlightColor = Color.LightGoldenrodYellow;
     }
 }

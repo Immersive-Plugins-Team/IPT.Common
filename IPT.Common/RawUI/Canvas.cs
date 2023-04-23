@@ -251,7 +251,11 @@ namespace IPT.Common.RawUI
                             {
                                 if (this.Cursor.ClickDuration > Constants.LongClick)
                                 {
+                                    Logging.Debug("starting drag...");
+                                    Logging.Debug($"active widget position: {this.activeWidget.Position}, bounds: {this.activeWidget.Bounds}");
+                                    Logging.Debug($"cursor position       : {this.Cursor.Position}, bounds: {this.Cursor.Bounds}");
                                     this.activeWidget.StartDrag(this.Cursor.Position);
+                                    Logging.Debug($"widget drag offset    : {this.activeWidget.DragOffset}");
                                 }
                             }
                             else
@@ -277,6 +281,9 @@ namespace IPT.Common.RawUI
                     {
                         if (this.activeWidget.IsDragging)
                         {
+                            Logging.Debug("ending drag...");
+                            Logging.Debug($"active widget position: {this.activeWidget.Position}, bounds: {this.activeWidget.Bounds}");
+                            Logging.Debug($"cursor position       : {this.Cursor.Position}, bounds: {this.Cursor.Bounds}");
                             this.activeWidget.EndDrag();
                         }
                         else
