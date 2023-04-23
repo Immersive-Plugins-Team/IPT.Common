@@ -76,13 +76,13 @@ namespace IPT.Common.RawUI
         /// <inheritdoc/>
         public void EndResize()
         {
-            throw new System.NotImplementedException();
+            // todo
         }
 
         /// <inheritdoc/>
         public void Resize(PointF mousePosition)
         {
-            throw new System.NotImplementedException();
+            // todo
         }
 
         /// <inheritdoc/>
@@ -95,7 +95,7 @@ namespace IPT.Common.RawUI
         /// <inheritdoc/>
         public void StartResize(PointF mousePosition)
         {
-            throw new System.NotImplementedException();
+            // todo
         }
     }
 }

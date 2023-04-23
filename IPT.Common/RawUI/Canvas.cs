@@ -14,9 +14,9 @@ namespace IPT.Common.RawUI
     public class Canvas : GenericFiber, IContainer<IDrawable>
     {
         private readonly Point position = new Point(0, 0);
-        private bool isInteractive;
-        private bool isPaused;
-        private bool isControlsEnabled;
+        private bool isInteractive = false;
+        private bool isPaused = false;
+        private bool isControlsEnabled = true;
         private IWidget hoveredWidget = null;  // mouse is currently hovering over that widget
         private IWidget activeWidget = null;   // mouse is currently down on that widget
         private MouseStatus mouseStatus = MouseStatus.Up;
@@ -74,6 +74,7 @@ namespace IPT.Common.RawUI
         {
             item.Parent = this;
             this.Items.Add(item);
+            Logging.Debug($"adding item to canvas, total items: {this.Items.Count}");
         }
 
         /// <inheritdoc />
@@ -85,7 +86,14 @@ namespace IPT.Common.RawUI
         /// <inheritdoc />
         public void Draw(Rage.Graphics g)
         {
-            this.Items.Where(x => x.IsVisible).ToList().ForEach(x => x.Draw(g));
+            foreach (var item in this.Items)
+            {
+                if (item.IsVisible)
+                {
+                    item.Draw(g);
+                }
+            }
+
             if (this.isInteractive)
             {
                 this.Cursor.Draw(g);
@@ -130,9 +138,9 @@ namespace IPT.Common.RawUI
         public override void Start()
         {
             base.Start();
+            this.UpdateBounds();
             Game.FrameRender += this.Game_FrameRender;
             Game.RawFrameRender += this.Game_RawFrameRender;
-            this.UpdateBounds();
         }
 
         /// <inheritdoc />

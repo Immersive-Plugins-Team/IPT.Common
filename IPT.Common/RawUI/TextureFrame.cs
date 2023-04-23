@@ -115,6 +115,10 @@ namespace IPT.Common.RawUI
                     base.UpdateBounds();
                 }
             }
+            else
+            {
+                Logging.Warning("cannout update bounds on texture frame, texture is null!");
+            }
 
             foreach (IDrawable item in this.Items)
             {
