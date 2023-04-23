@@ -6,7 +6,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// Represents a drawable item that renders a texture to the screen.
     /// </summary>
-    public class TextureElement : IElement, IDraggable
+    public abstract class TextureElement : IElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureElement"/> class.
@@ -18,13 +18,7 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc/>
-        public virtual RectangleF Bounds { get; protected set; }
-
-        /// <inheritdoc/>
-        public PointF DragOffset { get; protected set; }
-
-        /// <inheritdoc/>
-        public bool IsDragging { get; protected set; }
+        public virtual RectangleF Bounds { get; protected set; } = default;
 
         /// <inheritdoc/>
         public virtual bool IsVisible { get; set; } = true;
@@ -40,12 +34,6 @@ namespace IPT.Common.RawUI
         /// </summary>
         public virtual Texture Texture { get; protected set; } = null;
 
-        /// <inheritdoc/>
-        public void Drag(PointF mousePosition)
-        {
-            this.MoveTo(new Point((int)System.Math.Round(mousePosition.X - this.DragOffset.X), (int)System.Math.Round(mousePosition.Y - this.DragOffset.Y)));
-        }
-
         /// <summary>
         /// Draws the element onto the specified graphics object.
         /// </summary>
@@ -54,22 +42,8 @@ namespace IPT.Common.RawUI
         {
             if (this.Texture != null)
             {
-                if (this.IsDragging)
-                {
-                    var highlight = this.Bounds;
-                    highlight.Inflate(2f * this.Parent.Scale, 2f * this.Parent.Scale);
-                    g.DrawRectangle(highlight, Constants.HighlightColor);
-                }
-
                 g.DrawTexture(this.Texture, this.Bounds);
             }
-        }
-
-        /// <inheritdoc/>
-        public void EndDrag()
-        {
-            this.IsDragging = false;
-            this.DragOffset = default;
         }
 
         /// <inheritdoc/>
@@ -87,13 +61,6 @@ namespace IPT.Common.RawUI
         {
             this.Texture = texture;
             this.Update();
-        }
-
-        /// <inheritdoc/>
-        public void StartDrag(PointF mousePosition)
-        {
-            this.IsDragging = true;
-            this.DragOffset = new PointF(this.Position.X - mousePosition.X, this.Position.Y - mousePosition.Y);
         }
 
         /// <inheritdoc/>

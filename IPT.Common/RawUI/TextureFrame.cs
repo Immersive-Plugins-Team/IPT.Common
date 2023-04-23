@@ -8,7 +8,7 @@ namespace IPT.Common.RawUI
     /// A frame containing multiple sprites.
     /// </summary>
     /// <typeparam name="T">The type of the sprites that the frame contains.</typeparam>
-    public class TextureFrame<T> : TextureElement, IContainer, IInteractive
+    public class TextureFrame<T> : InteractiveTextureElement, IContainer
         where T : IElement
     {
         /// <summary>
@@ -19,15 +19,6 @@ namespace IPT.Common.RawUI
             : base(texture)
         {
         }
-
-        /// <inheritdoc />
-        public bool IsEnabled { get; set; } = true;
-
-        /// <inheritdoc />
-        public bool IsHovered { get; set; } = false;
-
-        /// <inheritdoc />
-        public bool IsPressed { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the list of the items contained within the container.
@@ -73,6 +64,11 @@ namespace IPT.Common.RawUI
             {
                 throw new System.ArgumentException("Frame only allows elements of type IElement or its subclasses.", "item");
             }
+        }
+
+        /// <inheritdoc />
+        public override void Click()
+        {
         }
 
         /// <inheritdoc />

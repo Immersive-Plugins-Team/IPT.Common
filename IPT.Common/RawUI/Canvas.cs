@@ -17,7 +17,8 @@ namespace IPT.Common.RawUI
         private bool isInteractive;
         private bool isPaused;
         private bool isControlsEnabled;
-        private IInteractive hoveredFrame = null;
+        private IInteractive hoveredItem = null;  // mouse is currently hovering over that item
+        private IInteractive activeItem = null;   // mouse is currently clicked on that item
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Canvas"/> class.
@@ -100,6 +101,7 @@ namespace IPT.Common.RawUI
             if (!Functions.IsGamePaused() && !this.isInteractive)
             {
                 this.isInteractive = true;
+                this.Cursor.IsVisible = true;
                 if (doPause)
                 {
                     Game.IsPaused = true;
@@ -191,6 +193,7 @@ namespace IPT.Common.RawUI
                 Game.IsPaused = false;
                 this.SetPlayerControls(true);
                 this.ReleaseInteractiveElements();
+                this.Cursor.IsVisible = false;
             }
             else
             {
@@ -201,11 +204,17 @@ namespace IPT.Common.RawUI
 
         private void ReleaseInteractiveElements()
         {
-            this.hoveredFrame = null;
+            this.hoveredItem = null;
+            this.activeItem = null;
             foreach (var item in this.Items.OfType<IInteractive>())
             {
                 item.IsHovered = false;
                 item.IsPressed = false;
+            }
+
+            foreach (var item in this.Items.OfType<IDraggable>())
+            {
+                item.EndDrag();
             }
         }
 
