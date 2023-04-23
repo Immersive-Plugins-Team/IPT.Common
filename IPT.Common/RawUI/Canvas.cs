@@ -17,7 +17,6 @@ namespace IPT.Common.RawUI
         private bool isInteractive;
         private bool isPaused;
         private bool isControlsEnabled;
-        private IInteractive activeFrame = null;
         private IInteractive hoveredFrame = null;
 
         /// <summary>
@@ -202,7 +201,6 @@ namespace IPT.Common.RawUI
 
         private void ReleaseInteractiveElements()
         {
-            this.activeFrame = null;
             this.hoveredFrame = null;
             foreach (var item in this.Items.OfType<IInteractive>())
             {
@@ -233,6 +231,7 @@ namespace IPT.Common.RawUI
                         interactiveItem.IsHovered = true;
                         interactiveItem.IsPressed = this.Cursor.MouseStatus == MouseStatus.Down;
                         hoveredFrameFound = true;
+                        this.hoveredFrame = interactiveItem;
                     }
                     else
                     {
@@ -240,6 +239,11 @@ namespace IPT.Common.RawUI
                         interactiveItem.IsPressed = false;
                     }
                 }
+            }
+
+            if (!hoveredFrameFound)
+            {
+                this.hoveredFrame = null;
             }
         }
     }

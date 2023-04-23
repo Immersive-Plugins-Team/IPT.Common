@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 using IPT.Common.API;
 using Rage;
 using Rage.Native;
@@ -10,6 +11,9 @@ namespace IPT.Common.RawUI
     /// </summary>
     public class Cursor : TextureElement
     {
+        private readonly Stopwatch clickTimer = new Stopwatch();
+        private bool isVisible;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Cursor"/> class.
         /// </summary>
@@ -21,11 +25,30 @@ namespace IPT.Common.RawUI
             this.ScrollWheelStatus = ScrollWheelStatus.None;
         }
 
+        /// <summary>
+        /// Gets the duration of a mouse down event.
+        /// </summary>
+        public long ClickDuration
+        {
+            get
+            {
+                return this.clickTimer.ElapsedMilliseconds;
+            }
+        }
+
         /// <inheritdoc/>
         public override bool IsVisible
         {
-            get { return true; }
-            set { }
+            get
+            {
+                return this.isVisible;
+            }
+
+            set
+            {
+                this.isVisible = value;
+                this.clickTimer.Reset();
+            }
         }
 
         /// <summary>
@@ -68,11 +91,19 @@ namespace IPT.Common.RawUI
         {
             if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.Attack))
             {
-                this.MouseStatus = MouseStatus.Down;
+                if (this.MouseStatus != MouseStatus.Down)
+                {
+                    this.clickTimer.Restart();
+                    this.MouseStatus = MouseStatus.Down;
+                }
             }
             else
             {
-                this.MouseStatus = MouseStatus.Up;
+                if (this.MouseStatus != MouseStatus.Up)
+                {
+                    this.clickTimer.Stop();
+                    this.MouseStatus = MouseStatus.Up;
+                }
             }
         }
 
