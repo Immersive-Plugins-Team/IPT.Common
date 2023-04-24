@@ -312,14 +312,22 @@ namespace IPT.Common.RawUI
             bool hoveredItemFound = false;
             for (int i = this.Items.Count - 1; i >= 0; i--)
             {
+                var item = this.Items[i];
+                Logging.Debug($"checking item {i}: {item.GetType().FullName}");
                 if (this.Items[i] is IWidget<IDrawable> widget)
                 {
+                    Logging.Debug($"checking item {i} to see if it contains cursor");
                     if (!hoveredItemFound && widget.Contains(this.Cursor))
                     {
+                        Logging.Debug($"found hovered widget at {this.Cursor.Bounds}");
                         widget.IsHovered = true;
                         hoveredItemFound = true;
                         this.hoveredWidget = widget;
                         this.hoveredControl = ControlFinder.FindControls(this.hoveredWidget).LastOrDefault(x => x.Contains(this.Cursor));
+                        if (this.hoveredControl != null)
+                        {
+                            Logging.Debug("also found hovered control");
+                        }
                     }
                     else
                     {
