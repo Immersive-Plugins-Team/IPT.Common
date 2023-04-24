@@ -220,7 +220,6 @@ namespace IPT.Common.RawUI
             {
                 item.IsHovered = false;
                 item.EndDrag();
-                item.EndResize();
             }
         }
 
@@ -286,12 +285,9 @@ namespace IPT.Common.RawUI
                             Logging.Debug($"cursor position       : {this.Cursor.Position}, bounds: {this.Cursor.Bounds}");
                             this.activeWidget.EndDrag();
                         }
-                        else
+                        else if (this.activeWidget is IControl control)
                         {
-                            if (this.activeWidget is IControl control)
-                            {
-                                control.Click();
-                            }
+                            control.Click();
                         }
 
                         this.activeWidget = null;
@@ -303,12 +299,11 @@ namespace IPT.Common.RawUI
         private void UpdateHoveredWidget()
         {
             bool hoveredItemFound = false;
-
             for (int i = this.Items.Count - 1; i >= 0; i--)
             {
                 if (this.Items[i] is IWidget widget)
                 {
-                    if (!hoveredItemFound && widget.Bounds.Contains(this.Cursor.Position))
+                    if (!hoveredItemFound && widget.Contains(this.Cursor))
                     {
                         widget.IsHovered = true;
                         hoveredItemFound = true;

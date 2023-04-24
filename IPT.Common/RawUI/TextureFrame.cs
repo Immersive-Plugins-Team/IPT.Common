@@ -98,6 +98,8 @@ namespace IPT.Common.RawUI
                     var frameScale = this.FrameScale / 100f;
                     float x;
                     float y = this.Position.Y * this.Scale.Height;
+                    x = this.Position.X * this.Scale.Width;
+                    /*
                     if (this.Position.X > (Constants.CanvasWidth / 2f))
                     {
                         x = canvas.Resolution.Width - ((Constants.CanvasWidth - this.Position.X - (this.Texture.Size.Width * frameScale)) * canvas.Scale.Width) + (this.Texture.Size.Width * this.Scale.Height);
@@ -106,6 +108,7 @@ namespace IPT.Common.RawUI
                     {
                         x = this.Position.X * this.Scale.Width;
                     }
+                    */
 
                     var size = new SizeF(this.Texture.Size.Width * this.Scale.Height, this.Texture.Size.Height * this.Scale.Height);
                     this.Bounds = new RectangleF(new PointF(x, y), size);

@@ -30,12 +30,6 @@ namespace IPT.Common.RawUI
         public bool IsHovered { get; set; } = false;
 
         /// <inheritdoc/>
-        public bool IsResizing { get; protected set; } = false;
-
-        /// <inheritdoc/>
-        public PointF ResizeOffset { get; protected set; } = new PointF(0, 0);
-
-        /// <inheritdoc/>
         public bool Contains(Cursor cursor)
         {
             return this.Bounds.Contains(cursor.Bounds.Location);
@@ -44,7 +38,7 @@ namespace IPT.Common.RawUI
         /// <inheritdoc/>
         public void Drag(PointF mousePosition)
         {
-            this.MoveTo(new Point((int)System.Math.Round(mousePosition.X - this.DragOffset.X), (int)System.Math.Round(mousePosition.Y - this.DragOffset.Y)));
+            this.MoveTo(new Point((int)System.Math.Round(mousePosition.X + this.DragOffset.X), (int)System.Math.Round(mousePosition.Y + this.DragOffset.Y)));
         }
 
         /// <summary>
@@ -55,11 +49,11 @@ namespace IPT.Common.RawUI
         {
             if (this.Texture != null)
             {
-                if (this.IsDragging)
+                if (this.IsDragging || this.IsHovered)
                 {
                     var highlight = this.Bounds;
-                    highlight.Inflate(2f * this.Parent.Scale.Height, 2f * this.Parent.Scale.Height);
-                    g.DrawRectangle(highlight, Constants.HighlightColor);
+                    highlight.Inflate(3f * this.Parent.Scale.Height, 2f * this.Parent.Scale.Height);
+                    g.DrawRectangle(highlight, this.IsDragging ? Constants.DraggingColor : Constants.HoverColor);
                 }
 
                 g.DrawTexture(this.Texture, this.Bounds);
@@ -74,28 +68,10 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc/>
-        public void EndResize()
-        {
-            // todo
-        }
-
-        /// <inheritdoc/>
-        public void Resize(PointF mousePosition)
-        {
-            // todo
-        }
-
-        /// <inheritdoc/>
         public void StartDrag(PointF mousePosition)
         {
             this.IsDragging = true;
             this.DragOffset = new PointF(this.Position.X - mousePosition.X, this.Position.Y - mousePosition.Y);
-        }
-
-        /// <inheritdoc/>
-        public void StartResize(PointF mousePosition)
-        {
-            // todo
         }
     }
 }

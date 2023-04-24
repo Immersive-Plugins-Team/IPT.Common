@@ -20,7 +20,7 @@ namespace IPT.Common
         /// <summary>
         /// The duration in milliseconds of a long click.
         /// </summary>
-        public const long LongClick = 500;
+        public const long LongClick = 200;
 
         /// <summary>
         /// The minimum allowable scaling factor (as a percentage).
@@ -33,8 +33,13 @@ namespace IPT.Common
         public const int MaxScale = 200;
 
         /// <summary>
-        /// The color to use when highlighting graphical elements.
+        /// The color to use when dragging graphical elements.
         /// </summary>
-        public static readonly Color HighlightColor = Color.LightGoldenrodYellow;
+        public static readonly Color DraggingColor = Color.FromArgb(64, Color.Red);
+
+        /// <summary>
+        /// The color to use when hovering over graphical elements.
+        /// </summary>
+        public static readonly Color HoverColor = Color.FromArgb(64, Color.Yellow);
     }
 }

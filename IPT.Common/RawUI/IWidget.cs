@@ -28,16 +28,6 @@ namespace IPT.Common.RawUI
         bool IsHovered { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the element is currently being resized.
-        /// </summary>
-        bool IsResizing { get; }
-
-        /// <summary>
-        /// Gets the offset between the mouse cursor and the corner of the element being used for the resize.
-        /// </summary>
-        PointF ResizeOffset { get; }
-
-        /// <summary>
         /// Gets a value indicating whether or not the cursor resides within the bounds of the widget.
         /// </summary>
         /// <param name="cursor">The cursor object.</param>
@@ -56,26 +46,9 @@ namespace IPT.Common.RawUI
         void EndDrag();
 
         /// <summary>
-        /// Called when the element stops being resized.
-        /// </summary>
-        void EndResize();
-
-        /// <summary>
-        /// Called when the element is being resized.
-        /// </summary>
-        /// <param name="mousePosition">The current position of the mouse cursor.</param>
-        void Resize(PointF mousePosition);
-
-        /// <summary>
         /// Called when the element starts being dragged.
         /// </summary>
         /// <param name="mousePosition">The position of the mouse cursor when the drag started.</param>
         void StartDrag(PointF mousePosition);
-
-        /// <summary>
-        /// Called when the element starts being resized.
-        /// </summary>
-        /// <param name="mousePosition">The position of the mouse cursor when the resize started.</param>
-        void StartResize(PointF mousePosition);
     }
 }

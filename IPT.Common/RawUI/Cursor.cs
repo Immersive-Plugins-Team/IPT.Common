@@ -85,9 +85,6 @@ namespace IPT.Common.RawUI
                     case CursorType.Pointing:
                         texture = this.textureSet.Value.Pointing;
                         break;
-                    case CursorType.Resizing:
-                        texture = this.textureSet.Value.Resizing;
-                        break;
                 }
 
                 this.Texture = texture;
@@ -205,11 +202,6 @@ namespace IPT.Common.RawUI
             /// Gets or sets the texture used when the cursor is pointing.
             /// </summary>
             public Texture Pointing { get; set; }
-
-            /// <summary>
-            /// Gets or sets the texture used when the cursor is resizing a widget.
-            /// </summary>
-            public Texture Resizing { get; set; }
         }
     }
 }
