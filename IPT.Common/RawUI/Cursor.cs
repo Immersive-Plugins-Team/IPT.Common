@@ -176,11 +176,11 @@ namespace IPT.Common.RawUI
         {
             if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.WeaponWheelNext))
             {
-                this.ScrollWheelStatus = ScrollWheelStatus.Up;
+                this.ScrollWheelStatus = ScrollWheelStatus.Down;
             }
             else if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.WeaponWheelPrev))
             {
-                this.ScrollWheelStatus = ScrollWheelStatus.Down;
+                this.ScrollWheelStatus = ScrollWheelStatus.Up;
             }
             else
             {

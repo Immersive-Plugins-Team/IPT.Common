@@ -243,6 +243,17 @@ namespace IPT.Common.RawUI
                         if (this.activeWidget.IsDragging)
                         {
                             this.activeWidget.Drag(this.Cursor.Position);
+                            if (this.activeWidget is TextureFrame frame)
+                            {
+                                if (this.Cursor.ScrollWheelStatus == ScrollWheelStatus.Up)
+                                {
+                                    frame.SetFrameScale(frame.FrameScale + 1);
+                                }
+                                else if (this.Cursor.ScrollWheelStatus == ScrollWheelStatus.Down)
+                                {
+                                    frame.SetFrameScale(frame.FrameScale - 1);
+                                }
+                            }
                         }
                         else
                         {
