@@ -3,9 +3,11 @@
 namespace IPT.Common.RawUI
 {
     /// <summary>
-    /// Represents an element that can be moved and resized.
+    /// Represents a container that can be moved and resized.
     /// </summary>
-    public interface IWidget : IDrawable
+    /// <typeparam name="T">The type of elements contained in the widget.</typeparam>
+    public interface IWidget<T> : IContainer<T>, IControl
+        where T : IDrawable
     {
         /// <summary>
         /// Gets the offset between the mouse cursor and the top-left corner of the element when being dragged.
@@ -18,21 +20,14 @@ namespace IPT.Common.RawUI
         bool IsDragging { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the element is enabled and can respond to user interaction.
-        /// </summary>
-        bool IsEnabled { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the element is currently being hovered over by the mouse cursor.
         /// </summary>
         bool IsHovered { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the cursor resides within the bounds of the widget.
+        /// Gets a value for the widget specific scale.
         /// </summary>
-        /// <param name="cursor">The cursor object.</param>
-        /// <returns>True if the cursor resides within the bounds of the widget, otherwise false.</returns>
-        bool Contains(Cursor cursor);
+        float WidgetScale { get; }
 
         /// <summary>
         /// Called when the element is being dragged.
@@ -41,14 +36,20 @@ namespace IPT.Common.RawUI
         void Drag(PointF mousePosition);
 
         /// <summary>
-        /// Called when the element stops being dragged.
+        /// Safely sets the widget's scale.
         /// </summary>
-        void EndDrag();
+        /// <param name="scale">The widget specific scale where 1.0 is native.</param>
+        void SetWidgetScale(float scale);
 
         /// <summary>
         /// Called when the element starts being dragged.
         /// </summary>
         /// <param name="mousePosition">The position of the mouse cursor when the drag started.</param>
         void StartDrag(PointF mousePosition);
+
+        /// <summary>
+        /// Called when the element stops being dragged.
+        /// </summary>
+        void StopDrag();
     }
 }

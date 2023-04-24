@@ -60,7 +60,7 @@ namespace IPT.Common.GUI
 
             set
             {
-                this.scale = IPT.Common.API.Math.Clamp(value, Constants.MinScale, Constants.MaxScale);
+                // this.scale = IPT.Common.API.Math.Clamp(value, Constants.MinScale, Constants.MaxScale);
                 this.Refresh();
             }
         }

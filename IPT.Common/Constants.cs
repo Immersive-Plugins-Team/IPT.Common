@@ -25,21 +25,21 @@ namespace IPT.Common
         /// <summary>
         /// The minimum allowable scaling factor (as a percentage).
         /// </summary>
-        public const int MinScale = 20;
+        public const float MinScale = 0.1f;
 
         /// <summary>
         /// The maximum allowable scaling factor (as a percentage).
         /// </summary>
-        public const int MaxScale = 200;
+        public const float MaxScale = 2f;
 
         /// <summary>
         /// The color to use when dragging graphical elements.
         /// </summary>
-        public static readonly Color DraggingColor = Color.FromArgb(64, Color.Red);
+        public static readonly Color DraggingColor = Color.FromArgb(128, Color.Green);
 
         /// <summary>
         /// The color to use when hovering over graphical elements.
         /// </summary>
-        public static readonly Color HoverColor = Color.FromArgb(64, Color.Yellow);
+        public static readonly Color HoverColor = Color.FromArgb(128, Color.Yellow);
     }
 }

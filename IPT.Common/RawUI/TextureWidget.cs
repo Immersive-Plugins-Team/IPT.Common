@@ -1,17 +1,21 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using IPT.Common.API;
 using Rage;
 
 namespace IPT.Common.RawUI
 {
     /// <summary>
-    /// Represents a texture drawable that can be resized and moved.
+    /// An interactive frame with a texture background that contains IDrawable objects.
     /// </summary>
-    public abstract class TextureWidget : TextureDrawable, IWidget
+    /// <typeparam name="T">The type of items contained in the widget.</typeparam>
+    public abstract class TextureWidget<T> : TextureDrawable, IWidget<T>
+        where T : IDrawable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextureWidget"/> class.
+        /// Initializes a new instance of the <see cref="TextureWidget{T}"/> class.
         /// </summary>
-        /// <param name="texture">The texture to be rendered.</param>
+        /// <param name="texture">The widget's texture.</param>
         public TextureWidget(Texture texture)
             : base(texture)
         {
@@ -24,10 +28,43 @@ namespace IPT.Common.RawUI
         public bool IsDragging { get; protected set; } = false;
 
         /// <inheritdoc/>
-        public bool IsEnabled { get; set; } = true;
+        public virtual bool IsEnabled { get; set; } = true;
 
         /// <inheritdoc/>
-        public bool IsHovered { get; set; } = false;
+        public virtual bool IsHovered { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the list of the items contained within the container.
+        /// </summary>
+        public List<T> Items { get; protected set; } = new List<T>();
+
+        /// <inheritdoc />
+        public SizeF Scale
+        {
+            get
+            {
+                return new SizeF(this.Parent.Scale.Width * this.WidgetScale, this.Parent.Scale.Height * this.WidgetScale);
+            }
+        }
+
+        /// <inheritdoc/>
+        public float WidgetScale { get; protected set; } = 1.0f;
+
+        /// <inheritdoc />
+        public void Add(T item)
+        {
+            item.Parent = this;
+            this.Items.Add(item);
+        }
+
+        /// <inheritdoc />
+        public void Clear()
+        {
+            this.Items.Clear();
+        }
+
+        /// <inheritdoc />
+        public abstract void Click();
 
         /// <inheritdoc/>
         public bool Contains(Cursor cursor)
@@ -41,30 +78,37 @@ namespace IPT.Common.RawUI
             this.MoveTo(new Point((int)System.Math.Round(mousePosition.X + this.DragOffset.X), (int)System.Math.Round(mousePosition.Y + this.DragOffset.Y)));
         }
 
-        /// <summary>
-        /// Draws the element onto the specified graphics object.
-        /// </summary>
-        /// <param name="g">The graphics object to draw onto.</param>
+        /// <inheritdoc />
         public override void Draw(Rage.Graphics g)
         {
             if (this.Texture != null)
             {
-                if (this.IsDragging || this.IsHovered)
-                {
-                    var highlight = this.Bounds;
-                    highlight.Inflate(3f * this.Parent.Scale.Height, 2f * this.Parent.Scale.Height);
-                    g.DrawRectangle(highlight, this.IsDragging ? Constants.DraggingColor : Constants.HoverColor);
-                }
+                base.Draw(g);
+            }
 
-                g.DrawTexture(this.Texture, this.Bounds);
+            foreach (var item in this.Items)
+            {
+                if (item.IsVisible)
+                {
+                    item.Draw(g);
+                }
             }
         }
 
-        /// <inheritdoc/>
-        public void EndDrag()
+        /// <inheritdoc />
+        public void Remove(T item)
         {
-            this.IsDragging = false;
-            this.DragOffset = default;
+            this.Items.Remove(item);
+        }
+
+        /// <inheritdoc />
+        public void SetWidgetScale(float scale)
+        {
+            if (this.Parent is Canvas)
+            {
+                this.WidgetScale = API.Math.Clamp(scale, Constants.MinScale, Constants.MaxScale);
+                this.UpdateBounds();
+            }
         }
 
         /// <inheritdoc/>
@@ -72,6 +116,41 @@ namespace IPT.Common.RawUI
         {
             this.IsDragging = true;
             this.DragOffset = new PointF(this.Position.X - mousePosition.X, this.Position.Y - mousePosition.Y);
+        }
+
+        /// <inheritdoc/>
+        public void StopDrag()
+        {
+            this.IsDragging = false;
+            this.DragOffset = default;
+        }
+
+        /// <inheritdoc />
+        public override void UpdateBounds()
+        {
+            if (this.Texture != null)
+            {
+                if (this.Parent is Canvas canvas)
+                {
+                    float x = this.Position.X * canvas.Scale.Width;
+                    float y = this.Position.Y * canvas.Scale.Height;
+                    var size = new SizeF(this.Texture.Size.Width * this.Scale.Height, this.Texture.Size.Height * this.Scale.Height);
+                    this.Bounds = new RectangleF(new PointF(x, y), size);
+                }
+                else
+                {
+                    base.UpdateBounds();
+                }
+            }
+            else
+            {
+                Logging.Warning("cannout update bounds on widget, texture is null!");
+            }
+
+            foreach (IDrawable item in this.Items)
+            {
+                item.UpdateBounds();
+            }
         }
     }
 }

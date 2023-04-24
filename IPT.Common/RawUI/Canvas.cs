@@ -17,8 +17,9 @@ namespace IPT.Common.RawUI
         private bool isInteractive = false;
         private bool isPaused = false;
         private bool isControlsEnabled = true;
-        private IWidget hoveredWidget = null;  // mouse is currently hovering over that widget
-        private IWidget activeWidget = null;   // mouse is currently down on that widget
+        private IWidget<IDrawable> hoveredWidget = null;  // mouse is currently hovering over that widget
+        private IWidget<IDrawable> activeWidget = null;   // mouse is currently down on that widget
+        private IControl hoveredControl = null;           // mouse is currently hovering over that control
         private MouseStatus mouseStatus = MouseStatus.Up;
 
         /// <summary>
@@ -214,12 +215,13 @@ namespace IPT.Common.RawUI
         private void ReleaseWidgets()
         {
             this.Cursor.SetCursorType(CursorType.Default);
+            this.activeWidget = null;
+            this.hoveredControl = null;
             this.hoveredWidget = null;
-            this.hoveredWidget = null;
-            foreach (var item in this.Items.OfType<IWidget>())
+            foreach (var item in this.Items.OfType<IWidget<IDrawable>>())
             {
                 item.IsHovered = false;
-                item.EndDrag();
+                item.StopDrag();
             }
         }
 
@@ -243,16 +245,13 @@ namespace IPT.Common.RawUI
                         if (this.activeWidget.IsDragging)
                         {
                             this.activeWidget.Drag(this.Cursor.Position);
-                            if (this.activeWidget is TextureFrame frame)
+                            if (this.Cursor.ScrollWheelStatus == ScrollWheelStatus.Up)
                             {
-                                if (this.Cursor.ScrollWheelStatus == ScrollWheelStatus.Up)
-                                {
-                                    frame.SetFrameScale(frame.FrameScale + 1);
-                                }
-                                else if (this.Cursor.ScrollWheelStatus == ScrollWheelStatus.Down)
-                                {
-                                    frame.SetFrameScale(frame.FrameScale - 1);
-                                }
+                                this.activeWidget.SetWidgetScale(this.activeWidget.WidgetScale + 0.1f);
+                            }
+                            else if (this.Cursor.ScrollWheelStatus == ScrollWheelStatus.Down)
+                            {
+                                this.activeWidget.SetWidgetScale(this.activeWidget.WidgetScale - 0.1f);
                             }
                         }
                         else
@@ -294,11 +293,12 @@ namespace IPT.Common.RawUI
                             Logging.Debug("ending drag...");
                             Logging.Debug($"active widget position: {this.activeWidget.Position}, bounds: {this.activeWidget.Bounds}");
                             Logging.Debug($"cursor position       : {this.Cursor.Position}, bounds: {this.Cursor.Bounds}");
-                            this.activeWidget.EndDrag();
+                            this.activeWidget.StopDrag();
                         }
-                        else if (this.activeWidget is IControl control)
+                        else if (this.hoveredControl != null)
                         {
-                            control.Click();
+                            Logging.Debug("click!");
+                            this.hoveredControl.Click();
                         }
 
                         this.activeWidget = null;
@@ -312,13 +312,14 @@ namespace IPT.Common.RawUI
             bool hoveredItemFound = false;
             for (int i = this.Items.Count - 1; i >= 0; i--)
             {
-                if (this.Items[i] is IWidget widget)
+                if (this.Items[i] is IWidget<IDrawable> widget)
                 {
                     if (!hoveredItemFound && widget.Contains(this.Cursor))
                     {
                         widget.IsHovered = true;
                         hoveredItemFound = true;
                         this.hoveredWidget = widget;
+                        this.hoveredControl = ControlFinder.FindControls(this.hoveredWidget).LastOrDefault(x => x.Contains(this.Cursor));
                     }
                     else
                     {
@@ -329,8 +330,11 @@ namespace IPT.Common.RawUI
 
             if (!hoveredItemFound)
             {
+                this.hoveredControl = null;
                 this.hoveredWidget = null;
             }
+
+            this.Cursor.SetCursorType(this.hoveredControl == null ? CursorType.Default : CursorType.Pointing);
         }
 
         private void UpdateWidgets()
