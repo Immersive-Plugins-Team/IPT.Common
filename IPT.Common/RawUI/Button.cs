@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a clickable sprite.
     /// </summary>
-    public abstract class Button : Sprite, IControl
+    public class Button : Sprite, IControl
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Button"/> class.
@@ -18,7 +18,9 @@
         public virtual bool IsEnabled { get; set; }
 
         /// <inheritdoc/>
-        public abstract void Click();
+        public virtual void Click()
+        {
+        }
 
         /// <inheritdoc/>
         public bool Contains(Cursor cursor)
