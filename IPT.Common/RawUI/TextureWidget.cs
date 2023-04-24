@@ -8,12 +8,10 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// An interactive frame with a texture background that contains IDrawable objects.
     /// </summary>
-    /// <typeparam name="T">The type of items contained in the widget.</typeparam>
-    public abstract class TextureWidget<T> : TextureDrawable, IWidget<T>
-        where T : IDrawable
+    public abstract class TextureWidget : TextureDrawable, IWidget
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextureWidget{T}"/> class.
+        /// Initializes a new instance of the <see cref="TextureWidget"/> class.
         /// </summary>
         /// <param name="texture">The widget's texture.</param>
         public TextureWidget(Texture texture)
@@ -36,7 +34,7 @@ namespace IPT.Common.RawUI
         /// <summary>
         /// Gets or sets the list of the items contained within the container.
         /// </summary>
-        public List<T> Items { get; protected set; } = new List<T>();
+        public List<IDrawable> Items { get; protected set; } = new List<IDrawable>();
 
         /// <inheritdoc />
         public SizeF Scale
@@ -51,7 +49,7 @@ namespace IPT.Common.RawUI
         public float WidgetScale { get; protected set; } = 1.0f;
 
         /// <inheritdoc />
-        public void Add(T item)
+        public void Add(IDrawable item)
         {
             item.Parent = this;
             this.Items.Add(item);
@@ -96,7 +94,7 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc />
-        public void Remove(T item)
+        public void Remove(IDrawable item)
         {
             this.Items.Remove(item);
         }

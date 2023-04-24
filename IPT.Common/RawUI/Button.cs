@@ -15,7 +15,7 @@
         }
 
         /// <inheritdoc/>
-        public virtual bool IsEnabled { get; set; }
+        public virtual bool IsEnabled { get; set; } = true;
 
         /// <inheritdoc/>
         public abstract void Click();

@@ -12,9 +12,7 @@ namespace IPT.Common.RawUI
         /// </summary>
         /// <param name="container">The container to search.</param>
         /// <returns>An enumerable of controls.</returns>
-        /// <typeparam name="T">The type of objects in the container.</typeparam>
-        public static IEnumerable<IControl> FindControls<T>(IContainer<T> container)
-            where T : IDrawable
+        public static IEnumerable<IControl> FindControls(IContainer container)
         {
             foreach (var item in container.Items)
             {
@@ -23,7 +21,7 @@ namespace IPT.Common.RawUI
                     yield return control;
                 }
 
-                if (item is IContainer<T> childContainer)
+                if (item is IContainer childContainer)
                 {
                     foreach (var childControl in FindControls(childContainer))
                     {

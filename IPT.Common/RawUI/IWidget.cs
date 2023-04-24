@@ -5,9 +5,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// Represents a container that can be moved and resized.
     /// </summary>
-    /// <typeparam name="T">The type of elements contained in the widget.</typeparam>
-    public interface IWidget<T> : IContainer<T>, IControl
-        where T : IDrawable
+    public interface IWidget : IContainer, IControl
     {
         /// <summary>
         /// Gets the offset between the mouse cursor and the top-left corner of the element when being dragged.

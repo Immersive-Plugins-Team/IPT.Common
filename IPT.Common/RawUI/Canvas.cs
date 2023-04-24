@@ -11,15 +11,15 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// A canvas representing the screen area where elements can be added and positioned.
     /// </summary>
-    public class Canvas : GenericFiber, IContainer<IDrawable>
+    public class Canvas : GenericFiber, IContainer
     {
         private readonly Point position = new Point(0, 0);
         private bool isInteractive = false;
         private bool isPaused = false;
         private bool isControlsEnabled = true;
-        private IWidget<IDrawable> hoveredWidget = null;  // mouse is currently hovering over that widget
-        private IWidget<IDrawable> activeWidget = null;   // mouse is currently down on that widget
-        private IControl hoveredControl = null;           // mouse is currently hovering over that control
+        private IWidget hoveredWidget = null;        // mouse is currently hovering over that widget
+        private IWidget activeWidget = null;         // mouse is currently down on that widget
+        private IControl hoveredControl = null;      // mouse is currently hovering over that control
         private MouseStatus mouseStatus = MouseStatus.Up;
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace IPT.Common.RawUI
             this.activeWidget = null;
             this.hoveredControl = null;
             this.hoveredWidget = null;
-            foreach (var item in this.Items.OfType<IWidget<IDrawable>>())
+            foreach (var item in this.Items.OfType<IWidget>())
             {
                 item.IsHovered = false;
                 item.StopDrag();
@@ -314,7 +314,7 @@ namespace IPT.Common.RawUI
             {
                 var item = this.Items[i];
                 Logging.Debug($"checking item {i}: {item.GetType().FullName}");
-                if (this.Items[i] is IWidget<IDrawable> widget)
+                if (this.Items[i] is IWidget widget)
                 {
                     Logging.Debug($"checking item {i} to see if it contains cursor");
                     if (!hoveredItemFound && widget.Contains(this.Cursor))
@@ -323,10 +323,22 @@ namespace IPT.Common.RawUI
                         widget.IsHovered = true;
                         hoveredItemFound = true;
                         this.hoveredWidget = widget;
-                        this.hoveredControl = ControlFinder.FindControls(this.hoveredWidget).LastOrDefault(x => x.Contains(this.Cursor));
-                        if (this.hoveredControl != null)
+                        Logging.Info("searching hovered widget to see if it contains any controls");
+                        var controls = ControlFinder.FindControls(this.hoveredWidget).ToList();
+                        Logging.Info($"we found {controls.Count} controls");
+                        if (controls.Count > 0)
                         {
-                            Logging.Debug("also found hovered control");
+                            Logging.Info("checking to see if any contain the cursor");
+                            var hoveredControl = controls.Where(x => x.Contains(this.Cursor)).ToList().LastOrDefault();
+                            if (hoveredControl != null)
+                            {
+                                Logging.Info("we found one, setting it to the hoveredControl");
+                                this.hoveredControl = hoveredControl;
+                            }
+                            else
+                            {
+                                Logging.Info("none of the controls are being hovered over");
+                            }
                         }
                     }
                     else
