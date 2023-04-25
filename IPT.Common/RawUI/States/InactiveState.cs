@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using IPT.Common.RawUI.Interfaces;
 using Rage;
 
 namespace IPT.Common.RawUI.States

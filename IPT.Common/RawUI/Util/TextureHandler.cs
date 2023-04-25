@@ -5,7 +5,7 @@ using System.Reflection;
 using IPT.Common.API;
 using Rage;
 
-namespace IPT.Common.RawUI
+namespace IPT.Common.RawUI.Util
 {
     /// <summary>
     /// Class for loading and accessing textures.

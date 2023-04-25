@@ -1,4 +1,6 @@
-﻿namespace IPT.Common.RawUI
+﻿using IPT.Common.RawUI.Interfaces;
+
+namespace IPT.Common.RawUI.Elements
 {
     /// <summary>
     /// Represents a clickable sprite.

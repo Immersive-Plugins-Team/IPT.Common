@@ -2,6 +2,8 @@
 using System.Drawing;
 using IPT.Common.API;
 using IPT.Common.Fibers;
+using IPT.Common.RawUI.Elements;
+using IPT.Common.RawUI.Interfaces;
 using IPT.Common.RawUI.States;
 
 namespace IPT.Common.RawUI
@@ -11,6 +13,9 @@ namespace IPT.Common.RawUI
     /// </summary>
     public class Canvas : GenericFiber, IContainer
     {
+        private readonly List<IDrawable> items = new List<IDrawable>();
+        private readonly object lockItemsObj = new object();
+        private List<IDrawable> itemsCopy = null;
         private bool isPaused = false;
         private CanvasState canvasState;
         private MouseState mouseState;
@@ -22,7 +27,6 @@ namespace IPT.Common.RawUI
             : base("canvas", 100)
         {
             this.Cursor = new Cursor(null);
-            this.Add(this.Cursor);
             this.canvasState = new InactiveState(this);
             this.mouseState = new MouseUpState(this);
         }
@@ -53,7 +57,21 @@ namespace IPT.Common.RawUI
         /// <summary>
         /// Gets the list of items contained within the container.
         /// </summary>
-        public List<IDrawable> Items { get; private set; } = new List<IDrawable>();
+        public List<IDrawable> Items
+        {
+            get
+            {
+                lock (this.lockItemsObj)
+                {
+                    if (this.itemsCopy == null)
+                    {
+                        this.itemsCopy = new List<IDrawable>(this.items);
+                    }
+
+                    return this.itemsCopy;
+                }
+            }
+        }
 
         /// <inheritdoc />
         public bool IsVisible { get; set; }
@@ -80,23 +98,38 @@ namespace IPT.Common.RawUI
         public void Add(IDrawable item)
         {
             item.Parent = this;
-            this.Items.Insert(0, item);
-            Logging.Debug($"adding item to canvas, total items: {this.Items.Count}");
+            lock (this.lockItemsObj)
+            {
+                this.items.Add(item);
+                this.itemsCopy = null;
+            }
         }
 
         /// <summary>
-        /// Moves the item to the top of the z order.
+        /// Moves the item to the top of the z order.  The cursor should always be the 0th element.
         /// </summary>
         /// <param name="item">The item to bring forward.</param>
         public void BringToFront(IDrawable item)
         {
-            // todo
+            lock (this.lockItemsObj)
+            {
+                if (this.items.Count > 1)
+                {
+                    this.items.Remove(item);
+                    this.items.Add(item);
+                    this.itemsCopy = null;
+                }
+            }
         }
 
         /// <inheritdoc />
         public void Clear()
         {
-            this.Items.Clear();
+            lock (this.lockItemsObj)
+            {
+                this.items.Clear();
+                this.itemsCopy = null;
+            }
         }
 
         /// <inheritdoc />
@@ -127,7 +160,11 @@ namespace IPT.Common.RawUI
         /// <inheritdoc />
         public void Remove(IDrawable element)
         {
-            this.Items.Remove(element);
+            lock (this.lockItemsObj)
+            {
+                this.items.Remove(element);
+                this.itemsCopy = null;
+            }
         }
 
         /// <summary>
@@ -173,6 +210,7 @@ namespace IPT.Common.RawUI
             new RectangleF(this.Position, this.Resolution);
             this.Bounds = new RectangleF(0, 0, this.Resolution.Width, this.Resolution.Height);
             this.Items.ForEach(x => x.UpdateBounds());
+            this.Cursor.UpdateBounds();
         }
 
         /// <summary>

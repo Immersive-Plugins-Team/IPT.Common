@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using IPT.Common.API;
 
 namespace IPT.Common
 {
@@ -51,18 +52,29 @@ namespace IPT.Common
             foreach (var plugin in LSPD_First_Response.Mod.API.Functions.GetAllUserPlugins())
             {
                 var names = new List<string>();
-                foreach (var callout in plugin.GetTypes().Where(x => typeof(LSPD_First_Response.Mod.Callouts.Callout).IsAssignableFrom(x)))
+                try
                 {
-                    var attribute = callout.GetCustomAttributes(typeof(LSPD_First_Response.Mod.Callouts.CalloutInfoAttribute), true).FirstOrDefault();
-                    if (attribute is LSPD_First_Response.Mod.Callouts.CalloutInfoAttribute calloutInfo)
+                    foreach (var callout in plugin.GetTypes().Where(x => typeof(LSPD_First_Response.Mod.Callouts.Callout).IsAssignableFrom(x)))
                     {
-                        names.Add(calloutInfo.Name);
+                        var attribute = callout.GetCustomAttributes(typeof(LSPD_First_Response.Mod.Callouts.CalloutInfoAttribute), true).FirstOrDefault();
+                        if (attribute is LSPD_First_Response.Mod.Callouts.CalloutInfoAttribute calloutInfo)
+                        {
+                            names.Add(calloutInfo.Name);
+                        }
+                    }
+
+                    if (names.Any())
+                    {
+                        callouts[plugin.GetName().Name] = names;
                     }
                 }
-
-                if (names.Any())
+                catch (System.Reflection.ReflectionTypeLoadException ex)
                 {
-                    callouts[plugin.GetName().Name] = names;
+                    Logging.Warning($"there was an error while trying to access plugin: {plugin.FullName}");
+                    foreach (var entry in ex.LoaderExceptions)
+                    {
+                        Logging.Error($"{plugin.FullName}: ", entry);
+                    }
                 }
             }
 

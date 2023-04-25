@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace IPT.Common.RawUI
+namespace IPT.Common.RawUI.Interfaces
 {
     /// <summary>
     /// Represents a container that can be moved and resized.

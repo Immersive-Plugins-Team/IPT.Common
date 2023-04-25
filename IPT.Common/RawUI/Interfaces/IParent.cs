@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace IPT.Common.RawUI
+namespace IPT.Common.RawUI.Interfaces
 {
     /// <summary>
     /// Represents a Parent used by drawables to determine their positioning.

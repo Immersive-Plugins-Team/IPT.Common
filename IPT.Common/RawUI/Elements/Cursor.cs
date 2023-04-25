@@ -4,7 +4,7 @@ using IPT.Common.API;
 using Rage;
 using Rage.Native;
 
-namespace IPT.Common.RawUI
+namespace IPT.Common.RawUI.Elements
 {
     /// <summary>
     /// A special sprite that represents the mouse cursor on the screen.

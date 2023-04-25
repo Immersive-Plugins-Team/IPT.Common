@@ -1,4 +1,4 @@
-﻿namespace IPT.Common.RawUI
+﻿namespace IPT.Common.RawUI.Interfaces
 {
     /// <summary>
     /// Represents an item that can be drawn to the screen.

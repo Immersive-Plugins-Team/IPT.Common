@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using IPT.Common.API;
+using IPT.Common.RawUI.Interfaces;
+using IPT.Common.RawUI.Util;
 
 namespace IPT.Common.RawUI.States
 {

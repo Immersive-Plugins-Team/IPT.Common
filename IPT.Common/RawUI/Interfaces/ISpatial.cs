@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace IPT.Common.RawUI
+namespace IPT.Common.RawUI.Interfaces
 {
     /// <summary>
     /// Represents a spatial object that has a position on a fixed canvas and bounds on a screen of variable resolution.

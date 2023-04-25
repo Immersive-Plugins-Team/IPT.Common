@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using IPT.Common.RawUI.Interfaces;
 
-namespace IPT.Common.RawUI
+namespace IPT.Common.RawUI.Util
 {
     /// <summary>
     /// Finds controls within a container.

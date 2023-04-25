@@ -1,7 +1,8 @@
 ﻿using System.Drawing;
+using IPT.Common.RawUI.Interfaces;
 using Rage;
 
-namespace IPT.Common.RawUI
+namespace IPT.Common.RawUI.Elements
 {
     /// <summary>
     /// Represents a drawable item that renders a texture to the screen.

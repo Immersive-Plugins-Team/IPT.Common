@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using IPT.Common.API;
+using IPT.Common.RawUI.Interfaces;
 using Rage;
 
-namespace IPT.Common.RawUI
+namespace IPT.Common.RawUI.Elements
 {
     /// <summary>
     /// An interactive frame with a texture background that contains IDrawable objects.

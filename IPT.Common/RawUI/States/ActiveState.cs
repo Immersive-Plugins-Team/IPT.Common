@@ -24,6 +24,10 @@ namespace IPT.Common.RawUI.States
             {
                 this.SetPlayerControls(false);
             }
+            else
+            {
+                Game.IsPaused = true;
+            }
         }
 
         /// <inheritdoc/>

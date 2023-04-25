@@ -1,4 +1,6 @@
-﻿namespace IPT.Common.RawUI
+﻿using IPT.Common.RawUI.Elements;
+
+namespace IPT.Common.RawUI.Interfaces
 {
     /// <summary>
     /// Represents an object that can be used for controlling things like a button.

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IPT.Common.RawUI
+namespace IPT.Common.RawUI.Interfaces
 {
     /// <summary>
     /// Represents a container that can contain items.
