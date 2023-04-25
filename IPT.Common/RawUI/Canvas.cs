@@ -13,7 +13,6 @@ namespace IPT.Common.RawUI
     /// </summary>
     public class Canvas : GenericFiber, IContainer
     {
-        private readonly Point position = new Point(0, 0);
         private bool isInteractive = false;
         private bool isPaused = false;
         private bool isControlsEnabled = true;
@@ -56,11 +55,7 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc />
-        public Point Position
-        {
-            get { return this.position; }
-            set { }
-        }
+        public Point Position { get; } = new Point(0, 0);
 
         /// <summary>
         /// Gets the screen resolution.
