@@ -1,6 +1,6 @@
 ﻿using IPT.Common.API;
 
-namespace IPT.Common.RawUI.Canvas
+namespace IPT.Common.RawUI.States
 {
     /// <summary>
     /// Represents the mouse in a down state.

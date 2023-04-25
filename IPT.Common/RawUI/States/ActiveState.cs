@@ -2,7 +2,7 @@
 using Rage;
 using Rage.Native;
 
-namespace IPT.Common.RawUI.Canvas
+namespace IPT.Common.RawUI.States
 {
     /// <summary>
     /// Represents the canvas in an active state.

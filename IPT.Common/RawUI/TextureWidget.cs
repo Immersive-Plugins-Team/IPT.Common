@@ -102,7 +102,7 @@ namespace IPT.Common.RawUI
         /// <inheritdoc />
         public void SetWidgetScale(float scale)
         {
-            if (this.Parent is Canvas.Canvas)
+            if (this.Parent is Canvas)
             {
                 this.WidgetScale = API.Math.Clamp(scale, Constants.MinScale, Constants.MaxScale);
                 this.UpdateBounds();
@@ -128,7 +128,7 @@ namespace IPT.Common.RawUI
         {
             if (this.Texture != null)
             {
-                if (this.Parent is Canvas.Canvas canvas)
+                if (this.Parent is Canvas canvas)
                 {
                     float x = this.Position.X * canvas.Scale.Width;
                     float y = this.Position.Y * canvas.Scale.Height;

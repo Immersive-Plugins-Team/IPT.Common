@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using IPT.Common.API;
 
-namespace IPT.Common.RawUI.Canvas
+namespace IPT.Common.RawUI.States
 {
     /// <summary>
     /// Represents the mouse in an up state.

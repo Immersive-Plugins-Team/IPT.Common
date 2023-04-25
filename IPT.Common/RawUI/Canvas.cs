@@ -2,9 +2,9 @@
 using System.Drawing;
 using IPT.Common.API;
 using IPT.Common.Fibers;
-using Rage;
+using IPT.Common.RawUI.States;
 
-namespace IPT.Common.RawUI.Canvas
+namespace IPT.Common.RawUI
 {
     /// <summary>
     /// A canvas representing the screen area where elements can be added and positioned.
@@ -153,22 +153,22 @@ namespace IPT.Common.RawUI.Canvas
         {
             base.Start();
             this.UpdateBounds();
-            Game.FrameRender += this.Game_FrameRender;
-            Game.RawFrameRender += this.Game_RawFrameRender;
+            Rage.Game.FrameRender += this.Game_FrameRender;
+            Rage.Game.RawFrameRender += this.Game_RawFrameRender;
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
             base.Stop();
-            Game.FrameRender -= this.Game_FrameRender;
-            Game.RawFrameRender -= this.Game_RawFrameRender;
+            Rage.Game.FrameRender -= this.Game_FrameRender;
+            Rage.Game.RawFrameRender -= this.Game_RawFrameRender;
         }
 
         /// <inheritdoc />
         public void UpdateBounds()
         {
-            this.Resolution = Game.Resolution;
+            this.Resolution = Rage.Game.Resolution;
             this.Scale = new SizeF(this.Resolution.Width / Constants.CanvasWidth, this.Resolution.Height / Constants.CanvasHeight);
             new RectangleF(this.Position, this.Resolution);
             this.Bounds = new RectangleF(0, 0, this.Resolution.Width, this.Resolution.Height);
@@ -181,13 +181,13 @@ namespace IPT.Common.RawUI.Canvas
         protected override void DoSomething()
         {
             this.isPaused = Functions.IsGamePaused();
-            if (Game.Resolution != this.Resolution)
+            if (Rage.Game.Resolution != this.Resolution)
             {
                 this.UpdateBounds();
             }
         }
 
-        private void Game_FrameRender(object sender, GraphicsEventArgs e)
+        private void Game_FrameRender(object sender, Rage.GraphicsEventArgs e)
         {
             this.canvasState.ProcessControls();
             if (this.canvasState is ActiveState)
@@ -196,7 +196,7 @@ namespace IPT.Common.RawUI.Canvas
             }
         }
 
-        private void Game_RawFrameRender(object sender, GraphicsEventArgs e)
+        private void Game_RawFrameRender(object sender, Rage.GraphicsEventArgs e)
         {
             if (!this.isPaused || this.canvasState is ActiveState)
             {
