@@ -27,6 +27,7 @@ namespace IPT.Common.RawUI
             : base("canvas", 100)
         {
             this.Cursor = new Cursor(null);
+            this.Add(this.Cursor);
             this.canvasState = new InactiveState(this);
             this.mouseState = new MouseUpState(this);
         }
