@@ -211,7 +211,6 @@ namespace IPT.Common.RawUI
             new RectangleF(this.Position, this.Resolution);
             this.Bounds = new RectangleF(0, 0, this.Resolution.Width, this.Resolution.Height);
             this.Items.ForEach(x => x.UpdateBounds());
-            this.Cursor.UpdateBounds();
         }
 
         /// <summary>
