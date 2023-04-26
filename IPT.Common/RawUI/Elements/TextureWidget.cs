@@ -27,9 +27,6 @@ namespace IPT.Common.RawUI.Elements
         public bool IsDragging { get; protected set; } = false;
 
         /// <inheritdoc/>
-        public virtual bool IsEnabled { get; set; } = true;
-
-        /// <inheritdoc/>
         public virtual bool IsHovered { get; set; } = false;
 
         /// <summary>
@@ -61,9 +58,6 @@ namespace IPT.Common.RawUI.Elements
         {
             this.Items.Clear();
         }
-
-        /// <inheritdoc />
-        public abstract void Click();
 
         /// <inheritdoc/>
         public bool Contains(Cursor cursor)

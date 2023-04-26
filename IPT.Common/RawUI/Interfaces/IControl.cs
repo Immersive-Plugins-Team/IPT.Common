@@ -13,11 +13,6 @@ namespace IPT.Common.RawUI.Interfaces
         bool IsEnabled { get; set; }
 
         /// <summary>
-        /// Executed when the user clicks the control.
-        /// </summary>
-        void Click();
-
-        /// <summary>
         /// Gets a value indicating whether or not the cursor resides within the bounds of the widget.
         /// </summary>
         /// <param name="cursor">The cursor object.</param>

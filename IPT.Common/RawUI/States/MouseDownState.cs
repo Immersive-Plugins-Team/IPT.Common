@@ -43,10 +43,10 @@ namespace IPT.Common.RawUI.States
                 }
                 else
                 {
-                    if (this.Canvas.HoveredControl != null)
+                    if (this.Canvas.HoveredControl != null && this.Canvas.HoveredControl is IClickable clickable)
                     {
                         Logging.Debug("registered click on hovered control");
-                        this.Canvas.HoveredControl.Click();
+                        clickable.Click();
                     }
                 }
 

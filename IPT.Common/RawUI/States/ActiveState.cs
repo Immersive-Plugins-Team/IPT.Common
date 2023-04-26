@@ -1,4 +1,5 @@
-﻿using IPT.Common.API;
+﻿using System.Linq;
+using IPT.Common.API;
 using Rage;
 using Rage.Native;
 
@@ -9,6 +10,8 @@ namespace IPT.Common.RawUI.States
     /// </summary>
     public class ActiveState : CanvasState
     {
+        private bool doPause = false;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ActiveState"/> class.
         /// </summary>
@@ -17,7 +20,8 @@ namespace IPT.Common.RawUI.States
         public ActiveState(Canvas canvas, bool doPause)
             : base(canvas)
         {
-            NativeFunction.Natives.xFC695459D4D0E219(0.5f, 0.5f); // centers the cursor
+            this.doPause = doPause;
+            this.MoveCursorToTopWidget();
             this.Canvas.Cursor.IsVisible = true;
             this.Canvas.Cursor.SetCursorType(CursorType.Default);
             if (!doPause)
@@ -33,14 +37,17 @@ namespace IPT.Common.RawUI.States
         /// <inheritdoc/>
         public override void Draw(Graphics g)
         {
-            base.Draw(g);
-            this.Canvas.Cursor.Draw(g);
+            if (!this.Canvas.IsGamePaused || this.doPause)
+            {
+                base.Draw(g);
+                this.Canvas.Cursor.Draw(g);
+            }
         }
 
         /// <inheritdoc/>
         public override void ProcessControls()
         {
-            if (Game.Console.IsOpen)
+            if (Game.Console.IsOpen || (this.Canvas.IsGamePaused && !this.doPause))
             {
                 return;
             }
@@ -52,6 +59,17 @@ namespace IPT.Common.RawUI.States
             else
             {
                 this.Canvas.Cursor.UpdateStatus();
+            }
+        }
+
+        private void MoveCursorToTopWidget()
+        {
+            var topWidget = this.Canvas.Items.LastOrDefault();
+            if (topWidget != null)
+            {
+                float x = topWidget.Bounds.X / this.Canvas.Resolution.Width;
+                float y = topWidget.Bounds.Y / this.Canvas.Resolution.Height;
+                NativeFunction.Natives.xFC695459D4D0E219(x, y);
             }
         }
     }

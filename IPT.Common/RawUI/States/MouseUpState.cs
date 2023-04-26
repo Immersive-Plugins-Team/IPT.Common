@@ -43,50 +43,58 @@ namespace IPT.Common.RawUI.States
 
         private void UpdateHoveredWidget()
         {
-            bool hoveredItemFound = false;
-            for (int i = this.Canvas.Items.Count - 1; i >= 0; i--)
+            if (this.Canvas.HoveredControl != null)
             {
-                var item = this.Canvas.Items[i];
-                if (this.Canvas.Items[i] is IWidget widget)
+                if (this.Canvas.HoveredControl.Contains(this.Canvas.Cursor))
                 {
-                    if (!hoveredItemFound && widget.Contains(this.Canvas.Cursor))
+                    if (this.Canvas.HoveredControl is IScrollable scrollable)
                     {
-                        Logging.Debug($"found hovered widget at {this.Canvas.Cursor.Bounds}");
-                        widget.IsHovered = true;
-                        hoveredItemFound = true;
-                        this.Canvas.HoveredWidget = widget;
-                        Logging.Info("searching hovered widget to see if it contains any controls");
-                        var controls = ControlFinder.FindControls(widget).ToList();
-                        Logging.Info($"we found {controls.Count} controls");
-                        if (controls.Count > 0)
+                        scrollable.Scroll(this.Canvas.Cursor.ScrollWheelStatus);
+                    }
+                }
+                else
+                {
+                    this.Canvas.HoveredControl = null;
+                    this.Canvas.Cursor.SetCursorType(CursorType.Default);
+                }
+            }
+            else if (this.Canvas.HoveredWidget != null)
+            {
+                if (this.Canvas.HoveredWidget.Contains(this.Canvas.Cursor))
+                {
+                    var controls = ControlFinder.FindControls(this.Canvas.HoveredWidget).ToList();
+                    if (controls.Count > 0)
+                    {
+                        var hoveredControl = controls.Where(x => x.Contains(this.Canvas.Cursor)).ToList().LastOrDefault();
+                        if (hoveredControl != null)
                         {
-                            Logging.Info("checking to see if any contain the cursor");
-                            var hoveredControl = controls.Where(x => x.Contains(this.Canvas.Cursor)).ToList().LastOrDefault();
-                            if (hoveredControl != null)
+                            if (hoveredControl is IClickable)
                             {
-                                Logging.Info("we found one, setting it to the hoveredControl");
-                                this.Canvas.HoveredControl = hoveredControl;
+                                this.Canvas.Cursor.SetCursorType(CursorType.Pointing);
                             }
-                            else
-                            {
-                                Logging.Info("none of the controls are being hovered over");
-                                this.Canvas.HoveredControl = null;
-                            }
+
+                            this.Canvas.HoveredControl = hoveredControl;
                         }
                     }
-                    else
+                }
+                else
+                {
+                    this.Canvas.HoveredWidget.IsHovered = false;
+                    this.Canvas.HoveredWidget = null;
+                }
+            }
+            else
+            {
+                for (int i = this.Canvas.Items.Count - 1; i >= 0; i--)
+                {
+                    if (this.Canvas.Items[i] is IWidget widget && widget.Contains(this.Canvas.Cursor))
                     {
-                        widget.IsHovered = false;
+                        widget.IsHovered = true;
+                        this.Canvas.HoveredWidget = widget;
+                        break;
                     }
                 }
             }
-
-            if (!hoveredItemFound)
-            {
-                this.Canvas.HoveredWidget = null;
-            }
-
-            this.Canvas.Cursor.SetCursorType(this.Canvas.HoveredControl == null ? CursorType.Default : CursorType.Pointing);
         }
     }
 }

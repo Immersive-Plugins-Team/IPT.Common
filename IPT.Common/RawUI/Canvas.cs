@@ -16,7 +16,6 @@ namespace IPT.Common.RawUI
         private readonly List<IDrawable> items = new List<IDrawable>();
         private readonly object lockItemsObj = new object();
         private List<IDrawable> itemsCopy = null;
-        private bool isPaused = false;
         private CanvasState canvasState;
         private MouseState mouseState;
 
@@ -54,6 +53,12 @@ namespace IPT.Common.RawUI
         /// Gets or sets the widget currently being hovered over.
         /// </summary>
         public IWidget HoveredWidget { get; set; } = null;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the game is paused.
+        /// This is safe to check on the raw frame render event.
+        /// </summary>
+        public bool IsGamePaused { get; protected set; }
 
         /// <summary>
         /// Gets the list of items contained within the container.
@@ -218,7 +223,7 @@ namespace IPT.Common.RawUI
         /// </summary>
         protected override void DoSomething()
         {
-            this.isPaused = Functions.IsGamePaused();
+            this.IsGamePaused = Functions.IsGamePaused();
             if (Rage.Game.Resolution != this.Resolution)
             {
                 this.UpdateBounds();
@@ -236,7 +241,7 @@ namespace IPT.Common.RawUI
 
         private void Game_RawFrameRender(object sender, Rage.GraphicsEventArgs e)
         {
-            if (!this.isPaused || this.canvasState is ActiveState)
+            if (!this.IsGamePaused || this.canvasState is ActiveState)
             {
                 this.canvasState.Draw(e.Graphics);
             }

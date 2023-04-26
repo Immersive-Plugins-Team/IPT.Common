@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using RAGENativeUI.Elements;
 
 namespace IPT.Common.RawUI.Elements
 {
@@ -10,13 +11,11 @@ namespace IPT.Common.RawUI.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBox"/> class.
         /// </summary>
-        /// <param name="text">The text in the box.</param>
         /// <param name="x">The x-coordinate.</param>
         /// <param name="y">The y-coordinate.</param>
         /// <param name="width">The width of the text box.</param>
         /// <param name="height">The height of the text box.</param>
-        public TextBox(string text, int x, int y, int width, int height)
-            : base(text)
+        public TextBox(int x, int y, int width, int height)
         {
             this.Position = new Point(x, y);
             this.Height = height;
@@ -24,9 +23,28 @@ namespace IPT.Common.RawUI.Elements
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TextBox"/> class.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="x">The x-coordinate.</param>
+        /// <param name="y">The y-coordinate.</param>
+        /// <param name="width">The width of the text box.</param>
+        /// <param name="height">The height of the text box.</param>
+        public TextBox(string text, int x, int y, int width, int height)
+            : this(x, y, width, height)
+        {
+            this.Text = text;
+        }
+
+        /// <summary>
         /// Gets or sets the color of the text box.
         /// </summary>
         public Color BackgroundColor { get; set; } = Color.White;
+
+        /// <summary>
+        /// Gets or sets the screen boundary for the border.
+        /// </summary>
+        public RectangleF BorderBounds { get; protected set; } = default;
 
         /// <summary>
         /// Gets or sets the border color.
@@ -44,6 +62,16 @@ namespace IPT.Common.RawUI.Elements
         public int Height { get; set; }
 
         /// <summary>
+        /// Gets or sets the left padding.
+        /// </summary>
+        public float LeftPadding { get; set; } = 4f;
+
+        /// <summary>
+        /// Gets or sets the real screen position to draw the text.
+        /// </summary>
+        public PointF TextPosition { get; protected set; } = default;
+
+        /// <summary>
         /// Gets or sets the width of the text box.
         /// </summary>
         public int Width { get; set; }
@@ -51,12 +79,9 @@ namespace IPT.Common.RawUI.Elements
         /// <inheritdoc/>
         public override void Draw(Rage.Graphics g)
         {
-            var borderRect = this.Bounds;
-            borderRect.Inflate(this.BorderWidth, this.BorderWidth);
-            g.DrawRectangle(borderRect, this.BorderColor);
+            g.DrawRectangle(this.BorderBounds, this.BorderColor);
             g.DrawRectangle(this.Bounds, this.BackgroundColor);
-            var fontSize = this.Parent != null ? (this.Parent.Scale.Height * this.FontSize) : this.FontSize;
-            g.DrawText(this.Text, this.FontFamily, fontSize, this.Bounds.Location, this.FontColor, this.Bounds);
+            g.DrawText(this.Text, this.FontFamily, this.ScaledFontSize, this.TextPosition, this.FontColor, this.Bounds);
         }
 
         /// <inheritdoc/>
@@ -64,11 +89,54 @@ namespace IPT.Common.RawUI.Elements
         {
             if (this.Parent != null)
             {
-                var screenPosition = new PointF(this.Parent.Bounds.X + (this.Position.X * this.Parent.Scale.Height), this.Parent.Bounds.Y + (this.Position.Y * this.Parent.Scale.Height));
-                // var realSize = Rage.Graphics.MeasureText(this.Text, this.FontFamily, this.FontSize);
-                var scaledSize = new SizeF(this.Width * this.Parent.Scale.Height, this.Height * this.Parent.Scale.Height);
+                var scale = this.Parent.Scale.Height;
+                var screenPosition = new PointF(this.Parent.Bounds.X + (this.Position.X * scale), this.Parent.Bounds.Y + (this.Position.Y * scale));
+                var scaledSize = new SizeF(this.Width * scale, this.Height * scale);
                 this.Bounds = new RectangleF(screenPosition, scaledSize);
+                this.UpdateBorderBounds(scale);
+                this.UpdateScaledFontSize(scale);
+                this.UpdateTextHeight();
+                this.UpdateTextPosition(scale);
             }
+        }
+
+        /// <summary>
+        /// Updates the border bounds.
+        /// </summary>
+        /// <param name="scale">The scale to apply to the border width.</param>
+        protected virtual void UpdateBorderBounds(float scale)
+        {
+            this.BorderBounds = this.Bounds;
+            var borderWidth = this.BorderWidth * scale;
+            this.BorderBounds.Inflate(borderWidth, borderWidth);
+        }
+
+        /// <summary>
+        /// Updates the scaled font size.
+        /// </summary>
+        /// <param name="scale">The scale to apply to the font.</param>
+        protected virtual void UpdateScaledFontSize(float scale)
+        {
+            this.ScaledFontSize = this.FontSize * scale;
+        }
+
+        /// <summary>
+        /// Updates the text height.
+        /// </summary>
+        protected virtual void UpdateTextHeight()
+        {
+            this.TextHeight = Rage.Graphics.MeasureText("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,^`", this.FontFamily, this.ScaledFontSize).Height;
+        }
+
+        /// <summary>
+        /// Updates the on screen text position.
+        /// </summary>
+        /// <param name="scale">The scale to apply to the padding.</param>
+        protected virtual void UpdateTextPosition(float scale)
+        {
+            var x = this.Bounds.X + (this.LeftPadding * scale);
+            var y = this.Bounds.Y + (this.Bounds.Height / 2f) - (this.TextHeight / 2f);
+            this.TextPosition = new PointF(x, y);
         }
     }
 }

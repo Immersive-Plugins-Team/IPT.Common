@@ -5,7 +5,7 @@ namespace IPT.Common.RawUI.Elements
     /// <summary>
     /// Represents a clickable sprite.
     /// </summary>
-    public abstract class Button : Sprite, IControl
+    public abstract class Button : Sprite, IClickable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Button"/> class.

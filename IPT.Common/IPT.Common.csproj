@@ -99,8 +99,11 @@
     <Compile Include="RawUI\Elements\Button.cs" />
     <Compile Include="RawUI\Canvas.cs" />
     <Compile Include="RawUI\Elements\Label.cs" />
+    <Compile Include="RawUI\Elements\TextArea.cs" />
     <Compile Include="RawUI\Elements\TextBox.cs" />
     <Compile Include="RawUI\Elements\TextDrawable.cs" />
+    <Compile Include="RawUI\Interfaces\IClickable.cs" />
+    <Compile Include="RawUI\Interfaces\IScrollable.cs" />
     <Compile Include="RawUI\States\MouseDownState.cs" />
     <Compile Include="RawUI\States\MouseUpState.cs" />
     <Compile Include="RawUI\Util\ControlFinder.cs" />

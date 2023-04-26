@@ -1,11 +1,12 @@
 ﻿using System.Drawing;
+using IPT.Common.RawUI.Elements;
 
 namespace IPT.Common.RawUI.Interfaces
 {
     /// <summary>
     /// Represents a container that can be moved and resized.
     /// </summary>
-    public interface IWidget : IContainer, IControl
+    public interface IWidget : IContainer
     {
         /// <summary>
         /// Gets the offset between the mouse cursor and the top-left corner of the element when being dragged.
@@ -26,6 +27,13 @@ namespace IPT.Common.RawUI.Interfaces
         /// Gets a value for the widget specific scale.
         /// </summary>
         float WidgetScale { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the cursor resides within the bounds of the widget.
+        /// </summary>
+        /// <param name="cursor">The cursor object.</param>
+        /// <returns>True if the cursor resides within the bounds of the widget, otherwise false.</returns>
+        bool Contains(Cursor cursor);
 
         /// <summary>
         /// Called when the element is being dragged.

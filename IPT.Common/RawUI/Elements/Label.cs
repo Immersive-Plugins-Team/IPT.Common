@@ -1,4 +1,6 @@
-﻿namespace IPT.Common.RawUI.Elements
+﻿using System.Drawing;
+
+namespace IPT.Common.RawUI.Elements
 {
     /// <summary>
     /// Represents a text-based label.
@@ -9,9 +11,18 @@
         /// Initializes a new instance of the <see cref="Label"/> class.
         /// </summary>
         /// <param name="text">The text of the label.</param>
-        public Label(string text)
-            : base(text)
+        /// <param name="x">The x-coordinate on the canvas.</param>
+        /// <param name="y">The y-coordinate on the canvas.</param>
+        public Label(string text, int x, int y)
         {
+            this.Text = text;
+            this.Position = new Point(x, y);
+        }
+
+        /// <inheritdoc/>
+        public override void Draw(Rage.Graphics g)
+        {
+            g.DrawText(this.Text, this.FontFamily, this.ScaledFontSize, this.Bounds.Location, this.FontColor);
         }
     }
 }
