@@ -9,7 +9,7 @@ namespace IPT.Common.RawUI.Elements
     /// <summary>
     /// An interactive frame with a texture background that contains IDrawable objects.
     /// </summary>
-    public abstract class TextureWidget : TextureDrawable, IWidget
+    public abstract class TextureWidget : TextureDrawable, IWidget, IObserver
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureWidget"/> class.
@@ -39,7 +39,14 @@ namespace IPT.Common.RawUI.Elements
         {
             get
             {
-                return new SizeF(this.Parent.Scale.Width * this.WidgetScale, this.Parent.Scale.Height * this.WidgetScale);
+                if (this.Parent != null)
+                {
+                    return new SizeF(this.Parent.Scale.Width * this.WidgetScale, this.Parent.Scale.Height * this.WidgetScale);
+                }
+                else
+                {
+                    return default;
+                }
             }
         }
 
@@ -51,6 +58,10 @@ namespace IPT.Common.RawUI.Elements
         {
             item.Parent = this;
             this.Items.Add(item);
+            if (item is IObservable observable)
+            {
+                observable.AddObserver(this);
+            }
         }
 
         /// <inheritdoc />
@@ -87,6 +98,9 @@ namespace IPT.Common.RawUI.Elements
                 }
             }
         }
+
+        /// <inheritdoc />
+        public abstract void OnUpdated(IObservable obj);
 
         /// <inheritdoc />
         public void Remove(IDrawable item)

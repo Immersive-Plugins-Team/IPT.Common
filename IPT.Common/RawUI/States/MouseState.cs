@@ -1,27 +1,18 @@
-﻿namespace IPT.Common.RawUI.States
+﻿using IPT.Common.RawUI.Elements;
+using IPT.Common.RawUI.Util;
+
+namespace IPT.Common.RawUI.States
 {
     /// <summary>
-    /// Represents the state of the canvas mouse.
+    /// Represents the state of the mouse.
     /// </summary>
     public abstract class MouseState
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MouseState"/> class.
+        /// Updates the widget manager based on the mouse state.
         /// </summary>
-        /// <param name="canvas">The context canvas for the state.</param>
-        public MouseState(Canvas canvas)
-        {
-            this.Canvas = canvas;
-        }
-
-        /// <summary>
-        /// Gets the context canvas for the state.
-        /// </summary>
-        public Canvas Canvas { get; }
-
-        /// <summary>
-        /// Updates the canvas active and hovered widgets.
-        /// </summary>
-        public abstract void UpdateWidgets();
+        /// <param name="cursor">The cursor containing the mouse data.</param>
+        /// <param name="widgetManager">The widget manager containing the widgets.</param>
+        public abstract void UpdateWidgets(Cursor cursor, WidgetManager widgetManager);
     }
 }

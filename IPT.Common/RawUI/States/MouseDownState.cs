@@ -1,6 +1,7 @@
 ﻿using IPT.Common.API;
 using IPT.Common.RawUI.Elements;
 using IPT.Common.RawUI.Interfaces;
+using IPT.Common.RawUI.Util;
 
 namespace IPT.Common.RawUI.States
 {
@@ -9,56 +10,50 @@ namespace IPT.Common.RawUI.States
     /// </summary>
     public class MouseDownState : MouseState
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MouseDownState"/> class.
-        /// </summary>
-        /// <param name="canvas">The context canvas for the state.</param>
-        public MouseDownState(Canvas canvas)
-            : base(canvas)
-        {
-        }
-
         /// <inheritdoc/>
-        public override void UpdateWidgets()
+        public override void UpdateWidgets(Cursor cursor, WidgetManager widgetManager)
         {
-            if (this.Canvas.Cursor.MouseStatus != MouseStatus.Down)
+            if (cursor.MouseStatus != MouseStatus.Down)
             {
-                this.ReleaseMouse();
+                this.ReleaseMouse(widgetManager);
             }
-            else if (this.Canvas.ActiveWidget != null)
+            else
             {
-                this.UpdateActiveWidget(this.Canvas.ActiveWidget, this.Canvas.Cursor);
+                this.PressMouse(widgetManager, cursor);
             }
         }
 
-        private void ReleaseMouse()
+        private void ReleaseMouse(WidgetManager widgetManager)
         {
-            Logging.Debug("mouse has been released");
-            if (this.Canvas.ActiveWidget != null)
+            if (widgetManager.PressedWidget != null)
             {
-                if (this.Canvas.ActiveWidget.IsDragging)
+                if (widgetManager.PressedWidget.IsDragging)
                 {
-                    Logging.Debug("stopping drag");
-                    this.Canvas.ActiveWidget.StopDrag();
+                    widgetManager.PressedWidget.StopDrag();
                 }
                 else
                 {
-                    if (this.Canvas.HoveredControl != null && this.Canvas.HoveredControl is IClickable clickable)
+                    if (widgetManager.HoveredControl != null && widgetManager.HoveredControl is IClickable clickable)
                     {
                         Logging.Debug("registered click on hovered control");
                         clickable.Click();
                     }
                 }
 
-                this.Canvas.ActiveWidget = null;
+                widgetManager.PressedWidget = null;
             }
 
-            Logging.Debug("setting mouse state to up");
-            this.Canvas.SetMouseState(new MouseUpState(this.Canvas));
+            widgetManager.SetMouseState(new MouseUpState());
         }
 
-        private void UpdateActiveWidget(IWidget widget, Cursor cursor)
+        private void PressMouse(WidgetManager widgetManager, Cursor cursor)
         {
+            var widget = widgetManager.PressedWidget;
+            if (widget == null)
+            {
+                return;
+            }
+
             if (widget.IsDragging)
             {
                 widget.Drag(cursor.Position);
@@ -73,17 +68,14 @@ namespace IPT.Common.RawUI.States
                 {
                     if (cursor.ClickDuration > Constants.LongClick)
                     {
-                        Logging.Debug("starting drag...");
-                        Logging.Debug($"widget position: {widget.Position}");
-                        Logging.Debug($"cursor position: {cursor.Position}");
                         widget.StartDrag(cursor.Position);
-                        this.Canvas.BringToFront(widget);
-                        Logging.Debug($"drag offset    : {widget.DragOffset}");
+
+                        // todo: this.Canvas.BringToFront(widget);
                     }
                 }
                 else
                 {
-                    this.Canvas.ActiveWidget = null;
+                    widgetManager.PressedWidget = null;
                 }
             }
         }

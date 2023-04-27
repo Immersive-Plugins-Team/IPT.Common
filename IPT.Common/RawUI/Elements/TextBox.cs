@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using RAGENativeUI.Elements;
 
 namespace IPT.Common.RawUI.Elements
 {
@@ -95,7 +94,7 @@ namespace IPT.Common.RawUI.Elements
                 this.Bounds = new RectangleF(screenPosition, scaledSize);
                 this.UpdateBorderBounds(scale);
                 this.UpdateScaledFontSize(scale);
-                this.UpdateTextHeight();
+                this.UpdateTextSize();
                 this.UpdateTextPosition(scale);
             }
         }
@@ -123,9 +122,9 @@ namespace IPT.Common.RawUI.Elements
         /// <summary>
         /// Updates the text height.
         /// </summary>
-        protected virtual void UpdateTextHeight()
+        protected virtual void UpdateTextSize()
         {
-            this.TextHeight = Rage.Graphics.MeasureText("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,^`", this.FontFamily, this.ScaledFontSize).Height;
+            this.TextSize = Rage.Graphics.MeasureText("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,^`", this.FontFamily, this.ScaledFontSize);
         }
 
         /// <summary>
@@ -135,7 +134,7 @@ namespace IPT.Common.RawUI.Elements
         protected virtual void UpdateTextPosition(float scale)
         {
             var x = this.Bounds.X + (this.LeftPadding * scale);
-            var y = this.Bounds.Y + (this.Bounds.Height / 2f) - (this.TextHeight / 2f);
+            var y = this.Bounds.Y + (this.Bounds.Height / 2f) - (this.TextSize.Height / 2f);
             this.TextPosition = new PointF(x, y);
         }
     }

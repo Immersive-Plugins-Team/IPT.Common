@@ -1,23 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using IPT.Common.API;
 using IPT.Common.Fibers;
-using IPT.Common.RawUI.Elements;
 using IPT.Common.RawUI.Interfaces;
-using IPT.Common.RawUI.States;
+using IPT.Common.RawUI.Util;
+using Rage;
+using Rage.Native;
 
 namespace IPT.Common.RawUI
 {
     /// <summary>
     /// A canvas representing the screen area where elements can be added and positioned.
     /// </summary>
-    public class Canvas : GenericFiber, IContainer
+    public class Canvas : GenericFiber, IParent
     {
-        private readonly List<IDrawable> items = new List<IDrawable>();
-        private readonly object lockItemsObj = new object();
-        private List<IDrawable> itemsCopy = null;
-        private CanvasState canvasState;
-        private MouseState mouseState;
+        private WidgetManager widgetManager;
+        private bool isControlsEnabled = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Canvas"/> class.
@@ -25,16 +22,12 @@ namespace IPT.Common.RawUI
         public Canvas()
             : base("canvas", 100)
         {
-            this.Cursor = new Cursor(null);
-            this.Add(this.Cursor);
-            this.canvasState = new InactiveState(this);
-            this.mouseState = new MouseUpState(this);
+            this.widgetManager = new WidgetManager();
+            this.Cursor = new Elements.Cursor(null)
+            {
+                Parent = this,
+            };
         }
-
-        /// <summary>
-        /// Gets or sets the widget currently being clicked or dragged.
-        /// </summary>
-        public IWidget ActiveWidget { get; set; }
 
         /// <inheritdoc />
         public RectangleF Bounds { get; protected set; }
@@ -42,52 +35,18 @@ namespace IPT.Common.RawUI
         /// <summary>
         /// Gets or sets the cursor belonging to the canvas.
         /// </summary>
-        public Cursor Cursor { get; set; }
+        public Elements.Cursor Cursor { get; set; }
 
         /// <summary>
-        /// Gets or sets the control currently being hovered over.
+        /// Gets or sets a value indicating whether or not the canvas is active.
         /// </summary>
-        public IControl HoveredControl { get; set; } = null;
-
-        /// <summary>
-        /// Gets or sets the widget currently being hovered over.
-        /// </summary>
-        public IWidget HoveredWidget { get; set; } = null;
+        public bool IsActive { get; protected set; } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the game is paused.
         /// This is safe to check on the raw frame render event.
         /// </summary>
-        public bool IsGamePaused { get; protected set; }
-
-        /// <summary>
-        /// Gets the list of items contained within the container.
-        /// </summary>
-        public List<IDrawable> Items
-        {
-            get
-            {
-                lock (this.lockItemsObj)
-                {
-                    if (this.itemsCopy == null)
-                    {
-                        this.itemsCopy = new List<IDrawable>(this.items);
-                    }
-
-                    return this.itemsCopy;
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public bool IsVisible { get; set; }
-
-        /// <inheritdoc />
-        public IParent Parent
-        {
-            get { return null; }
-            set { }
-        }
+        public bool IsGamePaused { get; protected set; } = false;
 
         /// <inheritdoc />
         public Point Position { get; } = new Point(0, 0);
@@ -100,48 +59,14 @@ namespace IPT.Common.RawUI
         /// <inheritdoc />
         public SizeF Scale { get; private set; }
 
-        /// <inheritdoc />
-        public void Add(IDrawable item)
-        {
-            item.Parent = this;
-            lock (this.lockItemsObj)
-            {
-                this.items.Add(item);
-                this.itemsCopy = null;
-            }
-        }
-
         /// <summary>
-        /// Moves the item to the top of the z order.  The cursor should always be the 0th element.
+        /// Adds a widget to the canvas.
         /// </summary>
-        /// <param name="item">The item to bring forward.</param>
-        public void BringToFront(IDrawable item)
+        /// <param name="widget">The widget to add.</param>
+        public void Add(IWidget widget)
         {
-            lock (this.lockItemsObj)
-            {
-                if (this.items.Count > 1)
-                {
-                    this.items.Remove(item);
-                    this.items.Add(item);
-                    this.itemsCopy = null;
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public void Clear()
-        {
-            lock (this.lockItemsObj)
-            {
-                this.items.Clear();
-                this.itemsCopy = null;
-            }
-        }
-
-        /// <inheritdoc />
-        public void Draw(Rage.Graphics g)
-        {
-            this.canvasState.Draw(g);
+            widget.Parent = this;
+            this.widgetManager.AddWidget(widget);
         }
 
         /// <summary>
@@ -150,45 +75,19 @@ namespace IPT.Common.RawUI
         /// <param name="doPause">Whether or not to pause the game when doing into interactive mode.</param>
         public void Interact(bool doPause)
         {
-            if (!Functions.IsGamePaused() && this.canvasState is InactiveState)
+            if (this.IsActive)
             {
-                this.SetCanvasState(new ActiveState(this, doPause));
-                this.SetMouseState(new MouseUpState(this));
+                return;
             }
+
+            this.IsActive = true;
+            this.SetPlayerControls(false);
         }
 
         /// <inheritdoc />
         public void MoveTo(Point position)
         {
             throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void Remove(IDrawable element)
-        {
-            lock (this.lockItemsObj)
-            {
-                this.items.Remove(element);
-                this.itemsCopy = null;
-            }
-        }
-
-        /// <summary>
-        /// Sets the canvas state.
-        /// </summary>
-        /// <param name="state">The state of the canvas (active or inactive).</param>
-        public void SetCanvasState(CanvasState state)
-        {
-            this.canvasState = state;
-        }
-
-        /// <summary>
-        /// Sets the canvas state.
-        /// </summary>
-        /// <param name="state">The state of the canvas (active or inactive).</param>
-        public void SetMouseState(MouseState state)
-        {
-            this.mouseState = state;
         }
 
         /// <inheritdoc />
@@ -204,18 +103,9 @@ namespace IPT.Common.RawUI
         public override void Stop()
         {
             base.Stop();
+            this.widgetManager.ClearWidgets();
             Rage.Game.FrameRender -= this.Game_FrameRender;
             Rage.Game.RawFrameRender -= this.Game_RawFrameRender;
-        }
-
-        /// <inheritdoc />
-        public void UpdateBounds()
-        {
-            this.Resolution = Rage.Game.Resolution;
-            this.Scale = new SizeF(this.Resolution.Width / Constants.CanvasWidth, this.Resolution.Height / Constants.CanvasHeight);
-            new RectangleF(this.Position, this.Resolution);
-            this.Bounds = new RectangleF(0, 0, this.Resolution.Width, this.Resolution.Height);
-            this.Items.ForEach(x => x.UpdateBounds());
         }
 
         /// <summary>
@@ -224,27 +114,63 @@ namespace IPT.Common.RawUI
         protected override void DoSomething()
         {
             this.IsGamePaused = Functions.IsGamePaused();
-            if (Rage.Game.Resolution != this.Resolution)
+            if (this.Resolution != Game.Resolution)
             {
+                Logging.Info("game resolution has changed, updating");
                 this.UpdateBounds();
             }
         }
 
         private void Game_FrameRender(object sender, Rage.GraphicsEventArgs e)
         {
-            this.canvasState.ProcessControls();
-            if (this.canvasState is ActiveState)
+            if (!this.IsActive || Game.Console.IsOpen || this.IsGamePaused)
             {
-                this.mouseState.UpdateWidgets();
+                return;
+            }
+            else if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.CellphoneCancel))
+            {
+                this.SetPlayerControls(true);
+                this.IsActive = false;
+            }
+            else
+            {
+                this.Cursor.UpdateStatus();
+                this.widgetManager.HandleMouseEvents(this.Cursor);
             }
         }
 
         private void Game_RawFrameRender(object sender, Rage.GraphicsEventArgs e)
         {
-            if (!this.IsGamePaused || this.canvasState is ActiveState)
+            if (!this.IsGamePaused)
             {
-                this.canvasState.Draw(e.Graphics);
+                this.widgetManager.Draw(e.Graphics);
+                if (this.IsActive)
+                {
+                    this.Cursor.Draw(e.Graphics);
+                }
             }
+        }
+
+        /// <summary>
+        /// Enables or disables the player controls.
+        /// </summary>
+        /// <param name="isEnabled">Whether or not to enable or disable the controls.</param>
+        private void SetPlayerControls(bool isEnabled)
+        {
+            if (isEnabled != this.isControlsEnabled)
+            {
+                NativeFunction.Natives.x8D32347D6D4C40A2(Game.LocalPlayer, isEnabled, 0);
+                this.isControlsEnabled = isEnabled;
+            }
+        }
+
+        private void UpdateBounds()
+        {
+            Logging.Info("game resolution has changed, updating bounds");
+            this.Resolution = Rage.Game.Resolution;
+            this.Scale = new SizeF(this.Resolution.Width / Constants.CanvasWidth, this.Resolution.Height / Constants.CanvasHeight);
+            this.Bounds = new RectangleF(this.Position, this.Resolution);
+            this.widgetManager.UpdateWidgetBounds();
         }
     }
 }

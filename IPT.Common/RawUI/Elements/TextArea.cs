@@ -77,7 +77,7 @@ namespace IPT.Common.RawUI.Elements
                     return;
                 }
 
-                g.DrawText(this.text[i], this.FontFamily, this.ScaledFontSize, new PointF(this.TextPosition.X, this.TextPosition.Y + ((i - this.firstLineIndex) * (this.TextHeight + (this.TextHeight * this.ScaledLineGap)))), this.FontColor);
+                g.DrawText(this.text[i], this.FontFamily, this.ScaledFontSize, new PointF(this.TextPosition.X, this.TextPosition.Y + ((i - this.firstLineIndex) * (this.TextSize.Height + (this.TextSize.Height * this.ScaledLineGap)))), this.FontColor);
             }
         }
 
@@ -105,7 +105,7 @@ namespace IPT.Common.RawUI.Elements
         /// </summary>
         protected void UpdateMaxLines()
         {
-            this.MaxLines = System.Convert.ToInt32(System.Math.Floor(this.Bounds.Height / (this.TextHeight + (this.TextHeight * this.ScaledLineGap))));
+            this.MaxLines = System.Convert.ToInt32(System.Math.Floor(this.Bounds.Height / (this.TextSize.Height + (this.TextSize.Height * this.ScaledLineGap))));
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace IPT.Common.RawUI.Elements
             this.UpdateScaledLineGap(scale);
             this.UpdateMaxLines();
             float x = this.Bounds.X + (this.LeftPadding * scale);
-            float y = this.Bounds.Y + (this.TextHeight * this.ScaledLineGap / 2f);
+            float y = this.Bounds.Y + (this.TextSize.Height * this.ScaledLineGap / 2f);
             this.TextPosition = new PointF(x, y);
         }
     }

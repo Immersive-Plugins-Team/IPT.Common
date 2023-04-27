@@ -6,24 +6,18 @@ namespace IPT.Common.RawUI.Elements
     /// <summary>
     /// Represents a drawable text based element.
     /// </summary>
-    public abstract class TextDrawable : IDrawable
+    public abstract class TextDrawable : IDrawable, IText
     {
         /// <inheritdoc/>
         public RectangleF Bounds { get; protected set; } = default;
 
-        /// <summary>
-        /// Gets or sets the font color.
-        /// </summary>
+        /// <inheritdoc/>
         public Color FontColor { get; set; } = Color.Black;
 
-        /// <summary>
-        /// Gets or sets the font family.
-        /// </summary>
+        /// <inheritdoc/>
         public string FontFamily { get; set; } = "Lucida Console";
 
-        /// <summary>
-        /// Gets or sets the font size.
-        /// </summary>
+        /// <inheritdoc/>
         public float FontSize { get; set; } = 14f;
 
         /// <inheritdoc/>
@@ -35,20 +29,14 @@ namespace IPT.Common.RawUI.Elements
         /// <inheritdoc/>
         public Point Position { get; protected set; } = default;
 
-        /// <summary>
-        /// Gets or sets the font size scaled to the parent widget.
-        /// </summary>
+        /// <inheritdoc/>
         public float ScaledFontSize { get; protected set; } = 14f;
 
-        /// <summary>
-        /// Gets or sets the text to be drawn.
-        /// </summary>
+        /// <inheritdoc/>
         public string Text { get; set; } = string.Empty;
 
-        /// <summary>
-        /// Gets or sets the text size.
-        /// </summary>
-        public float TextHeight { get; protected set; } = 14f;
+        /// <inheritdoc/>
+        public SizeF TextSize { get; protected set; } = default;
 
         /// <inheritdoc/>
         public abstract void Draw(Rage.Graphics g);
@@ -67,9 +55,8 @@ namespace IPT.Common.RawUI.Elements
             {
                 var screenPosition = new PointF(this.Parent.Bounds.X + (this.Position.X * this.Parent.Scale.Height), this.Parent.Bounds.Y + (this.Position.Y * this.Parent.Scale.Height));
                 this.ScaledFontSize = this.FontSize * this.Parent.Scale.Height;
-                var textSize = Rage.Graphics.MeasureText(this.Text, this.FontFamily, this.ScaledFontSize);
-                this.Bounds = new RectangleF(screenPosition, textSize);
-                this.TextHeight = textSize.Height;
+                this.TextSize = Rage.Graphics.MeasureText(this.Text, this.FontFamily, this.ScaledFontSize);
+                this.Bounds = new RectangleF(screenPosition, this.TextSize);
             }
         }
     }
