@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.AccessControl;
 using IPT.Common.RawUI.Elements;
 using IPT.Common.RawUI.Interfaces;
 using IPT.Common.RawUI.States;

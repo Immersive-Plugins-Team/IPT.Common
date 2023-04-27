@@ -13,7 +13,7 @@ namespace IPT.Common.RawUI
     /// </summary>
     public class Canvas : GenericFiber, IParent
     {
-        private WidgetManager widgetManager;
+        private readonly WidgetManager widgetManager;
         private bool isControlsEnabled = true;
 
         /// <summary>

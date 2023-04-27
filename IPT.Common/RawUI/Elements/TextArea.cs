@@ -10,7 +10,7 @@ namespace IPT.Common.RawUI.Elements
     /// </summary>
     public class TextArea : TextBox, IScrollable
     {
-        private List<string> text = new List<string>();
+        private readonly List<string> text = new List<string>();
         private int firstLineIndex = 0;
 
         /// <summary>
