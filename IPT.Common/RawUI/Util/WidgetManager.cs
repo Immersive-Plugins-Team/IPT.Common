@@ -111,16 +111,6 @@ namespace IPT.Common.RawUI.Util
         }
 
         /// <summary>
-        /// Updates the Widget Manager's pressed widget property.
-        /// </summary>
-        /// <param name="cursor">The cursor to check.</param>
-        public void UpdatePressedWidget(Cursor cursor)
-        {
-            this.PressedWidget = cursor.MouseStatus == API.MouseStatus.Up ? null :
-                this.PressedWidget != null && this.PressedWidget.Contains(cursor) ? this.PressedWidget : this.GetMousedOverWidget(cursor);
-        }
-
-        /// <summary>
         /// Updates all of the widgets bounds, usually as a result of a change in resolution.
         /// </summary>
         public void UpdateWidgetBounds()

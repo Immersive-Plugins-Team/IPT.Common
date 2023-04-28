@@ -115,7 +115,7 @@ namespace IPT.Common.RawUI
             {
                 if (this.MouseStatus != MouseStatus.Up)
                 {
-                    this.clickTimer.Stop();
+                    this.clickTimer.Reset();
                     this.MouseStatus = MouseStatus.Up;
                 }
             }

@@ -14,7 +14,7 @@ namespace IPT.Common.RawUI.States
         {
             if (cursor.MouseStatus != MouseStatus.Up)
             {
-                this.PressMouse(widgetManager);
+                this.PressMouse(cursor, widgetManager);
             }
             else
             {
@@ -22,8 +22,10 @@ namespace IPT.Common.RawUI.States
             }
         }
 
-        private void PressMouse(WidgetManager widgetManager)
+        private void PressMouse(Cursor cursor, WidgetManager widgetManager)
         {
+            widgetManager.UpdateHoveredWidget(cursor);
+            widgetManager.UpdateHoveredControl(cursor);
             widgetManager.PressedWidget = widgetManager.HoveredWidget;
             widgetManager.SetMouseState(new MouseDownState());
         }
