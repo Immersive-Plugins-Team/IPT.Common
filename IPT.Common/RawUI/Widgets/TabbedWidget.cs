@@ -21,9 +21,8 @@ namespace IPT.Common.RawUI.Widgets
         /// </summary>
         public TabbedWidget()
         {
-            this.tabWidget = new TabWidget(1, 1);
-            this.tabWidget.MoveTo(new Point(0, 0));
-            this.tabWidget.AddObserver(this);
+            this.tabWidget = this.BuildTabWidget();
+            this.Add(this.tabWidget);
             this.Width = 0;
             this.Height = 0;
         }
@@ -46,6 +45,14 @@ namespace IPT.Common.RawUI.Widgets
         /// <inheritdoc/>
         public SizeF TextSize { get; protected set; } = default;
 
+        public List<IWidget> Widgets
+        {
+            get
+            {
+                return this.widgets.Values.ToList();
+            }
+        }
+
         /// <summary>
         /// Properly adds a widget to the tabbed widget.
         /// </summary>
@@ -65,19 +72,22 @@ namespace IPT.Common.RawUI.Widgets
             }
 
             this.widgets[tabTitle] = widget;
-            this.tabWidget.Add(new RectangleButton(tabTitle, 50, 20, tabTitle));
+            this.tabWidget.Add(new RectangleButton(tabTitle, 150, 50, tabTitle) { BackgroundColor = Color.Black, FontColor = Color.White });
+
             if (widget.Height > this.Height)
             {
-                this.Height = widget.Height + 20;
+                this.Height = widget.Height + 50;
             }
 
             if (widget.Width > this.Width)
             {
                 this.Width = widget.Width;
+                this.tabWidget.Resize(new Size(this.Width, 50));
             }
 
             this.UpdateBounds();
-            widget.MoveTo(new System.Drawing.Point(0, 20));
+            this.tabWidget.UpdateBounds();
+            widget.MoveTo(new System.Drawing.Point(0, 50));
         }
 
         /// <inheritdoc/>
@@ -116,13 +126,13 @@ namespace IPT.Common.RawUI.Widgets
             this.widgets.Values.ToList().ForEach(widget => widget.UpdateBounds());
         }
 
-        /// <summary>
-        /// Hides the base widget's Add method.
-        /// </summary>
-        /// <param name="item">The IDrawable item to not add.</param>
-        protected new void Add(IDrawable item)
+        private TabWidget BuildTabWidget()
         {
-            Logging.Warning("you can only add widgets to the tabbed widget using the AddWidget method");
+            var tabWidget = new TabWidget(150, 50) { BackgroundColor = Color.Cyan };
+            tabWidget.Parent = this;
+            tabWidget.MoveTo(new Point(0, 0));
+            tabWidget.AddObserver(this);
+            return tabWidget;
         }
 
         private class TabWidget : RectangleWidget, IObservable
@@ -138,7 +148,7 @@ namespace IPT.Common.RawUI.Widgets
 
             public override void Add(IDrawable drawable)
             {
-                drawable.MoveTo(new Point(0, this.Items.Count * 20));
+                drawable.MoveTo(new Point(this.Items.Count * 150, 0));
                 base.Add(drawable);
             }
 
@@ -149,6 +159,7 @@ namespace IPT.Common.RawUI.Widgets
 
             public override void OnUpdated(IObservable obj)
             {
+                Logging.Info($"tab widget received update from {obj.Id}");
                 foreach (IObserver observer in this.observers)
                 {
                     observer.OnUpdated(obj);

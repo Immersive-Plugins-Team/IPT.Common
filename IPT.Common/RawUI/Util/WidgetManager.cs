@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using IPT.Common.API;
 using IPT.Common.RawUI.Interfaces;
 using IPT.Common.RawUI.States;
+using IPT.Common.RawUI.Widgets;
 
 namespace IPT.Common.RawUI.Util
 {
@@ -120,7 +122,16 @@ namespace IPT.Common.RawUI.Util
 
         private IControl GetHoveredControl(IWidget widget, Cursor cursor)
         {
-            return ControlFinder.FindControls(widget).FirstOrDefault(x => x.Contains(cursor));
+            if (widget is TabbedWidget tabbedWidget)
+            {
+                Logging.Debug("searching tabbed widget for hovered control");
+            }
+
+            var control = ControlFinder.FindControls(widget).FirstOrDefault(x => x.Contains(cursor));
+            Logging.Debug($"{(control == null ? "no control found" : "found a control")}");
+            return control;
+
+            // return ControlFinder.FindControls(widget).FirstOrDefault(x => x.Contains(cursor));
         }
 
         private IWidget GetMousedOverWidget(Cursor cursor)

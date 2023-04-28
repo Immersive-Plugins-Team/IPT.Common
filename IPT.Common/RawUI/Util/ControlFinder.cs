@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using IPT.Common.API;
 using IPT.Common.RawUI.Interfaces;
+using IPT.Common.RawUI.Widgets;
 
 namespace IPT.Common.RawUI.Util
 {
@@ -15,6 +17,25 @@ namespace IPT.Common.RawUI.Util
         /// <returns>An enumerable of controls.</returns>
         public static IEnumerable<IControl> FindControls(IContainer container)
         {
+            if (container is TabbedWidget tabbedWidget)
+            {
+                foreach (var item in tabbedWidget.Widgets)
+                {
+                    if (item is IControl control && control.IsEnabled)
+                    {
+                        yield return control;
+                    }
+
+                    if (item is IContainer childContainer)
+                    {
+                        foreach (var childControl in FindControls(childContainer))
+                        {
+                            yield return childControl;
+                        }
+                    }
+                }
+            }
+
             foreach (var item in container.Items)
             {
                 if (item is IControl control && control.IsEnabled)
