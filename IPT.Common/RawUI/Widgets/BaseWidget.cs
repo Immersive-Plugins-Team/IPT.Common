@@ -90,7 +90,7 @@ namespace IPT.Common.RawUI.Widgets
         }
 
         /// <inheritdoc/>
-        public bool Contains(Cursor cursor)
+        public virtual bool Contains(Cursor cursor)
         {
             return this.Bounds.Contains(cursor.Bounds.Location);
         }

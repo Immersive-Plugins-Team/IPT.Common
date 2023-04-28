@@ -122,16 +122,7 @@ namespace IPT.Common.RawUI.Util
 
         private IControl GetHoveredControl(IWidget widget, Cursor cursor)
         {
-            if (widget is TabbedWidget tabbedWidget)
-            {
-                Logging.Debug("searching tabbed widget for hovered control");
-            }
-
-            var control = ControlFinder.FindControls(widget).FirstOrDefault(x => x.Contains(cursor));
-            Logging.Debug($"{(control == null ? "no control found" : "found a control")}");
-            return control;
-
-            // return ControlFinder.FindControls(widget).FirstOrDefault(x => x.Contains(cursor));
+            return ControlFinder.FindControls(widget).FirstOrDefault(x => x.Contains(cursor));
         }
 
         private IWidget GetMousedOverWidget(Cursor cursor)

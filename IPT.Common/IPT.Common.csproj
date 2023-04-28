@@ -105,6 +105,7 @@
     <Compile Include="RawUI\Elements\TextBox.cs" />
     <Compile Include="RawUI\Elements\LabeledTextureButton.cs" />
     <Compile Include="RawUI\Elements\TextDrawable.cs" />
+    <Compile Include="RawUI\Elements\ToggledButton.cs" />
     <Compile Include="RawUI\Interfaces\IButton.cs" />
     <Compile Include="RawUI\Interfaces\IClickable.cs" />
     <Compile Include="RawUI\Interfaces\IGeometry.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="RawUI\Elements\TextureElement.cs" />
     <Compile Include="RawUI\Util\TextureHandler.cs" />
     <Compile Include="RawUI\Util\WidgetManager.cs" />
+    <Compile Include="RawUI\Widgets\ToggleButtonPanelWidget.cs" />
     <Compile Include="RawUI\Widgets\RectangleWidget.cs" />
     <Compile Include="RawUI\Widgets\TabbedWidget.cs" />
     <Compile Include="RawUI\Widgets\TextureWidget.cs" />
