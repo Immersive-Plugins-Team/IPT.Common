@@ -127,6 +127,7 @@
     <Compile Include="RawUI\Elements\TextureElement.cs" />
     <Compile Include="RawUI\Util\TextureHandler.cs" />
     <Compile Include="RawUI\Util\WidgetManager.cs" />
+    <Compile Include="RawUI\Widgets\RectangleWidget.cs" />
     <Compile Include="RawUI\Widgets\TextureWidget.cs" />
     <Compile Include="User\Configuration.cs" />
     <Compile Include="User\Inputs\ButtonCombo.cs" />

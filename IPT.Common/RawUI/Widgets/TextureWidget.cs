@@ -60,7 +60,7 @@ namespace IPT.Common.RawUI.Widgets
                 g.DrawTexture(this.Texture, this.Bounds);
             }
 
-            this.Items.Where(x => x.IsVisible).ToList().ForEach(x => x.Draw(g));
+            base.Draw(g);
         }
 
         /// <summary>

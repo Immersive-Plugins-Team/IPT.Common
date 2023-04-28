@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using IPT.Common.API;
 using IPT.Common.RawUI.Interfaces;
 
@@ -101,7 +102,10 @@ namespace IPT.Common.RawUI.Widgets
         }
 
         /// <inheritdoc/>
-        public abstract void Draw(Rage.Graphics g);
+        public virtual void Draw(Rage.Graphics g)
+        {
+            this.Items.Where(x => x.IsVisible).ToList().ForEach(x => x.Draw(g));
+        }
 
         /// <inheritdoc/>
         public void MoveTo(Point position)
