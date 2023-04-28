@@ -53,10 +53,11 @@ namespace IPT.Common.RawUI.Elements
         {
             if (this.Parent != null)
             {
-                var screenPosition = new PointF(this.Parent.Bounds.X + (this.Position.X * this.Parent.Scale.Height), this.Parent.Bounds.Y + (this.Position.Y * this.Parent.Scale.Height));
+                var x = this.Parent.Bounds.X + (this.Position.X * this.Parent.Scale.Height);
+                var y = this.Parent.Bounds.Y + (this.Position.Y * this.Parent.Scale.Height);
                 this.ScaledFontSize = this.FontSize * this.Parent.Scale.Height;
-                this.TextSize = Rage.Graphics.MeasureText(this.Text, this.FontFamily, this.ScaledFontSize);
-                this.Bounds = new RectangleF(screenPosition, this.TextSize);
+                var textSize = Rage.Graphics.MeasureText(this.Text, this.FontFamily, this.ScaledFontSize);
+                this.Bounds = new RectangleF(new PointF(x, y), this.TextSize);
             }
         }
     }

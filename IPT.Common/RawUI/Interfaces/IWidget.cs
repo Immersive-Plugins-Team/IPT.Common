@@ -6,7 +6,7 @@ namespace IPT.Common.RawUI.Interfaces
     /// <summary>
     /// Represents a container that can be moved and resized.
     /// </summary>
-    public interface IWidget : IContainer
+    public interface IWidget : IContainer, IGeometry
     {
         /// <summary>
         /// Gets the offset between the mouse cursor and the top-left corner of the element when being dragged.

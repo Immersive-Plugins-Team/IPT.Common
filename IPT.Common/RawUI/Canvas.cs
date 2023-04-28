@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using IPT.Common.API;
 using IPT.Common.Fibers;
 using IPT.Common.RawUI.Interfaces;
@@ -14,16 +15,20 @@ namespace IPT.Common.RawUI
     public class Canvas : GenericFiber, IParent
     {
         private readonly WidgetManager widgetManager;
+        private readonly string texturePath;
         private bool isControlsEnabled = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Canvas"/> class.
         /// </summary>
-        public Canvas()
+        /// <param name="texturePath">The fully qualified path to the textures.</param>
+        public Canvas(string texturePath)
             : base("canvas", 100)
         {
+            this.texturePath = texturePath;
+            this.UUID = Guid.NewGuid().ToString();
             this.widgetManager = new WidgetManager();
-            this.Cursor = new Elements.Cursor(null)
+            this.Cursor = new Cursor()
             {
                 Parent = this,
             };
@@ -35,7 +40,7 @@ namespace IPT.Common.RawUI
         /// <summary>
         /// Gets or sets the cursor belonging to the canvas.
         /// </summary>
-        public Elements.Cursor Cursor { get; set; }
+        public Cursor Cursor { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the canvas is active.
@@ -58,6 +63,9 @@ namespace IPT.Common.RawUI
 
         /// <inheritdoc />
         public SizeF Scale { get; private set; }
+
+        /// <inheritdoc />
+        public string UUID { get; private set; }
 
         /// <summary>
         /// Adds a widget to the canvas.
@@ -94,6 +102,7 @@ namespace IPT.Common.RawUI
         public override void Start()
         {
             base.Start();
+            TextureHandler.Load(this.UUID, this.texturePath);
             this.UpdateBounds();
             Rage.Game.FrameRender += this.Game_FrameRender;
             Rage.Game.RawFrameRender += this.Game_RawFrameRender;

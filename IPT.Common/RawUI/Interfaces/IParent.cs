@@ -11,5 +11,10 @@ namespace IPT.Common.RawUI.Interfaces
         /// Gets the scaling factor to be applied to the parent and its children.
         /// </summary>
         SizeF Scale { get; }
+
+        /// <summary>
+        /// Gets the universally unique identifier.  The Canvas should generate this and propopate it through other parents.
+        /// </summary>
+        string UUID { get; }
     }
 }

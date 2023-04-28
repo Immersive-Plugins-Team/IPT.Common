@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using IPT.Common.RawUI.Interfaces;
-using Rage;
 
 namespace IPT.Common.RawUI.Elements
 {
@@ -13,10 +12,10 @@ namespace IPT.Common.RawUI.Elements
         /// Initializes a new instance of the <see cref="TextButton"/> class.
         /// </summary>
         /// <param name="id">A unique identifer for the button.</param>
-        /// <param name="texture">The background texture.</param>
+        /// <param name="textureName">The background texture.</param>
         /// <param name="text">The text drawn on top of the texture.</param>
-        public TextButton(string id, Texture texture, string text)
-            : base(id, texture)
+        public TextButton(string id, string textureName, string text)
+            : base(id, textureName)
         {
             this.Text = text;
         }

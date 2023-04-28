@@ -2,39 +2,42 @@
 using System.Drawing;
 using IPT.Common.API;
 using IPT.Common.RawUI.Interfaces;
-using Rage;
 
-namespace IPT.Common.RawUI.Elements
+namespace IPT.Common.RawUI.Widgets
 {
     /// <summary>
-    /// An interactive frame with a texture background that contains IDrawable objects.
+    /// Represents a base widget.
     /// </summary>
-    public abstract class TextureWidget : TextureDrawable, IWidget, IObserver
+    public abstract class BaseWidget : IObserver, IWidget
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextureWidget"/> class.
-        /// </summary>
-        /// <param name="texture">The widget's texture.</param>
-        public TextureWidget(Texture texture)
-            : base(texture)
-        {
-        }
+        /// <inheritdoc/>
+        public RectangleF Bounds { get; protected set; } = default;
 
         /// <inheritdoc/>
         public PointF DragOffset { get; protected set; } = new PointF(0, 0);
 
         /// <inheritdoc/>
+        public int Height { get; protected set; }
+
+        /// <inheritdoc/>
         public bool IsDragging { get; protected set; } = false;
 
         /// <inheritdoc/>
-        public virtual bool IsHovered { get; set; } = false;
+        public bool IsHovered { get; set; } = false;
 
-        /// <summary>
-        /// Gets or sets the list of the items contained within the container.
-        /// </summary>
+        /// <inheritdoc/>
+        public bool IsVisible { get; set; } = true;
+
+        /// <inheritdoc/>
         public List<IDrawable> Items { get; protected set; } = new List<IDrawable>();
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
+        public IParent Parent { get; set; } = null;
+
+        /// <inheritdoc/>
+        public Point Position { get; protected set; } = default;
+
+        /// <inheritdoc/>
         public SizeF Scale
         {
             get
@@ -43,17 +46,32 @@ namespace IPT.Common.RawUI.Elements
                 {
                     return new SizeF(this.Parent.Scale.Width * this.WidgetScale, this.Parent.Scale.Height * this.WidgetScale);
                 }
-                else
-                {
-                    return default;
-                }
+
+                return default;
             }
         }
 
         /// <inheritdoc/>
-        public float WidgetScale { get; protected set; } = 1.0f;
+        public string UUID
+        {
+            get
+            {
+                if (this.Parent != null)
+                {
+                    return this.Parent.UUID;
+                }
 
-        /// <inheritdoc />
+                return System.Guid.Empty.ToString();
+            }
+        }
+
+        /// <inheritdoc/>
+        public float WidgetScale { get; protected set; } = 1f;
+
+        /// <inheritdoc/>
+        public int Width { get; protected set; }
+
+        /// <inheritdoc/>
         public void Add(IDrawable item)
         {
             item.Parent = this;
@@ -64,7 +82,7 @@ namespace IPT.Common.RawUI.Elements
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public void Clear()
         {
             this.Items.Clear();
@@ -82,33 +100,28 @@ namespace IPT.Common.RawUI.Elements
             this.MoveTo(new Point((int)System.Math.Round(mousePosition.X + this.DragOffset.X), (int)System.Math.Round(mousePosition.Y + this.DragOffset.Y)));
         }
 
-        /// <inheritdoc />
-        public override void Draw(Rage.Graphics g)
-        {
-            if (this.Texture != null)
-            {
-                base.Draw(g);
-            }
+        /// <inheritdoc/>
+        public abstract void Draw(Rage.Graphics g);
 
-            foreach (var item in this.Items)
-            {
-                if (item.IsVisible)
-                {
-                    item.Draw(g);
-                }
-            }
+        /// <inheritdoc/>
+        public void MoveTo(Point position)
+        {
+            this.Position = position;
+            this.UpdateBounds();
         }
 
         /// <inheritdoc />
-        public abstract void OnUpdated(IObservable obj);
+        public virtual void OnUpdated(IObservable obj)
+        {
+        }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public void Remove(IDrawable item)
         {
             this.Items.Remove(item);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public void SetWidgetScale(float scale)
         {
             if (this.Parent is Canvas)
@@ -132,26 +145,28 @@ namespace IPT.Common.RawUI.Elements
             this.DragOffset = default;
         }
 
-        /// <inheritdoc />
-        public override void UpdateBounds()
+        /// <inheritdoc/>
+        public virtual void UpdateBounds()
         {
-            if (this.Texture != null)
+            if (this.Parent == null)
             {
-                if (this.Parent is Canvas canvas)
-                {
-                    float x = this.Position.X * canvas.Scale.Width;
-                    float y = this.Position.Y * canvas.Scale.Height;
-                    var size = new SizeF(this.Texture.Size.Width * this.Scale.Height, this.Texture.Size.Height * this.Scale.Height);
-                    this.Bounds = new RectangleF(new PointF(x, y), size);
-                }
-                else
-                {
-                    base.UpdateBounds();
-                }
+                Logging.Warning("cannot update bounds on parentless widget");
+                return;
+            }
+
+            if (this.Parent is Canvas canvas)
+            {
+                float x = this.Position.X * canvas.Scale.Width;
+                float y = this.Position.Y * canvas.Scale.Height;
+                var size = new SizeF(this.Width * this.Scale.Height, this.Height * this.Scale.Height);
+                this.Bounds = new RectangleF(new PointF(x, y), size);
             }
             else
             {
-                Logging.Warning("cannout update bounds on widget, texture is null!");
+                float x = this.Parent.Bounds.X + (this.Position.X * this.Parent.Scale.Height);
+                float y = this.Parent.Bounds.Y + (this.Position.Y * this.Parent.Scale.Height);
+                var size = new SizeF(this.Width * this.Parent.Scale.Height, this.Height * this.Parent.Scale.Height);
+                this.Bounds = new RectangleF(new PointF(x, y), size);
             }
 
             foreach (IDrawable item in this.Items)

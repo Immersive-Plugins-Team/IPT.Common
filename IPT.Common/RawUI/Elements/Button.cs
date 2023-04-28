@@ -4,9 +4,9 @@ using IPT.Common.RawUI.Interfaces;
 namespace IPT.Common.RawUI.Elements
 {
     /// <summary>
-    /// Represents a clickable sprite.
+    /// Represents a clickable button.
     /// </summary>
-    public class Button : Sprite, IClickable, IObservable
+    public class Button : TextureElement, IButton
     {
         private readonly List<IObserver> observers = new List<IObserver>();
 
@@ -14,9 +14,9 @@ namespace IPT.Common.RawUI.Elements
         /// Initializes a new instance of the <see cref="Button"/> class.
         /// </summary>
         /// <param name="id">The unique identifier for the button.</param>
-        /// <param name="texture">The button's texture.</param>
-        public Button(string id, Rage.Texture texture)
-            : base(texture)
+        /// <param name="textureName">The texture name for the button.</param>
+        public Button(string id, string textureName)
+            : base(textureName, 0, 0)
         {
             this.Id = id;
         }

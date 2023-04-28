@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
 using IPT.Common.API;
+using IPT.Common.RawUI.Elements;
 using Rage;
 using Rage.Native;
 
-namespace IPT.Common.RawUI.Elements
+namespace IPT.Common.RawUI
 {
     /// <summary>
     /// A special sprite that represents the mouse cursor on the screen.
@@ -13,22 +14,15 @@ namespace IPT.Common.RawUI.Elements
     {
         private readonly Stopwatch clickTimer = new Stopwatch();
         private bool isVisible;
-        private CursorTextureSet? textureSet = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Cursor"/> class.
         /// </summary>
-        /// <param name="textureSet">The cursor's texture set.</param>
-        public Cursor(CursorTextureSet? textureSet = null)
-            : base(null)
+        public Cursor()
+            : base("cursor/default.png")
         {
-            this.textureSet = textureSet;
             this.MouseStatus = MouseStatus.Up;
             this.ScrollWheelStatus = ScrollWheelStatus.None;
-            if (this.textureSet != null)
-            {
-                this.Texture = this.textureSet.Value.Default;
-            }
         }
 
         /// <summary>
@@ -74,20 +68,14 @@ namespace IPT.Common.RawUI.Elements
         /// <param name="cursorType">The type of cursor (drag, pointer, resize).</param>
         public void SetCursorType(CursorType cursorType)
         {
-            if (this.textureSet != null)
+            switch (cursorType)
             {
-                Texture texture = null;
-                switch (cursorType)
-                {
-                    case CursorType.Default:
-                        texture = this.textureSet.Value.Default;
-                        break;
-                    case CursorType.Pointing:
-                        texture = this.textureSet.Value.Pointing;
-                        break;
-                }
-
-                this.Texture = texture;
+                case CursorType.Default:
+                    this.SetTextureName("cursor/default.png");
+                    break;
+                case CursorType.Pointing:
+                    this.SetTextureName("cursor/pointing.png");
+                    break;
             }
         }
 
@@ -97,31 +85,6 @@ namespace IPT.Common.RawUI.Elements
             if (this.Texture != null)
             {
                 base.Draw(g);
-            }
-            else
-            {
-                // draw a crosshair instead
-            }
-        }
-
-        /// <summary>
-        /// Sets the <see cref="CursorTextureSet"/> for the cursor.
-        /// </summary>
-        /// <param name="textureSet">The cursor's texture set.</param>
-        public void SetTextureSet(CursorTextureSet textureSet)
-        {
-            this.textureSet = textureSet;
-            this.SetCursorType(CursorType.Default);
-        }
-
-        /// <inheritdoc/>
-        public override void UpdateBounds()
-        {
-            if (this.Parent != null)
-            {
-                var screenPosition = new PointF(this.Position.X * this.Parent.Scale.Width, this.Position.Y * this.Parent.Scale.Height);
-                var size = this.Texture == null ? new SizeF(0, 0) : new SizeF(this.Texture.Size.Width * this.Parent.Scale.Height, this.Texture.Size.Height * this.Parent.Scale.Height);
-                this.Bounds = new RectangleF(screenPosition, size);
             }
         }
 
@@ -186,22 +149,6 @@ namespace IPT.Common.RawUI.Elements
             {
                 this.ScrollWheelStatus = ScrollWheelStatus.None;
             }
-        }
-
-        /// <summary>
-        /// A struct that represents a set of textures for the cursor.
-        /// </summary>
-        public struct CursorTextureSet
-        {
-            /// <summary>
-            /// Gets or sets the texture for the default cursor.
-            /// </summary>
-            public Texture Default { get; set; }
-
-            /// <summary>
-            /// Gets or sets the texture used when the cursor is pointing.
-            /// </summary>
-            public Texture Pointing { get; set; }
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using IPT.Common.API;
 using Rage;
 
@@ -10,15 +9,17 @@ namespace IPT.Common.RawUI.Util
     /// <summary>
     /// Class for loading and accessing textures.
     /// </summary>
-    public static class TextureHandler
+    internal static class TextureHandler
     {
-        private static readonly Dictionary<Assembly, Dictionary<string, Texture>> TexturesByAssembly = new Dictionary<Assembly, Dictionary<string, Texture>>();
+        private static readonly Dictionary<string, Dictionary<string, Texture>> Textures = new Dictionary<string, Dictionary<string, Texture>>();
+        private static readonly Dictionary<string, List<string>> Blacklist = new Dictionary<string, List<string>>();
 
         /// <summary>
-        /// Loads textures from the specified directory path.  You must call this from your plugin if you want to access your textures.
+        /// Loads textures from the specified directory path.
         /// </summary>
+        /// <param name="uuid">The unique identifer of the canvas.</param>
         /// <param name="path">The path to the directory containing the textures.</param>
-        public static void Load(string path)
+        public static void Load(string uuid, string path)
         {
             var textures = new Dictionary<string, Texture>();
             try
@@ -38,9 +39,8 @@ namespace IPT.Common.RawUI.Util
                     }
                 }
 
-                var assembly = Assembly.GetCallingAssembly();
-                TexturesByAssembly[assembly] = textures;
-                Logging.Info($"loaded {textures.Count} textures for {assembly.FullName}");
+                Textures[uuid] = textures;
+                Logging.Info($"loaded {textures.Count} textures for {uuid}");
             }
             catch (IOException ex)
             {
@@ -53,14 +53,14 @@ namespace IPT.Common.RawUI.Util
         }
 
         /// <summary>
-        /// Gets a texture by its name for the specified assembly.
+        /// Gets a texture by its name for the specified uuid.
         /// </summary>
+        /// <param name="uuid">The unique identifer of the canvas.</param>
         /// <param name="name">The name of the texture.</param>
         /// <returns>The texture if it exists, otherwise null.</returns>
-        public static Texture Get(string name)
+        public static Texture Get(string uuid, string name)
         {
-            var assembly = Assembly.GetCallingAssembly();
-            if (TexturesByAssembly.TryGetValue(assembly, out Dictionary<string, Texture> textures))
+            if (Textures.TryGetValue(uuid, out Dictionary<string, Texture> textures))
             {
                 if (textures.TryGetValue(name, out Texture texture))
                 {
@@ -68,7 +68,17 @@ namespace IPT.Common.RawUI.Util
                 }
             }
 
-            Logging.Warning($"could not load texture {name} for assembly {assembly.FullName}");
+            if (!Blacklist.ContainsKey(uuid))
+            {
+                Blacklist[uuid] = new List<string>();
+            }
+
+            if (!Blacklist[uuid].Contains(name))
+            {
+                Blacklist[uuid].Add(name);
+                Logging.Warning($"could not load texture {name} for canvas {uuid}");
+            }
+
             return null;
         }
 
