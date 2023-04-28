@@ -10,7 +10,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// A special sprite that represents the mouse cursor on the screen.
     /// </summary>
-    public class Cursor : Sprite
+    public sealed class Cursor : Sprite
     {
         private readonly Stopwatch clickTimer = new Stopwatch();
         private bool isVisible;
@@ -53,14 +53,14 @@ namespace IPT.Common.RawUI
         }
 
         /// <summary>
-        /// Gets or sets the mouse down or up status.
+        /// Gets the mouse down or up status.
         /// </summary>
-        public MouseStatus MouseStatus { get; protected set; }
+        public MouseStatus MouseStatus { get; private set; }
 
         /// <summary>
-        /// Gets or sets the mouse scroll wheel down, up, or none status.
+        /// Gets the mouse scroll wheel down, up, or none status.
         /// </summary>
-        public ScrollWheelStatus ScrollWheelStatus { get; protected set; }
+        public ScrollWheelStatus ScrollWheelStatus { get; private set; }
 
         /// <summary>
         /// Sets the cursor type.
@@ -101,7 +101,7 @@ namespace IPT.Common.RawUI
         /// <summary>
         /// Updates the status of the mouse button.
         /// </summary>
-        protected void UpdateMouseStatus()
+        private void UpdateMouseStatus()
         {
             if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.Attack))
             {
@@ -124,7 +124,7 @@ namespace IPT.Common.RawUI
         /// <summary>
         /// Updates the cursor's position based on the mouse position.
         /// </summary>
-        protected void UpdatePosition()
+        private void UpdatePosition()
         {
             var x = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, (int)GameControl.CursorX);
             var y = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, (int)GameControl.CursorY);
@@ -135,7 +135,7 @@ namespace IPT.Common.RawUI
         /// <summary>
         /// Update's the status of the scroll wheel.
         /// </summary>
-        protected void UpdateScrollWheelStatus()
+        private void UpdateScrollWheelStatus()
         {
             if (NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, (int)GameControl.WeaponWheelNext))
             {

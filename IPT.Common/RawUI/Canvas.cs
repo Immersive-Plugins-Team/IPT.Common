@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using IPT.Common.API;
 using IPT.Common.Fibers;
@@ -12,10 +13,11 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// A canvas representing the screen area where elements can be added and positioned.
     /// </summary>
-    public sealed class Canvas : GenericFiber, IParent
+    public sealed class Canvas : GenericFiber, IObservable, IParent
     {
         private readonly WidgetManager widgetManager;
         private readonly string texturePath;
+        private readonly List<IObserver> observers = new List<IObserver>();
         private bool isControlsEnabled = true;
 
         /// <summary>
@@ -26,7 +28,7 @@ namespace IPT.Common.RawUI
             : base("canvas", 100)
         {
             this.texturePath = texturePath;
-            this.UUID = Guid.NewGuid().ToString();
+            this.UUID = $"canvas-{Guid.NewGuid()}";
             this.widgetManager = new WidgetManager();
             this.Cursor = new Cursor()
             {
@@ -38,9 +40,18 @@ namespace IPT.Common.RawUI
         public RectangleF Bounds { get; private set; }
 
         /// <summary>
-        /// Gets or sets the cursor belonging to the canvas.
+        /// Gets the cursor belonging to the canvas.
         /// </summary>
-        public Cursor Cursor { get; set; }
+        public Cursor Cursor { get; }
+
+        /// <inheritdoc />
+        public string Id
+        {
+            get
+            {
+                return this.UUID;
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not the canvas is active.
@@ -77,11 +88,16 @@ namespace IPT.Common.RawUI
             this.widgetManager.AddWidget(widget);
         }
 
+        /// <inheritdoc />
+        public void AddObserver(IObserver observer)
+        {
+            this.observers.Add(observer);
+        }
+
         /// <summary>
         /// Set the canvas to interactive mode.
         /// </summary>
-        /// <param name="doPause">Whether or not to pause the game when doing into interactive mode.</param>
-        public void Interact(bool doPause)
+        public void Interact()
         {
             if (this.IsActive)
             {
@@ -95,7 +111,13 @@ namespace IPT.Common.RawUI
         /// <inheritdoc />
         public void MoveTo(Point position)
         {
-            throw new System.NotImplementedException();
+            Logging.Warning("you cannot move the canvas, dumbass");
+        }
+
+        /// <inheritdoc />
+        public void RemoveObserver(IObserver observer)
+        {
+            this.observers.Remove(observer);
         }
 
         /// <inheritdoc />
@@ -144,6 +166,11 @@ namespace IPT.Common.RawUI
             else
             {
                 this.Cursor.UpdateStatus();
+                if (this.Cursor.Position.X < 480 && this.Cursor.Position.Y < 16)
+                {
+                    this.observers.ForEach(x => x.OnUpdated(this));
+                }
+
                 this.widgetManager.HandleMouseEvents(this.Cursor);
             }
         }
