@@ -12,7 +12,7 @@ namespace IPT.Common.RawUI
     /// <summary>
     /// A canvas representing the screen area where elements can be added and positioned.
     /// </summary>
-    public class Canvas : GenericFiber, IParent
+    public sealed class Canvas : GenericFiber, IParent
     {
         private readonly WidgetManager widgetManager;
         private readonly string texturePath;
@@ -35,7 +35,7 @@ namespace IPT.Common.RawUI
         }
 
         /// <inheritdoc />
-        public RectangleF Bounds { get; protected set; }
+        public RectangleF Bounds { get; private set; }
 
         /// <summary>
         /// Gets or sets the cursor belonging to the canvas.
@@ -43,15 +43,15 @@ namespace IPT.Common.RawUI
         public Cursor Cursor { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the canvas is active.
+        /// Gets a value indicating whether or not the canvas is active.
         /// </summary>
-        public bool IsActive { get; protected set; } = false;
+        public bool IsActive { get; private set; } = false;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the game is paused.
+        /// Gets a value indicating whether or not the game is paused.
         /// This is safe to check on the raw frame render event.
         /// </summary>
-        public bool IsGamePaused { get; protected set; } = false;
+        public bool IsGamePaused { get; private set; } = false;
 
         /// <inheritdoc />
         public Point Position { get; } = new Point(0, 0);

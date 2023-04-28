@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using IPT.Common.API;
 using IPT.Common.RawUI.Interfaces;
 
@@ -123,7 +124,9 @@ namespace IPT.Common.RawUI.Elements
             this.UpdateScaledLineGap(scale);
             this.UpdateMaxLines();
             float x = this.Bounds.X + (this.LeftPadding * scale);
-            float y = this.Bounds.Y + (this.TextSize.Height * this.ScaledLineGap / 2f);
+            var totalTextSize = this.MaxLines * (this.TextSize.Height + (this.TextSize.Height * this.ScaledLineGap));
+            var totalGap = this.Bounds.Height - totalTextSize + (this.TextSize.Height * this.ScaledLineGap);
+            float y = this.Bounds.Y + (totalGap / 2f);
             this.TextPosition = new PointF(x, y);
         }
     }

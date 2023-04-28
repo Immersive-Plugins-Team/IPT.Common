@@ -1,5 +1,4 @@
 ﻿using IPT.Common.API;
-using IPT.Common.RawUI.Elements;
 using IPT.Common.RawUI.Interfaces;
 using IPT.Common.RawUI.Util;
 
@@ -8,7 +7,7 @@ namespace IPT.Common.RawUI.States
     /// <summary>
     /// Represents the mouse in a down state.
     /// </summary>
-    public class MouseDownState : MouseState
+    internal class MouseDownState : MouseState
     {
         /// <inheritdoc/>
         public override void UpdateWidgets(Cursor cursor, WidgetManager widgetManager)
@@ -60,7 +59,6 @@ namespace IPT.Common.RawUI.States
                 if (cursor.ScrollWheelStatus != ScrollWheelStatus.None)
                 {
                     widget.SetWidgetScale(widget.WidgetScale + (cursor.ScrollWheelStatus == ScrollWheelStatus.Up ? Constants.RescaleIncrement : -Constants.RescaleIncrement));
-                    // widget.SetWidgetScale(widget.WidgetScale + (cursor.ScrollWheelStatus == ScrollWheelStatus.Up ? 0.05f : -0.05f));
                 }
             }
             else
@@ -70,8 +68,7 @@ namespace IPT.Common.RawUI.States
                     if (cursor.ClickDuration > Constants.LongClick)
                     {
                         widget.StartDrag(cursor.Position);
-
-                        // todo: this.Canvas.BringToFront(widget);
+                        widgetManager.BringToFront(widget);
                     }
                 }
                 else

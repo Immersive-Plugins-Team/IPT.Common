@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using IPT.Common.RawUI.Interfaces;
 using IPT.Common.RawUI.States;
@@ -8,7 +9,7 @@ namespace IPT.Common.RawUI.Util
     /// <summary>
     /// Used by the canvas to manage the widgets.
     /// </summary>
-    public class WidgetManager
+    internal class WidgetManager
     {
         private readonly List<IWidget> widgets = new List<IWidget>();
         private MouseState mouseState = new MouseUpState();
@@ -35,6 +36,19 @@ namespace IPT.Common.RawUI.Util
         public void AddWidget(IWidget widget)
         {
             this.widgets.Add(widget);
+        }
+
+        /// <summary>
+        /// Moves the widget to the top.
+        /// </summary>
+        /// <param name="widget">The widget to bring forward.</param>
+        public void BringToFront(IWidget widget)
+        {
+            lock (this.widgets)
+            {
+                this.widgets.Remove(widget);
+                this.AddWidget(widget);
+            }
         }
 
         /// <summary>

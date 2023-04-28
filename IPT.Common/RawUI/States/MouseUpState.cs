@@ -1,5 +1,4 @@
 ﻿using IPT.Common.API;
-using IPT.Common.RawUI.Elements;
 using IPT.Common.RawUI.Interfaces;
 using IPT.Common.RawUI.Util;
 
@@ -8,7 +7,7 @@ namespace IPT.Common.RawUI.States
     /// <summary>
     /// Represents the mouse in an up state.
     /// </summary>
-    public class MouseUpState : MouseState
+    internal class MouseUpState : MouseState
     {
         /// <inheritdoc/>
         public override void UpdateWidgets(Cursor cursor, WidgetManager widgetManager)

@@ -1,12 +1,11 @@
-﻿using IPT.Common.RawUI.Elements;
-using IPT.Common.RawUI.Util;
+﻿using IPT.Common.RawUI.Util;
 
 namespace IPT.Common.RawUI.States
 {
     /// <summary>
     /// Represents the state of the mouse.
     /// </summary>
-    public abstract class MouseState
+    internal abstract class MouseState
     {
         /// <summary>
         /// Updates the widget manager based on the mouse state.
