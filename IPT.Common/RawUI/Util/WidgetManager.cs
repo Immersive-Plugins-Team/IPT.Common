@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using IPT.Common.RawUI.Elements;
 using IPT.Common.RawUI.Interfaces;
 using IPT.Common.RawUI.States;
 
@@ -11,7 +10,7 @@ namespace IPT.Common.RawUI.Util
     /// </summary>
     public class WidgetManager
     {
-        private List<IWidget> widgets = new List<IWidget>();
+        private readonly List<IWidget> widgets = new List<IWidget>();
         private MouseState mouseState = new MouseUpState();
 
         /// <summary>

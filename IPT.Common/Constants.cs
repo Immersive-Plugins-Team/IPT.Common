@@ -33,6 +33,11 @@ namespace IPT.Common
         public const float MaxScale = 2f;
 
         /// <summary>
+        /// How much to rescale when resizing widgets with the scrollwheel.
+        /// </summary>
+        public const float RescaleIncrement = 0.01f;
+
+        /// <summary>
         /// The color to use when dragging graphical elements.
         /// </summary>
         public static readonly Color DraggingColor = Color.FromArgb(128, Color.Green);

@@ -59,7 +59,8 @@ namespace IPT.Common.RawUI.States
                 widget.Drag(cursor.Position);
                 if (cursor.ScrollWheelStatus != ScrollWheelStatus.None)
                 {
-                    widget.SetWidgetScale(widget.WidgetScale + (cursor.ScrollWheelStatus == ScrollWheelStatus.Up ? 0.05f : -0.05f));
+                    widget.SetWidgetScale(widget.WidgetScale + (cursor.ScrollWheelStatus == ScrollWheelStatus.Up ? Constants.RescaleIncrement : -Constants.RescaleIncrement));
+                    // widget.SetWidgetScale(widget.WidgetScale + (cursor.ScrollWheelStatus == ScrollWheelStatus.Up ? 0.05f : -0.05f));
                 }
             }
             else
