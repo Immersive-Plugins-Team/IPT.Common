@@ -6,15 +6,15 @@ namespace IPT.Common.RawUI.Elements
     /// <summary>
     /// Represents a button with text draw on top of it.
     /// </summary>
-    public class TextButton : Button, IText
+    public class LabeledTextureButton : TextureButton, IText
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextButton"/> class.
+        /// Initializes a new instance of the <see cref="LabeledTextureButton"/> class.
         /// </summary>
         /// <param name="id">A unique identifer for the button.</param>
         /// <param name="textureName">The background texture.</param>
         /// <param name="text">The text drawn on top of the texture.</param>
-        public TextButton(string id, string textureName, string text)
+        public LabeledTextureButton(string id, string textureName, string text)
             : base(id, textureName)
         {
             this.Text = text;

@@ -73,7 +73,7 @@ namespace IPT.Common.RawUI.Widgets
         public int Width { get; protected set; }
 
         /// <inheritdoc/>
-        public void Add(IDrawable item)
+        public virtual void Add(IDrawable item)
         {
             item.Parent = this;
             this.Items.Add(item);
@@ -84,7 +84,7 @@ namespace IPT.Common.RawUI.Widgets
         }
 
         /// <inheritdoc/>
-        public void Clear()
+        public virtual void Clear()
         {
             this.Items.Clear();
         }
@@ -120,7 +120,7 @@ namespace IPT.Common.RawUI.Widgets
         }
 
         /// <inheritdoc/>
-        public void Remove(IDrawable item)
+        public virtual void Remove(IDrawable item)
         {
             this.Items.Remove(item);
         }

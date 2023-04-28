@@ -6,16 +6,16 @@ namespace IPT.Common.RawUI.Elements
     /// <summary>
     /// Represents a clickable button.
     /// </summary>
-    public class Button : TextureElement, IButton
+    public class TextureButton : TextureElement, IButton
     {
         private readonly List<IObserver> observers = new List<IObserver>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Button"/> class.
+        /// Initializes a new instance of the <see cref="TextureButton"/> class.
         /// </summary>
         /// <param name="id">The unique identifier for the button.</param>
         /// <param name="textureName">The texture name for the button.</param>
-        public Button(string id, string textureName)
+        public TextureButton(string id, string textureName)
             : base(textureName, 0, 0)
         {
             this.Id = id;
