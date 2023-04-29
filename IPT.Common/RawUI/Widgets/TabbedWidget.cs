@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using IPT.Common.API;
+using IPT.Common.RawUI.Elements;
 using IPT.Common.RawUI.Interfaces;
 
 namespace IPT.Common.RawUI.Widgets
@@ -9,23 +9,25 @@ namespace IPT.Common.RawUI.Widgets
     /// <summary>
     /// Represents a widget that contains other widgets which allows the user to switch between them.
     /// </summary>
-    public class TabbedWidget : BaseWidget
+    public class TabbedWidget : TextureWidget
     {
         private readonly Dictionary<string, IWidget> widgets = new Dictionary<string, IWidget>();
-        private readonly ToggleButtonPanelWidget buttonPanel;
+        private readonly string activeButtonTextureName;
+        private readonly string inactiveButtonTextureName;
+        private readonly List<ToggledButton> tabButtons = new List<ToggledButton>();
         private string activeTabTitle = string.Empty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TabbedWidget"/> class.
         /// </summary>
+        /// <param name="widgetTextureName">The name of the texture for the widget background.</param>
         /// <param name="activeButtonTextureName">The name of the texture for the active button.</param>
         /// <param name="inactiveButtonTextureName">The name of the texture for the inactive button.</param>
-        public TabbedWidget(string activeButtonTextureName, string inactiveButtonTextureName)
+        public TabbedWidget(string widgetTextureName, string activeButtonTextureName, string inactiveButtonTextureName)
+            : base(widgetTextureName)
         {
-            this.buttonPanel = new ToggleButtonPanelWidget(activeButtonTextureName, inactiveButtonTextureName);
-            this.buttonPanel.MoveTo(new Point(0, 0));
-            this.Add(this.buttonPanel);
-            this.buttonPanel.AddObserver(this);
+            this.activeButtonTextureName = activeButtonTextureName;
+            this.inactiveButtonTextureName = inactiveButtonTextureName;
             this.Width = 0;
             this.Height = 0;
         }
@@ -44,60 +46,70 @@ namespace IPT.Common.RawUI.Widgets
             }
 
             this.widgets[tabTitle] = widget;
-            this.buttonPanel.AddButton(tabTitle, tabTitle);
-        }
+            var button = new ToggledButton(tabTitle, this.activeButtonTextureName, this.inactiveButtonTextureName, tabTitle, true);
+            this.Add(button);
+            button.AddObserver(this);
+            if (this.widgets.Count == 1)
+            {
+                button.IsActive = true;
+            }
 
-        /// <inheritdoc/>
-        public override bool Contains(Cursor cursor)
-        {
-            return this.Items.OfType<IWidget>().Any(widget => widget.Contains(cursor));
+            this.tabButtons.Add(button);
         }
 
         /// <inheritdoc/>
         public override void Draw(Rage.Graphics g)
         {
-            g.DrawRectangle(this.Bounds, Color.LimeGreen);
-            this.buttonPanel.Draw(g);
-            if (this.widgets.TryGetValue(this.activeTabTitle, out IWidget widget))
+            if (this.Texture != null)
             {
-                widget.Draw(g);
+                g.DrawTexture(this.Texture, this.Bounds);
+                this.tabButtons.ForEach(button => button.Draw(g));
+                if (this.widgets.TryGetValue(this.activeTabTitle, out IWidget widget))
+                {
+                    widget.Draw(g);
+                }
             }
         }
 
         /// <inheritdoc />
         public override void OnUpdated(IObservable obj)
         {
-            if (obj is ToggleButtonPanelWidget)
-            {
-                this.activeTabTitle = obj.Id;
-            }
+            this.tabButtons.Where(x => x.Id != obj.Id).ToList().ForEach(x => x.IsActive = false);
+            this.activeTabTitle = obj.Id;
         }
 
         /// <inheritdoc/>
         public override void UpdateBounds()
         {
-            if (this.widgets.Count == 0 || this.Parent == null)
+            if (this.widgets.Count == 0 || this.Parent == null || this.Texture == null)
             {
                 return;
             }
 
-            // update ourselves
-            float x = this.Parent.Bounds.X + (this.Position.X * this.Parent.Scale.Height);
-            float y = this.Parent.Bounds.Y + (this.Position.Y * this.Parent.Scale.Height);
-            var size = new SizeF(this.Width * this.Parent.Scale.Height, this.Height * this.Parent.Scale.Height);
-            this.Bounds = new RectangleF(new PointF(x, y), size);
+            base.UpdateBounds();
 
-            // update the panel
-            this.buttonPanel.UpdateBounds();
-
-            // now reposition and reupdate the widgets
-            foreach (var widget in this.widgets.Values)
+            // update the buttons
+            for (int i = 0; i < this.tabButtons.Count; i++)
             {
-                widget.MoveTo(new Point(0, this.buttonPanel.Height));
-                widget.UpdateBounds();
+                var button = this.tabButtons[i];
+                if (i == 0)
+                {
+                    button.MoveTo(new Point(0, 0));
+                }
+                else
+                {
+                    button.MoveTo(new Point(this.tabButtons[i - 1].Position.X + this.tabButtons[i - 1].Width, 0));
+                }
             }
 
-            // finally update our bounds again
+            // now reposition and reupdate the widgets
+            foreach (var widget in this.Items.OfType<IWidget>())
+            {
+                if (this.tabButtons.Count > 0)
+                {
+                    widget.MoveTo(new Point(0, this.tabButtons[0].Height));
+                }
+            }
         }
     }
 }

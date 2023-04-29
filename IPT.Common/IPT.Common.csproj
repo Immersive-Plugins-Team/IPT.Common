@@ -129,7 +129,6 @@
     <Compile Include="RawUI\Elements\TextureElement.cs" />
     <Compile Include="RawUI\Util\TextureHandler.cs" />
     <Compile Include="RawUI\Util\WidgetManager.cs" />
-    <Compile Include="RawUI\Widgets\ToggleButtonPanelWidget.cs" />
     <Compile Include="RawUI\Widgets\RectangleWidget.cs" />
     <Compile Include="RawUI\Widgets\TabbedWidget.cs" />
     <Compile Include="RawUI\Widgets\TextureWidget.cs" />
