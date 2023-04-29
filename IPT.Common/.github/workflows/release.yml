@@ -5,7 +5,7 @@ on:
 
 env:
   FILES: |
-    IPT.Common/Release/IPT.Common.dll
+    IPT.Common/bin/Release/IPT.Common.dll
     
 steps:
   - name: Checkout code
