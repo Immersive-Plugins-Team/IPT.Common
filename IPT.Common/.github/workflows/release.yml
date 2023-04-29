@@ -1,61 +1,23 @@
 name: Release
 
 on:
-  create:
-    branches:
-      - 'release-*'
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
   build:
-    name: Build
-    runs-on: windows-2019
+
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Setup .NET Framework
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '4.8.x'
-
-      - name: Restore NuGet packages
-        run: nuget restore IPT.Common.sln
-
-      - name: Build .NET Framework 4.8 library
-        run: msbuild IPT.Common/IPT.Common.csproj /p:Configuration=Release /p:Platform=x64
-      
-      - name: Determine version
-        run: |
-          version=$(echo "${{ github.ref }}" | sed 's|refs/tags/v||;s|refs/heads/release-||')
-          echo "::set-output name=version::$version"
-        id: version
-
-      - name: Create new tag
-        uses: anothrNick/github-tag-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: v${{ steps.version.outputs.version }}
-
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ steps.version.outputs.version }}
-          release_name: Release ${{ steps.version.outputs.version }}
-          body: |
-            Release ${{ steps.version.outputs.version }}
-          draft: false
-          prerelease: false
-
-      - name: Upload files
-        id: upload_files
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: IPT.Common/bin/Release/IPT.Common.dll
-          asset_name: IPT.Common_${{ steps.version.outputs.version }}.zip
-          asset_content_type: application/zip
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 4.8
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
