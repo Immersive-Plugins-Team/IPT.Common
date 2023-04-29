@@ -5,8 +5,7 @@ on:
 
 env:
   FILES: |
-    file1.txt
-    file2.tet
+    IPT.Common/Release/IPT.Common.dll
     
 steps:
   - name: Checkout code
