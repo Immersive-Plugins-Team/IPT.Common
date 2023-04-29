@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Runtime.CompilerServices;
 using IPT.Common.RawUI.Interfaces;
 using IPT.Common.RawUI.Util;
 using Rage;

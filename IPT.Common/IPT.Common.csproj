@@ -98,8 +98,7 @@
     <Compile Include="RawUI\Elements\Label.cs" />
     <Compile Include="RawUI\Elements\TextArea.cs" />
     <Compile Include="RawUI\Elements\TextBox.cs" />
-    <Compile Include="RawUI\Elements\LabeledTextureButton.cs" />
-    <Compile Include="RawUI\Elements\TextDrawable.cs" />
+    <Compile Include="RawUI\Elements\TextElement.cs" />
     <Compile Include="RawUI\Elements\ToggledButton.cs" />
     <Compile Include="RawUI\Interfaces\IButton.cs" />
     <Compile Include="RawUI\Interfaces\IClickable.cs" />
@@ -149,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

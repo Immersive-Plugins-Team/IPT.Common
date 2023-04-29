@@ -5,7 +5,7 @@ namespace IPT.Common.RawUI.Elements
     /// <summary>
     /// Represents a box with text in it.
     /// </summary>
-    public class TextBox : TextDrawable
+    public class TextBox : TextElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBox"/> class.

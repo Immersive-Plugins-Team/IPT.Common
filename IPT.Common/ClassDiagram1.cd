@@ -1,0 +1,492 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="IPT.Common.API.Events" Collapsed="true">
+    <Position X="24.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAIAAAAAAAAAABAQ=</HashCode>
+      <FileName>API\Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.API.Functions" Collapsed="true">
+    <Position X="26.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>API\Functions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.API.Logging" Collapsed="true">
+    <Position X="23" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAYABAAAAABAAAAgBAAAAAAIAAEAAAAA=</HashCode>
+      <FileName>API\Logging.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.API.Math" Collapsed="true">
+    <Position X="24.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAghAAAAAAAAAAAAAAAAAgAAQAgAAAAAAAAAAAA=</HashCode>
+      <FileName>API\Math.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.API.Player" Collapsed="true">
+    <Position X="26.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>API\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.Callouts" Collapsed="true">
+    <Position X="23" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Callouts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.CommonPlugin" Collapsed="true">
+    <Position X="24.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAgAQAAAAAAAAAAAAAAAAAAIBAAAAAAAAA=</HashCode>
+      <FileName>CommonPlugin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.Constants" Collapsed="true">
+    <Position X="28.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABgIAAAAAAAAAAAAAABAAAAAAAIAAgAAAAIAAAAI=</HashCode>
+      <FileName>Constants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.Fibers.ComboFiber" Collapsed="true">
+    <Position X="14.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fibers\ComboFiber.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.Fibers.GenericFiber" Collapsed="true">
+    <Position X="15.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAACAAAAAAAIAAQAQAAAAAAAAAIAAAAAAAAAI=</HashCode>
+      <FileName>Fibers\GenericFiber.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.Handlers.InputHandler" Collapsed="true">
+    <Position X="28.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAAAAAAAAABAAAAAQIAAAAAAAAAA=</HashCode>
+      <FileName>Handlers\InputHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.Canvas" Collapsed="true">
+    <Position X="16.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAYqAAAAAShAAEAgEAMAAAAAIAIoAAAAIBCAAAAAAgA=</HashCode>
+      <FileName>RawUI\Canvas.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="IPT.Common.RawUI.Cursor" Collapsed="true">
+    <Position X="8.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAEAAAAEmAAABAAAEAAAAAAAAAAAACAAAAIIAA=</HashCode>
+      <FileName>RawUI\Cursor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.Elements.BaseElement" Collapsed="true">
+    <Position X="6.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEgAgAAAAQAAAAAAIAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>RawUI\Elements\BaseElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="IPT.Common.RawUI.Elements.Label" Collapsed="true">
+    <Position X="1" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RawUI\Elements\Label.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.Elements.RectangleButton" Collapsed="true">
+    <Position X="5.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAKAAAABAhAAgAAAAEAAEAACAAAAAAAAAAAAAEwAgA=</HashCode>
+      <FileName>RawUI\Elements\RectangleButton.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="1.3" />
+  </Class>
+  <Class Name="IPT.Common.RawUI.Elements.Sprite" Collapsed="true">
+    <Position X="8.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RawUI\Elements\Sprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.Elements.TextArea" Collapsed="true">
+    <Position X="3.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAgAAAAgAAEAEAAAAIAAAAAAAIIAIgABAQAAA=</HashCode>
+      <FileName>RawUI\Elements\TextArea.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="1.3" />
+  </Class>
+  <Class Name="IPT.Common.RawUI.Elements.TextBox" Collapsed="true">
+    <Position X="3.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAABBAAAgAAAAAACEAGCABAAAAAIAAAAAggAgA=</HashCode>
+      <FileName>RawUI\Elements\TextBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.Elements.TextElement" Collapsed="true">
+    <Position X="3.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAJAAAAAAAAAAAAAAAgAAAAAAIAAAABAACAAAAgA=</HashCode>
+      <FileName>RawUI\Elements\TextElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="IPT.Common.RawUI.Elements.TextureButton" Collapsed="true">
+    <Position X="11.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAKAJAAAAhAAgAAAAEAAgAAAAAAIAAAABAACAAwAgA=</HashCode>
+      <FileName>RawUI\Elements\TextureButton.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="1.214" />
+  </Class>
+  <Class Name="IPT.Common.RawUI.Elements.TextureElement" Collapsed="true">
+    <Position X="10" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAABAAAAgAIAAAAAEAAAAAAAgAAAAIAAAAgAgA=</HashCode>
+      <FileName>RawUI\Elements\TextureElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="1.196" />
+  </Class>
+  <Class Name="IPT.Common.RawUI.Elements.ToggledButton" Collapsed="true">
+    <Position X="11.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEACAABAAAACAABAAAAAAEAAAAgA=</HashCode>
+      <FileName>RawUI\Elements\ToggledButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.States.MouseDownState" Collapsed="true">
+    <Position X="0.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAgAAAA=</HashCode>
+      <FileName>RawUI\States\MouseDownState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.States.MouseState" Collapsed="true">
+    <Position X="1.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RawUI\States\MouseState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.States.MouseUpState" Collapsed="true">
+    <Position X="2.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAIAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RawUI\States\MouseUpState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.Util.ControlFinder" Collapsed="true">
+    <Position X="23" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RawUI\Util\ControlFinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.Util.TextureHandler" Collapsed="true">
+    <Position X="28.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>RawUI\Util\TextureHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.Util.WidgetManager" Collapsed="true">
+    <Position X="26.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIEAAAAAAEAgEAACAAAgAIAAAQACAAEAQAkQAAAAA=</HashCode>
+      <FileName>RawUI\Util\WidgetManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.Widgets.BaseWidget" Collapsed="true">
+    <Position X="19" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAoAAAAABAIAGgAgEAJAREAAAAAKCBAAAAAAAAFQYgA=</HashCode>
+      <FileName>RawUI\Widgets\BaseWidget.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="IPT.Common.RawUI.Widgets.RectangleWidget" Collapsed="true">
+    <Position X="17.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAACAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>RawUI\Widgets\RectangleWidget.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.Widgets.TabbedWidget" Collapsed="true">
+    <Position X="20" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAkAAACAEAAAIAAAAAAAAAIAAAAEAAgA=</HashCode>
+      <FileName>RawUI\Widgets\TabbedWidget.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.RawUI.Widgets.TextureWidget" Collapsed="true">
+    <Position X="20" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAgAIAAAAAAAAAAAAAgAAAAIAAAAgAgA=</HashCode>
+      <FileName>RawUI\Widgets\TextureWidget.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.User.Configuration" Collapsed="true">
+    <Position X="26.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAABAAAAAAAAAgAAAoAAEAEAABAAAA=</HashCode>
+      <FileName>User\Configuration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.User.Inputs.ButtonCombo" Collapsed="true">
+    <Position X="7.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAJAgAAAAgAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>User\Inputs\ButtonCombo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="IPT.Common.User.Inputs.GenericCombo" Collapsed="true">
+    <Position X="4" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAJAAAAAEAAAAAAAAAAAQAAAAAAAAAACAAAg=</HashCode>
+      <FileName>User\Inputs\GenericCombo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.User.Inputs.HoldableButtonCombo" Collapsed="true">
+    <Position X="0.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAJAgAAAAgAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>User\Inputs\HoldableButtonCombo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="IPT.Common.User.Inputs.HoldableCombo" Collapsed="true">
+    <Position X="1.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACgAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>User\Inputs\HoldableCombo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.User.Inputs.HoldableKeyCombo" Collapsed="true">
+    <Position X="3" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAJAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgQA=</HashCode>
+      <FileName>User\Inputs\HoldableKeyCombo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="IPT.Common.User.Inputs.KeyCombo" Collapsed="true">
+    <Position X="5.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAJAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgQA=</HashCode>
+      <FileName>User\Inputs\KeyCombo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="IPT.Common.User.Settings.Setting" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAIAAgAgAAAAAAAAQAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>User\Settings\Setting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.User.Settings.SettingBool" Collapsed="true">
+    <Position X="10.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAIAAAAgAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>User\Settings\SettingBool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.User.Settings.SettingButtonCombo" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAIAAAAgAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>User\Settings\SettingButtonCombo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.User.Settings.SettingFloat" Collapsed="true">
+    <Position X="14.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAIBAAAgAAMAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>User\Settings\SettingFloat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.User.Settings.SettingHoldableButtonCombo" Collapsed="true">
+    <Position X="17" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAIAAAAgAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>User\Settings\SettingHoldableButtonCombo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.User.Settings.SettingHoldableKeyCombo" Collapsed="true">
+    <Position X="1.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAIAAAAgAAAAAAAAAAAAAAAEAAAAAgAAAAAAA=</HashCode>
+      <FileName>User\Settings\SettingHoldableKeyCombo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.User.Settings.SettingInt" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAIBAAAgAAMAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>User\Settings\SettingInt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.User.Settings.SettingKeyCombo" Collapsed="true">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAIAAAAgAAAAAAAAAAAAAAAEAAAAAgAAAAAAA=</HashCode>
+      <FileName>User\Settings\SettingKeyCombo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.User.Settings.SettingString" Collapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAIAAAAgAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>User\Settings\SettingString.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.UX.UXMenu" Collapsed="true">
+    <Position X="23" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAABAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UX\UXMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPT.Common.UX.UXMenuItem" Collapsed="true">
+    <Position X="24.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UX\UXMenuItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="IPT.Common.RawUI.Interfaces.IButton" Collapsed="true">
+    <Position X="19" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RawUI\Interfaces\IButton.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPT.Common.RawUI.Interfaces.IClickable" Collapsed="true">
+    <Position X="19" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>RawUI\Interfaces\IClickable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPT.Common.RawUI.Interfaces.IContainer" Collapsed="true">
+    <Position X="14.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAACAAAAAAABAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>RawUI\Interfaces\IContainer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPT.Common.RawUI.Interfaces.IControl" Collapsed="true">
+    <Position X="17.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>RawUI\Interfaces\IControl.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPT.Common.RawUI.Interfaces.IDrawable" Collapsed="true">
+    <Position X="15.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEgAAAAAAQAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>RawUI\Interfaces\IDrawable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPT.Common.RawUI.Interfaces.IGeometry" Collapsed="true">
+    <Position X="12.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RawUI\Interfaces\IGeometry.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPT.Common.RawUI.Interfaces.IObservable" Collapsed="true">
+    <Position X="19.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RawUI\Interfaces\IObservable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPT.Common.RawUI.Interfaces.IObserver" Collapsed="true">
+    <Position X="23" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>RawUI\Interfaces\IObserver.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPT.Common.RawUI.Interfaces.IParent" Collapsed="true">
+    <Position X="13" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RawUI\Interfaces\IParent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPT.Common.RawUI.Interfaces.IScrollable" Collapsed="true">
+    <Position X="16.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>RawUI\Interfaces\IScrollable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPT.Common.RawUI.Interfaces.ISpatial" Collapsed="true">
+    <Position X="14.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAIAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>RawUI\Interfaces\ISpatial.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPT.Common.RawUI.Interfaces.IText" Collapsed="true">
+    <Position X="24.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAJAAAAAAAAAAAAAAAgAAAAAAIAAAABAACAAAAAA=</HashCode>
+      <FileName>RawUI\Interfaces\IText.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPT.Common.RawUI.Interfaces.IWidget" Collapsed="true">
+    <Position X="13.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAIAAAAAAABAAAAAAAACCBAAAAAAAAAQYAA=</HashCode>
+      <FileName>RawUI\Interfaces\IWidget.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="IPT.Common.API.CursorType" Collapsed="true">
+    <Position X="23" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAIAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>API\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="IPT.Common.API.MouseStatus" Collapsed="true">
+    <Position X="26.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>API\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="IPT.Common.API.ScrollWheelStatus" Collapsed="true">
+    <Position X="28.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAI=</HashCode>
+      <FileName>API\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="IPT.Common.API.LoggingLevel" Collapsed="true">
+    <Position X="24.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABgAAAAAAAAAAAEAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>API\Logging.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

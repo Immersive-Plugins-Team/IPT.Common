@@ -7,7 +7,7 @@ namespace IPT.Common.RawUI.Elements
     /// <summary>
     /// Represents a button that is drawn as a rectangle rather than using a texture.
     /// </summary>
-    public class RectangleButton : TextDrawable, IButton, IGeometry, IText
+    public class RectangleButton : TextElement, IButton, IGeometry, IText
     {
         private readonly List<IObserver> observers = new List<IObserver>();
 

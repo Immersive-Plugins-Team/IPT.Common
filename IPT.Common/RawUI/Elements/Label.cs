@@ -5,7 +5,7 @@ namespace IPT.Common.RawUI.Elements
     /// <summary>
     /// Represents a text-based label.
     /// </summary>
-    public class Label : TextDrawable
+    public class Label : TextElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Label"/> class.

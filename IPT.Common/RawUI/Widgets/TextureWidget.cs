@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using IPT.Common.RawUI.Util;
+﻿using IPT.Common.RawUI.Util;
 using Rage;
 
 namespace IPT.Common.RawUI.Widgets
@@ -7,7 +6,7 @@ namespace IPT.Common.RawUI.Widgets
     /// <summary>
     /// Represents a texture based widget.
     /// </summary>
-    public abstract class TextureWidget : BaseWidget
+    public class TextureWidget : BaseWidget
     {
         private readonly bool isDynamic;
         private Texture texture = null;

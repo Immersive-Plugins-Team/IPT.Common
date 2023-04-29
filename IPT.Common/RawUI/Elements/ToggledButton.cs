@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a labeled texture button that can be toggled on and off.
     /// </summary>
-    public class ToggledButton : LabeledTextureButton
+    public class ToggledButton : TextureButton
     {
         private readonly string activeTextureName;
         private readonly string inactiveTextureName;
