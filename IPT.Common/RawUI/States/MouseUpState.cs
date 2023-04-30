@@ -27,6 +27,11 @@ namespace IPT.Common.RawUI.States
             widgetManager.UpdateHoveredWidget(cursor);
             widgetManager.UpdateHoveredControl(cursor);
             widgetManager.PressedWidget = widgetManager.HoveredWidget;
+            if (widgetManager.HoveredControl != null && widgetManager.HoveredControl is IClickable clickable)
+            {
+                clickable.Click();
+            }
+
             widgetManager.SetMouseState(new MouseDownState());
         }
 

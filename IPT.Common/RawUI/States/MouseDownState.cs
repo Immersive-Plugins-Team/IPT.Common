@@ -30,14 +30,6 @@ namespace IPT.Common.RawUI.States
                 {
                     widgetManager.PressedWidget.StopDrag();
                 }
-                else
-                {
-                    if (widgetManager.HoveredControl != null && widgetManager.HoveredControl is IClickable clickable)
-                    {
-                        Logging.Debug("registered click on hovered control");
-                        clickable.Click();
-                    }
-                }
 
                 widgetManager.PressedWidget = null;
             }
@@ -48,7 +40,7 @@ namespace IPT.Common.RawUI.States
         private void PressMouse(WidgetManager widgetManager, Cursor cursor)
         {
             var widget = widgetManager.PressedWidget;
-            if (widget == null)
+            if (widget == null || (widgetManager.HoveredControl != null && widgetManager.HoveredControl is IClickable))
             {
                 return;
             }
