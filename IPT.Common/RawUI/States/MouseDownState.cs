@@ -65,7 +65,7 @@ namespace IPT.Common.RawUI.States
             {
                 if (widget.Contains(cursor))
                 {
-                    if (cursor.ClickDuration > Constants.LongClick)
+                    if (cursor.ClickDuration > cursor.LongClickDuration)
                     {
                         widget.StartDrag(cursor.Position);
                         widgetManager.BringToFront(widget);

@@ -33,6 +33,7 @@ namespace IPT.Common.RawUI
             this.Cursor = new Cursor()
             {
                 Parent = this,
+                LongClickDuration = Constants.LongClick,
             };
         }
 

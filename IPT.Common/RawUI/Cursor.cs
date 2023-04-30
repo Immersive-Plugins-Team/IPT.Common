@@ -53,6 +53,11 @@ namespace IPT.Common.RawUI
         }
 
         /// <summary>
+        /// Gets or sets the long click duration used for dragging.
+        /// </summary>
+        public long LongClickDuration { get; set; } = 200;
+
+        /// <summary>
         /// Gets the mouse down or up status.
         /// </summary>
         public MouseStatus MouseStatus { get; private set; }

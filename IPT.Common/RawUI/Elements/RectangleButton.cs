@@ -32,6 +32,16 @@ namespace IPT.Common.RawUI.Elements
         /// </summary>
         public Color BackgroundColor { get; set; } = Color.Black;
 
+        /// <summary>
+        /// Gets or sets the border color.
+        /// </summary>
+        public Color BorderColor { get; set; } = Color.Black;
+
+        /// <summary>
+        /// Gets or sets the border width.
+        /// </summary>
+        public float BorderWidth { get; set; } = 0f;
+
         /// <inheritdoc/>
         public int Height { get; protected set; }
 
@@ -73,6 +83,14 @@ namespace IPT.Common.RawUI.Elements
         /// <inheritdoc/>
         public override void Draw(Rage.Graphics g)
         {
+            if (this.BorderWidth > 0 && this.Parent != null)
+            {
+                float scaledBorderWidth = this.BorderWidth * this.Parent.Scale.Height;
+                var borderBounds = this.Bounds;
+                borderBounds.Inflate(scaledBorderWidth, scaledBorderWidth);
+                g.DrawRectangle(borderBounds, this.BorderColor);
+            }
+
             g.DrawRectangle(this.Bounds, this.BackgroundColor);
             g.DrawText(this.Text, this.FontFamily, this.ScaledFontSize, this.TextPosition, this.FontColor);
         }
