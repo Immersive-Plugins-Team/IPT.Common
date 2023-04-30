@@ -1,4 +1,5 @@
-﻿using IPT.Common.User.Inputs;
+﻿using System;
+using IPT.Common.User.Inputs;
 
 namespace IPT.Common.API
 {

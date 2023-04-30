@@ -78,16 +78,54 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Enums.cs" />
     <Compile Include="API\Events.cs" />
     <Compile Include="API\Functions.cs" />
     <Compile Include="API\Logging.cs" />
     <Compile Include="API\Math.cs" />
+    <Compile Include="API\Player.cs" />
     <Compile Include="Callouts.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Fibers\GenericFiber.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Handlers\InputHandler.cs" />
     <Compile Include="CommonPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RawUI\Elements\BaseElement.cs" />
+    <Compile Include="RawUI\Elements\RectangleButton.cs" />
+    <Compile Include="RawUI\Elements\TextureButton.cs" />
+    <Compile Include="RawUI\Canvas.cs" />
+    <Compile Include="RawUI\Elements\Label.cs" />
+    <Compile Include="RawUI\Elements\TextArea.cs" />
+    <Compile Include="RawUI\Elements\TextBox.cs" />
+    <Compile Include="RawUI\Elements\TextElement.cs" />
+    <Compile Include="RawUI\Elements\ToggledButton.cs" />
+    <Compile Include="RawUI\Interfaces\IButton.cs" />
+    <Compile Include="RawUI\Interfaces\IClickable.cs" />
+    <Compile Include="RawUI\Interfaces\IGeometry.cs" />
+    <Compile Include="RawUI\Widgets\BaseWidget.cs" />
+    <Compile Include="RawUI\Interfaces\IObservable.cs" />
+    <Compile Include="RawUI\Interfaces\IObserver.cs" />
+    <Compile Include="RawUI\Interfaces\IScrollable.cs" />
+    <Compile Include="RawUI\Interfaces\IText.cs" />
+    <Compile Include="RawUI\States\MouseDownState.cs" />
+    <Compile Include="RawUI\States\MouseUpState.cs" />
+    <Compile Include="RawUI\Util\ControlFinder.cs" />
+    <Compile Include="RawUI\Cursor.cs" />
+    <Compile Include="RawUI\Interfaces\IControl.cs" />
+    <Compile Include="RawUI\Interfaces\IParent.cs" />
+    <Compile Include="RawUI\Interfaces\ISpatial.cs" />
+    <Compile Include="RawUI\States\MouseState.cs" />
+    <Compile Include="RawUI\Interfaces\IDrawable.cs" />
+    <Compile Include="RawUI\Interfaces\IContainer.cs" />
+    <Compile Include="RawUI\Interfaces\IWidget.cs" />
+    <Compile Include="RawUI\Elements\Sprite.cs" />
+    <Compile Include="RawUI\Elements\TextureElement.cs" />
+    <Compile Include="RawUI\Util\TextureHandler.cs" />
+    <Compile Include="RawUI\Util\WidgetManager.cs" />
+    <Compile Include="RawUI\Widgets\RectangleWidget.cs" />
+    <Compile Include="RawUI\Widgets\TabbedWidget.cs" />
+    <Compile Include="RawUI\Widgets\TextureWidget.cs" />
     <Compile Include="User\Configuration.cs" />
     <Compile Include="User\Inputs\ButtonCombo.cs" />
     <Compile Include="User\Inputs\GenericCombo.cs" />
@@ -110,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

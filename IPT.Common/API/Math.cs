@@ -1,10 +1,22 @@
-﻿namespace IPT.Common.API
+﻿using Rage;
+
+namespace IPT.Common.API
 {
     /// <summary>
     /// Additional math-related functions.
     /// </summary>
     public static class Math
     {
+        /// <summary>
+        /// A value used for converting radians to degrees.
+        /// </summary>
+        public static readonly double Rad2Deg = 180.0 / System.Math.PI;
+
+        /// <summary>
+        /// A value used for converting degrees to radians.
+        /// </summary>
+        public static readonly double Deg2Rad = System.Math.PI / 180.0;
+
         /// <summary>
         /// Clamps a float between two (inclusive) values.
         /// </summary>
@@ -80,6 +92,39 @@
             }
 
             return cValue;
+        }
+
+        /// <summary>
+        /// Gets the angle (0-180 degrees) between the source and target entities.
+        /// </summary>
+        /// <param name="source">The source entity.</param>
+        /// <param name="target">The target entity.</param>
+        /// <returns>A double indicating the angle in degrees.</returns>
+        public static double GetVectorAngle(Entity source, Entity target)
+        {
+            var targetVector = target.Position - source.Position;
+            var dotProduct = Vector3.Dot(source.ForwardVector.ToNormalized(), targetVector.ToNormalized());
+            return ConvertRadiansToDegrees(System.Math.Acos(dotProduct));
+        }
+
+        /// <summary>
+        /// Converts radians into degrees.
+        /// </summary>
+        /// <param name="radians">The initial value in radians.</param>
+        /// <returns>A double value representing the radians in degrees.</returns>
+        public static double ConvertRadiansToDegrees(double radians)
+        {
+            return radians * Rad2Deg;
+        }
+
+        /// <summary>
+        /// Converts degrees into radians.
+        /// </summary>
+        /// <param name="degrees">The initial value in degrees.</param>
+        /// <returns>A double value representing the degrees in radians.</returns>
+        public static double ConvertDegreesToRadians(double degrees)
+        {
+            return degrees * Deg2Rad;
         }
     }
 }
