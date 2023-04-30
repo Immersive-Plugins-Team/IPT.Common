@@ -16,8 +16,8 @@ jobs:
       
       - name: Determine version
         run: |
-          version=$(echo "${{ github.ref }}" | sed 's|refs/tags/v||;s|refs/heads/release-||')
-          echo "::set-output name=version::$version"
+          $branch = $env:GITHUB_REF 
+          $version = $branch.Split("/")[-1].Replace("release-", "")
         id: version
 
       - name: Setup .NET Framework
