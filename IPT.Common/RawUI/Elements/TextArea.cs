@@ -60,6 +60,16 @@ namespace IPT.Common.RawUI.Elements
             }
         }
 
+        /// <summary>
+        /// Clears the text from the text area.
+        /// </summary>
+        public void Clear()
+        {
+            this.text.Clear();
+            this.firstLineIndex = 0;
+            this.UpdateBounds();
+        }
+
         /// <inheritdoc/>
         public bool Contains(Cursor cursor)
         {
