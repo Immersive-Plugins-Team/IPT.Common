@@ -1,5 +1,5 @@
-﻿using System;
-using IPT.Common.User.Inputs;
+﻿using IPT.Common.User.Inputs;
+using static IPT.Common.Enums;
 
 namespace IPT.Common.API
 {
@@ -22,6 +22,12 @@ namespace IPT.Common.API
         public delegate void HoldableUserInputEventHandler(HoldableCombo combo, bool isLongPress);
 
         /// <summary>
+        /// Delegate event handler for player status changes.
+        /// </summary>
+        /// <param name="playerStatus">The new status.</param>
+        public delegate void PlayerStatusChangeEventHandler(PlayerStatus playerStatus);
+
+        /// <summary>
         /// Event for user input changes.
         /// </summary>
         public static event UserInputChangedEventHandler OnUserInputChanged;
@@ -30,6 +36,11 @@ namespace IPT.Common.API
         ///  Event for holdable user inputs.
         /// </summary>
         public static event HoldableUserInputEventHandler OnHoldableUserInput;
+
+        /// <summary>
+        /// Event for player status changes.
+        /// </summary>
+        public static event PlayerStatusChangeEventHandler OnPlayerStatusChange;
 
         /// <summary>
         /// Fires an event for a user input change.
@@ -48,6 +59,15 @@ namespace IPT.Common.API
         internal static void FireHoldableUserInput(HoldableCombo combo, bool isLongPress)
         {
             OnHoldableUserInput?.Invoke(combo, isLongPress);
+        }
+
+        /// <summary>
+        /// Fires an event for a player status change.
+        /// </summary>
+        /// <param name="playerStatus">The new player status.</param>
+        internal static void FirePlayerStatusChange(PlayerStatus playerStatus)
+        {
+            OnPlayerStatusChange?.Invoke(playerStatus);
         }
     }
 }
