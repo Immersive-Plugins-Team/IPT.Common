@@ -47,7 +47,8 @@ namespace IPT.Common.Handlers
         /// </summary>
         /// <param name="playerStatus">The new status.</param>
         /// <param name="sendNotification">Sends a notification when true.</param>
-        internal static void SetStatus(PlayerStatus playerStatus, bool sendNotification = true)
+        /// <param name="handleAvailability">Update the availability based on the status..</param>
+        internal static void SetStatus(PlayerStatus playerStatus, bool sendNotification = true, bool handleAvailability = true)
         {
             if (status == playerStatus)
             {
@@ -78,12 +79,17 @@ namespace IPT.Common.Handlers
                 }
             }
 
-            playerStatus.SetPlayerAvailability();
-            API.Events.FirePlayerStatusChange(playerStatus);
+            if (handleAvailability)
+            {
+                playerStatus.SetPlayerAvailability();
+            }
+
             if (sendNotification)
             {
                 Notifications.StatusNotification();
             }
+
+            API.Events.FirePlayerStatusChange(playerStatus);
         }
     }
 }
