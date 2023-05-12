@@ -1,5 +1,4 @@
 ﻿using IPT.Common.User.Inputs;
-using static IPT.Common.Enums;
 
 namespace IPT.Common.API
 {
