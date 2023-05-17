@@ -12,8 +12,9 @@ namespace IPT.Common.Handlers
     /// </summary>
     public static class PlayerHandler
     {
-        private static PlayerStatus status = PlayerStatus.OutOfService;
+        private static PlayerStatus status = PlayerStatus.Available;
         private static string callsign = "1-LINCOLN-18";
+        private static int callsignSetterPriority = -1;
 
         /// <summary>
         /// Gets the player's callsign.
@@ -37,9 +38,14 @@ namespace IPT.Common.Handlers
         /// Sets the player's callsign.
         /// </summary>
         /// <param name="playerCallsign">The new callsign.</param>
-        internal static void SetCallsign(string playerCallsign)
+        /// <param name="priority">The priority of the caller, higher priority takes precedence.</param>
+        internal static void SetCallsign(string playerCallsign, int priority = 0)
         {
-            callsign = playerCallsign;
+            if (priority > callsignSetterPriority)
+            {
+                callsign = playerCallsign;
+                callsignSetterPriority = priority;
+            }
         }
 
         /// <summary>
