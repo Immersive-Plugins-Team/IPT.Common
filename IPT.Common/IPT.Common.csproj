@@ -82,6 +82,7 @@
     <Compile Include="API\Functions.cs" />
     <Compile Include="API\Logging.cs" />
     <Compile Include="API\Math.cs" />
+    <Compile Include="API\MathHelperExtensions.cs" />
     <Compile Include="API\Notifications.cs" />
     <Compile Include="API\Player.cs" />
     <Compile Include="Enums.cs" />
