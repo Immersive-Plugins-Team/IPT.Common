@@ -94,18 +94,7 @@ namespace IPT.Common.API
             return cValue;
         }
 
-        /// <summary>
-        /// Gets the angle (0-180 degrees) between the source and target entities.
-        /// </summary>
-        /// <param name="source">The source entity.</param>
-        /// <param name="target">The target entity.</param>
-        /// <returns>A double indicating the angle in degrees.</returns>
-        public static double GetVectorAngle(Entity source, Entity target)
-        {
-            var targetVector = target.Position - source.Position;
-            var dotProduct = Vector3.Dot(source.ForwardVector.ToNormalized(), targetVector.ToNormalized());
-            return ConvertRadiansToDegrees(System.Math.Acos(dotProduct));
-        }
+
 
         /// <summary>
         /// Converts radians into degrees.

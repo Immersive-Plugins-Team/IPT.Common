@@ -14,7 +14,7 @@ namespace IPT.Common.API
         /// <returns>The angle in degrees.</returns>
         public static double GetVectorAngleTo(Entity entity)
         {
-            return Math.GetVectorAngle(Game.LocalPlayer.Character, entity);
+            return MathHelperExtensions.GetVectorAngle(Game.LocalPlayer.Character, entity);
         }
     }
 }
