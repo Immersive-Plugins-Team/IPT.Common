@@ -94,8 +94,6 @@ namespace IPT.Common.API
             return cValue;
         }
 
-
-
         /// <summary>
         /// Converts radians into degrees.
         /// </summary>
