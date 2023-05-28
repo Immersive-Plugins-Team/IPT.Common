@@ -1,6 +1,18 @@
 # Changelog
 _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/)._
 
+## [1.4.1] - 2023-05-27
+
+### Added
+- Player Status Handler so that GrammarPolice and CalloutInterface can sync
+- The ability to safely retrieve the current weather
+- MathHelperExtensions for some vector math and wrap angle
+- Notification shortcuts have been added as well
+
+### Removed
+- All new GUI elements have been moved to RawCanvasUI
+- The callouts.cs code has been moved to CalloutInterface
+
 ## [1.4] - 2023-04-17
 
 ### Added
