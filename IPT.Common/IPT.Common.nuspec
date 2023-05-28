@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package >
   <metadata>
-    <id>$id$</id>
-    <version>1.4.1</version>
-    <title>IPT.Common</title>
+    <id>IPT.Common</id>
+    <version>1.4.2</version>
     <authors>Opus49</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <!-- <icon>icon.png</icon> -->
     <projectUrl>https://github.com/Immersive-Plugins-Team/IPT.Common</projectUrl>
     <description>Utility library for writing LSPDFR plugins.</description>
-    <releaseNotes>Initial release.</releaseNotes>
+    <releaseNotes>Updated for CalloutInterface and GrammarPolice.</releaseNotes>
     <copyright>2021-2023</copyright>
     <tags>LSPDFR</tags>
   </metadata>
