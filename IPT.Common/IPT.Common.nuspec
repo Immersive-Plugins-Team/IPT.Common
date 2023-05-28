@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>IPT.Common</id>
-    <version>1.4.3</version>
+    <version>1.4.4</version>
     <authors>Opus49</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
