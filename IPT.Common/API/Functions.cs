@@ -1,5 +1,6 @@
 ﻿using System;
 using Rage;
+using Rage.Native;
 
 namespace IPT.Common.API
 {
@@ -34,6 +35,21 @@ namespace IPT.Common.API
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Safely gets the current weather.
+        /// </summary>
+        /// <returns>The current weather type.</returns>
+        public static EWeatherType GetWeatherType()
+        {
+            int weatherType = NativeFunction.Natives.GET_PREV_WEATHER_TYPE_HASH_NAME<int>();
+            if (Enum.IsDefined(typeof(EWeatherType), weatherType))
+            {
+                return (EWeatherType)weatherType;
+            }
+
+            return EWeatherType.Neutral;
         }
     }
 }
