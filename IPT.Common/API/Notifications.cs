@@ -43,7 +43,7 @@ namespace IPT.Common.API
         /// </summary>
         public static void StatusNotification()
         {
-            string message = $"~w~Callsign: ~g~{PlayerHandler.Instance.Callsign}~n~~w~Status: {PlayerHandler.Instance.Status.ToColorString()}";
+            string message = $"~w~Callsign: ~g~{StatusHandler.Instance.Callsign}~n~~w~Status: {StatusHandler.Instance.Status.ToColorString()}";
             DispatchNotification("~b~Officer Status", message);
         }
     }
