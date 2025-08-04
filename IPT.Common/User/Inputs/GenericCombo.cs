@@ -1,6 +1,4 @@
-﻿using IPT.Common.API;
-
-namespace IPT.Common.User.Inputs
+﻿namespace IPT.Common.User.Inputs
 {
     /// <summary>
     /// A generic class for defining combinations of keys or controller buttons.
@@ -14,9 +12,9 @@ namespace IPT.Common.User.Inputs
         /// <param name="secondary">The optional secondary key or button.</param>
         protected GenericCombo(object primary, object secondary)
         {
-            this.Primary = primary;
-            this.Secondary = secondary;
-            this.IsPressed = false;
+            Primary = primary;
+            Secondary = secondary;
+            IsPressed = false;
         }
 
         /// <summary>
@@ -42,13 +40,11 @@ namespace IPT.Common.User.Inputs
         /// <summary>
         /// Checks the actual status of the key/button combo and updates if it has changed.
         /// </summary>
-        public virtual void Check()
+        public virtual InputState Check()
         {
-            if (this.CheckGameIsPressed() != this.IsPressed)
-            {
-                this.IsPressed = !this.IsPressed;
-                Events.FireUserInputChanged(this);
-            }
+            if (CheckGameIsPressed() == IsPressed) return InputState.None;
+            IsPressed = !IsPressed;
+            return IsPressed ? InputState.Pressed : InputState.Released;
         }
 
         /// <summary>
@@ -57,7 +53,7 @@ namespace IPT.Common.User.Inputs
         /// <returns>A string that represents the combination.</returns>
         public override string ToString()
         {
-            return (this.HasSecondary ? $"{this.Secondary}+" : string.Empty) + this.Primary.ToString();
+            return (HasSecondary ? $"{Secondary}+" : string.Empty) + Primary.ToString();
         }
 
         /// <summary>

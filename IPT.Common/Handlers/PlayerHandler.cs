@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using IPT.Common.API;
 using Rage;
 
@@ -10,41 +11,31 @@ namespace IPT.Common.Handlers
     /// <summary>
     /// Used for managing player status.
     /// </summary>
-    public static class PlayerHandler
+    public sealed class PlayerHandler
     {
-        private static PlayerStatus status = PlayerStatus.Available;
-        private static string callsign = "1-LINCOLN-18";
-        private static int callsignSetterPriority = -1;
+        private static readonly Lazy<PlayerHandler> lazyInstance = new Lazy<PlayerHandler>(() => new PlayerHandler());
+        private PlayerStatus _status = PlayerStatus.Available;
+        private string _callsign = "1-LINCOLN-18";
+        private int _callsignSetterPriority = -1;
 
-        /// <summary>
-        /// Gets the player's callsign.
-        /// </summary>
-        /// <returns>A string representing the player's callsign.</returns>
-        public static string GetCallsign()
-        {
-            return callsign;
-        }
+        private PlayerHandler() { }
 
-        /// <summary>
-        /// Gets the current player status.
-        /// </summary>
-        /// <returns>The player's status.</returns>
-        public static PlayerStatus GetStatus()
-        {
-            return status;
-        }
+        public static PlayerHandler Instance => lazyInstance.Value;
+        public event Action<PlayerStatus> OnStatusChanged;
+        public string Callsign => _callsign;
+        public PlayerStatus Status => _status;
 
         /// <summary>
         /// Sets the player's callsign.
         /// </summary>
         /// <param name="playerCallsign">The new callsign.</param>
         /// <param name="priority">The priority of the caller, higher priority takes precedence.</param>
-        internal static void SetCallsign(string playerCallsign, int priority = 0)
+        internal void SetCallsign(string playerCallsign, int priority = 0)
         {
-            if (priority > callsignSetterPriority)
+            if (priority > _callsignSetterPriority)
             {
-                callsign = playerCallsign;
-                callsignSetterPriority = priority;
+                _callsign = playerCallsign;
+                _callsignSetterPriority = priority;
             }
         }
 
@@ -54,15 +45,11 @@ namespace IPT.Common.Handlers
         /// <param name="playerStatus">The new status.</param>
         /// <param name="sendNotification">Sends a notification when true.</param>
         /// <param name="handleAvailability">Update the availability based on the status..</param>
-        internal static void SetStatus(PlayerStatus playerStatus, bool sendNotification = true, bool handleAvailability = true)
+        internal void SetStatus(PlayerStatus playerStatus, bool sendNotification = true, bool handleAvailability = true)
         {
-            if (status == playerStatus)
-            {
-                return;
-            }
-
-            status = playerStatus;
-            if (status == PlayerStatus.EnRoute)
+            if (_status == playerStatus) return;
+            _status = playerStatus;
+            if (_status == PlayerStatus.EnRoute)
             {
                 var callout = LSPD_First_Response.Mod.API.Functions.GetCurrentCallout();
                 if (callout == null)
@@ -85,17 +72,9 @@ namespace IPT.Common.Handlers
                 }
             }
 
-            if (handleAvailability)
-            {
-                playerStatus.SetPlayerAvailability();
-            }
-
-            if (sendNotification)
-            {
-                Notifications.StatusNotification();
-            }
-
-            API.Events.FirePlayerStatusChange(playerStatus);
+            if (handleAvailability) _status.SetPlayerAvailability();
+            if (sendNotification) Notifications.StatusNotification();
+            OnStatusChanged?.Invoke(playerStatus);
         }
     }
 }

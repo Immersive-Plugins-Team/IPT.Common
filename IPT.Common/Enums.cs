@@ -41,5 +41,17 @@
         Snow = -273223690,
         Thunder = -1233681761,
     }
+
+    /// <summary>
+    /// Represents the state of an input combo.
+    /// </summary>
+    public enum InputState
+    {
+        None,
+        Pressed,
+        Released,
+        LongPress,
+        ShortPress,
+    }
 #pragma warning restore 1591, SA1602
 }

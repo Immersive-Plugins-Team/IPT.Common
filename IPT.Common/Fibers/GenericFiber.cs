@@ -15,9 +15,9 @@ namespace IPT.Common.Fibers
         /// <param name="name">A descriptive name for the fiber.  Does not need to be unique.</param>
         protected GenericFiber(string name, int interval)
         {
-            this.Name = $"{name.ToUpper()}-{Guid.NewGuid()}";
-            this.IsRunning = false;
-            this.Interval = interval;
+            Name = $"{name.ToUpper()}-{Guid.NewGuid()}";
+            IsRunning = false;
+            Interval = interval;
         }
 
         /// <summary>
@@ -40,13 +40,9 @@ namespace IPT.Common.Fibers
         /// </summary>
         public virtual void Start()
         {
-            if (this.IsRunning)
-            {
-                return;
-            }
-
-            this.IsRunning = true;
-            GameFiber.StartNew(this.Run, this.Name);
+            if (IsRunning) return;
+            IsRunning = true;
+            GameFiber.StartNew(Run, Name);
         }
 
         /// <summary>
@@ -54,7 +50,7 @@ namespace IPT.Common.Fibers
         /// </summary>
         public virtual void Stop()
         {
-            this.IsRunning = false;
+            IsRunning = false;
         }
 
         /// <summary>
@@ -67,18 +63,11 @@ namespace IPT.Common.Fibers
         /// </summary>
         protected virtual void Run()
         {
-            while (this.IsRunning)
+            while (IsRunning)
             {
-                if (this.Interval == 0)
-                {
-                    GameFiber.Yield();
-                }
-                else
-                {
-                    GameFiber.Sleep(this.Interval);
-                }
-
-                this.DoSomething();
+                if (Interval == 0) GameFiber.Yield();
+                else GameFiber.Sleep(Interval);
+                DoSomething();
             }
         }
     }

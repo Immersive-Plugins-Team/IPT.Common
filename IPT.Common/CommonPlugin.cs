@@ -1,42 +1,30 @@
-﻿namespace IPT.Common
+﻿using System.Collections.Generic;
+using IPT.Common.API;
+
+namespace IPT.Common
 {
-    /// <summary>
-    /// An abstract generic plugin class.
-    /// </summary>
     public abstract class CommonPlugin : LSPD_First_Response.Mod.API.Plugin
     {
-        /// <summary>
-        /// Called when the player goes off duty.
-        /// </summary>
-        public override void Finally()
-        {
-            this.Stop();
-        }
+        protected abstract string PluginName { get; }
+        protected abstract List<Dependency> Dependencies { get; }
 
-        /// <summary>
-        /// Called when the plugin is created.
-        /// </summary>
         public override void Initialize()
         {
             LSPD_First_Response.Mod.API.Functions.OnOnDutyStateChanged += this.Functions_OnOnDutyStateChanged;
         }
 
-        /// <summary>
-        /// Starts the plugin.
-        /// </summary>
-        protected abstract void Start();
+        public override void Finally()
+        {
+            Stop();
+        }
 
-        /// <summary>
-        /// Stops the plugin.
-        /// </summary>
+        protected abstract void Start();
         protected abstract void Stop();
 
         private void Functions_OnOnDutyStateChanged(bool onDuty)
         {
             if (onDuty)
-            {
-                this.Start();
-            }
+                if (DependencyManager.Check(PluginName, Dependencies)) Start();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using System;
+using Rage;
 
 namespace IPT.Common.User.Settings
 {
@@ -8,6 +9,11 @@ namespace IPT.Common.User.Settings
     public abstract class Setting
     {
         /// <summary>
+        /// An event that is triggered when the value of the setting changes.
+        /// </summary>
+        public event Action<object> OnValueChanged;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Setting"/> class.
         /// </summary>
         /// <param name="section">The section of the INI file containing the setting.</param>
@@ -15,9 +21,9 @@ namespace IPT.Common.User.Settings
         /// <param name="description">A brief description of the setting.</param>
         protected Setting(string section, string name, string description)
         {
-            this.Section = section;
-            this.Name = name;
-            this.Description = description;
+            Section = section;
+            Name = name;
+            Description = description;
         }
 
         /// <summary>
@@ -58,5 +64,14 @@ namespace IPT.Common.User.Settings
         /// </summary>
         /// <param name="ini">The INI object used to save the value.</param>
         public abstract void Save(InitializationFile ini);
+
+        /// <summary>
+        /// Fires the OnValueChanged event. To be called by subclasses.
+        /// </summary>
+        /// <param name="newValue">The new value being assigned.</param>
+        protected void ValueChanged(object newValue)
+        {
+            OnValueChanged?.Invoke(newValue);
+        }
     }
 }

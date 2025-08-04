@@ -17,7 +17,7 @@ namespace IPT.Common.User.Settings
         public SettingString(string section, string name, string description, string defaultValue)
             : base(section, name, description)
         {
-            this.Value = defaultValue;
+            Value = defaultValue;
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace IPT.Common.User.Settings
         /// <returns>The value of the setting.</returns>
         public override object GetValue()
         {
-            return this.Value;
+            return Value;
         }
 
         /// <summary>
@@ -40,7 +40,10 @@ namespace IPT.Common.User.Settings
         /// <param name="value">The value to use.</param>
         public override void SetValue(object value)
         {
-            this.Value = value.ToString();
+            var newValue = value.ToString();
+            if (Value == newValue) return;
+            Value = newValue;
+            ValueChanged(Value);
         }
 
         /// <summary>
@@ -49,7 +52,7 @@ namespace IPT.Common.User.Settings
         /// <param name="ini">The INI object used to load the value.</param>
         public override void Load(InitializationFile ini)
         {
-            this.Value = ini.ReadString(this.Section, this.Name, this.Value);
+            Value = ini.ReadString(Section, Name, Value);
         }
 
         /// <summary>
@@ -58,7 +61,7 @@ namespace IPT.Common.User.Settings
         /// <param name="ini">The INI object used to save the value.</param>
         public override void Save(InitializationFile ini)
         {
-            ini.Write(this.Section, this.Name, this.Value);
+            ini.Write(Section, Name, Value);
         }
     }
 }

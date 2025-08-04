@@ -1,62 +1,59 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IPT.Common.Fibers;
 using IPT.Common.User;
+using IPT.Common.User.Inputs;
+using Rage;
 
 namespace IPT.Common.Handlers
 {
     /// <summary>
     /// A handler for managing user input.
     /// </summary>
-    public class InputHandler
+    public class InputHandler : GenericFiber
     {
-        private readonly Configuration config;
-        private readonly List<GenericFiber> fibers;
+        public event Action<GenericCombo> OnInputPressed;
+        public event Action<GenericCombo> OnInputReleased;
+        public event Action<HoldableCombo, bool> OnHoldableInput;
+
+        private readonly List<GenericCombo> _combos = new List<GenericCombo>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InputHandler"/> class.
         /// </summary>
         /// <param name="config">The configuration object for the plugin.</param>
         public InputHandler(Configuration config)
+            : base("InputHandler", 0)
         {
-            this.config = config;
-            this.fibers = new List<GenericFiber>();
+            _combos.AddRange(config.GetInputCombos());
         }
 
         /// <summary>
-        /// Gets a list of fibers managed by the handler.
+        /// Executes each tick.
         /// </summary>
-        public List<GenericFiber> Fibers
+        protected override void DoSomething()
         {
-            get
+            if (API.Functions.IsGamePaused()) return;
+            foreach (var combo in _combos)
             {
-                return this.fibers;
-            }
-        }
+                if (combo is HoldableCombo holdable)
+                {
+                    switch (holdable.Check())
+                    {
+                        case InputState.ShortPress: OnHoldableInput?.Invoke(holdable, false); break;
+                        case InputState.LongPress: OnHoldableInput?.Invoke(holdable, true); break;
+                    }
 
-        /// <summary>
-        /// Starts the input handler.
-        /// </summary>
-        public void Start()
-        {
-            foreach (var combo in this.config.GetInputCombos())
-            {
-                var fiber = new ComboFiber(combo);
-                fiber.Start();
-                this.fibers.Add(fiber);
+                }
+                else
+                {
+                    switch (combo.Check())
+                    {
+                        case InputState.Pressed: OnInputPressed?.Invoke(combo); break;
+                        case InputState.Released: OnInputReleased?.Invoke(combo); break;
+                    }
+                }
             }
-        }
-
-        /// <summary>
-        /// Stops the input handler.
-        /// </summary>
-        public void Stop()
-        {
-            foreach (var fiber in this.fibers)
-            {
-                fiber.Stop();
-            }
-
-            this.fibers.Clear();
         }
     }
 }
