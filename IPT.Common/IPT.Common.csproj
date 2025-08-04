@@ -91,6 +91,7 @@
     <Compile Include="Callouts.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Fibers\ComboFiber.cs" />
     <Compile Include="Fibers\GenericFiber.cs" />
     <Compile Include="Handlers\InputHandler.cs" />
     <Compile Include="CommonPlugin.cs" />
