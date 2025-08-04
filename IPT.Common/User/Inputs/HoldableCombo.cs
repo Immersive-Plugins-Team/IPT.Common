@@ -16,9 +16,9 @@ namespace IPT.Common.User.Inputs
         protected HoldableCombo(object primary, object secondary, int interval)
             : base(primary, secondary)
         {
-            this.Interval = interval;
-            this.Timer = new Stopwatch();
-            this.IsLong = false;
+            Interval = interval;
+            Timer = new Stopwatch();
+            IsLong = false;
         }
 
         /// <summary>
@@ -39,34 +39,26 @@ namespace IPT.Common.User.Inputs
         /// <summary>
         /// Checks the status of the combo.
         /// </summary>
-        public override void Check()
+        public override InputState Check()
         {
-            if (this.CheckGameIsPressed() != this.IsPressed)
+            if (CheckGameIsPressed() != IsPressed)
             {
-                this.IsPressed = !this.IsPressed;
-                if (this.IsPressed)
-                {
-                    this.Timer.Start();
-                }
+                IsPressed = !IsPressed;
+                if (IsPressed) Timer.Start();
                 else
                 {
-                    this.Timer.Reset();
-                    if (!this.IsLong)
-                    {
-                        API.Events.FireHoldableUserInput(this, false);
-                    }
-                    else
-                    {
-                        // we already fired the event from a long press
-                        this.IsLong = false;
-                    }
+                    Timer.Reset();
+                    if (!IsLong) return InputState.ShortPress;
+                    else IsLong = false; // Reset long press state on release
                 }
             }
-            else if (this.IsPressed && !this.IsLong && this.Timer.ElapsedMilliseconds > this.Interval)
+            else if (IsPressed && !IsLong && Timer.ElapsedMilliseconds > Interval)
             {
-                this.IsLong = true;
-                API.Events.FireHoldableUserInput(this, true);
+                IsLong = true;
+                return InputState.LongPress;
             }
+
+            return InputState.None;
         }
     }
 }

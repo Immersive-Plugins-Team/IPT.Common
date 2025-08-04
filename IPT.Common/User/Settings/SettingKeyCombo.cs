@@ -18,7 +18,7 @@ namespace IPT.Common.User.Settings
         public SettingKeyCombo(string section, string name, string description)
             : base(section, name, description)
         {
-            this.Value = new KeyCombo(Keys.None, Keys.None);
+            Value = new KeyCombo(Keys.None, Keys.None);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace IPT.Common.User.Settings
         /// <returns>The value of the setting.</returns>
         public override object GetValue()
         {
-            return this.Value;
+            return Value;
         }
 
         /// <summary>
@@ -41,7 +41,10 @@ namespace IPT.Common.User.Settings
         /// <param name="value">The value of the setting.</param>
         public override void SetValue(object value)
         {
-            this.Value = (KeyCombo)value;
+            var newValue = (KeyCombo)value;
+            if (Value == newValue) return;
+            Value = newValue;
+            ValueChanged(Value);
         }
 
         /// <summary>
@@ -50,9 +53,9 @@ namespace IPT.Common.User.Settings
         /// <param name="ini">The INI object used to load the value.</param>
         public override void Load(InitializationFile ini)
         {
-            Keys primary = GetKeysFromString(ini.ReadString(this.Section, this.Name, this.Value.PrimaryKey.ToString()), this.Value.PrimaryKey);
-            Keys secondary = GetKeysFromString(ini.ReadString(this.Section, $"{this.Name}Modifier", this.Value.SecondaryKey.ToString()), this.Value.SecondaryKey);
-            this.Value = new KeyCombo(primary, secondary);
+            Keys primary = GetKeysFromString(ini.ReadString(Section, Name, Value.PrimaryKey.ToString()), Value.PrimaryKey);
+            Keys secondary = GetKeysFromString(ini.ReadString(Section, $"{Name}Modifier", Value.SecondaryKey.ToString()), Value.SecondaryKey);
+            Value = new KeyCombo(primary, secondary);
         }
 
         /// <summary>
@@ -61,10 +64,10 @@ namespace IPT.Common.User.Settings
         /// <param name="ini">The INI object used to save the value.</param>
         public override void Save(InitializationFile ini)
         {
-            ini.Write(this.Section, this.Name, this.Value.PrimaryKey.ToString());
-            if (this.Value.HasSecondary)
+            ini.Write(Section, Name, Value.PrimaryKey.ToString());
+            if (Value.HasSecondary)
             {
-                ini.Write(this.Section, $"{this.Name}Modifier", this.Value.SecondaryKey.ToString());
+                ini.Write(Section, $"{Name}Modifier", Value.SecondaryKey.ToString());
             }
         }
 

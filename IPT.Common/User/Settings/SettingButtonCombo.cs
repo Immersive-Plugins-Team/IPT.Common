@@ -17,7 +17,7 @@ namespace IPT.Common.User.Settings
         public SettingButtonCombo(string section, string name, string description)
             : base(section, name, description)
         {
-            this.Value = new ButtonCombo(ControllerButtons.None, ControllerButtons.None);
+            Value = new ButtonCombo(ControllerButtons.None, ControllerButtons.None);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace IPT.Common.User.Settings
         /// <returns>The value.</returns>
         public override object GetValue()
         {
-            return this.Value;
+            return Value;
         }
 
         /// <summary>
@@ -40,7 +40,10 @@ namespace IPT.Common.User.Settings
         /// <param name="value">The value.</param>
         public override void SetValue(object value)
         {
-            this.Value = (ButtonCombo)value;
+            var newValue = (ButtonCombo)value;
+            if (Value == newValue) return;
+            Value = newValue;
+            ValueChanged(Value);
         }
 
         /// <summary>
@@ -49,9 +52,9 @@ namespace IPT.Common.User.Settings
         /// <param name="ini">The INI object used to load the value.</param>
         public override void Load(InitializationFile ini)
         {
-            ControllerButtons primary = ini.ReadEnum(this.Section, this.Name, this.Value.PrimaryButton);
-            ControllerButtons secondary = ini.ReadEnum(this.Section, $"{this.Name}Modifier", this.Value.SecondaryButton);
-            this.Value = new ButtonCombo(primary, secondary);
+            ControllerButtons primary = ini.ReadEnum(Section, Name, Value.PrimaryButton);
+            ControllerButtons secondary = ini.ReadEnum(Section, $"{Name}Modifier", Value.SecondaryButton);
+            Value = new ButtonCombo(primary, secondary);
         }
 
         /// <summary>
@@ -60,10 +63,10 @@ namespace IPT.Common.User.Settings
         /// <param name="ini">The INI object used to save the value.</param>
         public override void Save(InitializationFile ini)
         {
-            ini.Write(this.Section, this.Name, this.Value.PrimaryButton.ToString());
-            if (this.Value.HasSecondary)
+            ini.Write(Section, Name, Value.PrimaryButton.ToString());
+            if (Value.HasSecondary)
             {
-                ini.Write(this.Section, $"{this.Name}Modifier", this.Value.SecondaryButton.ToString());
+                ini.Write(Section, $"{Name}Modifier", Value.SecondaryButton.ToString());
             }
         }
     }

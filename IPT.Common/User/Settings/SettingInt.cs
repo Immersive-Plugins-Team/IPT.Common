@@ -21,10 +21,10 @@ namespace IPT.Common.User.Settings
         public SettingInt(string section, string name, string description, int defaultValue, int min, int max, int increment)
             : base(section, name, description)
         {
-            this.Value = defaultValue;
-            this.Min = min;
-            this.Max = max;
-            this.Increment = increment;
+            Value = defaultValue;
+            Min = min;
+            Max = max;
+            Increment = increment;
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace IPT.Common.User.Settings
         /// <returns>The value.</returns>
         public override object GetValue()
         {
-            return this.Value;
+            return Value;
         }
 
         /// <summary>
@@ -62,7 +62,10 @@ namespace IPT.Common.User.Settings
         /// <param name="value">The value.</param>
         public override void SetValue(object value)
         {
-            this.Value = Math.Snap((int)value, this.Min, this.Max, this.Increment);
+            var newValue = Math.Snap((int)value, Min, Max, Increment);
+            if (Value == newValue) return;
+            Value = newValue;
+            ValueChanged(Value);
         }
 
         /// <summary>
@@ -71,8 +74,8 @@ namespace IPT.Common.User.Settings
         /// <param name="ini">The INI object used to load the value.</param>
         public override void Load(InitializationFile ini)
         {
-            this.Value = ini.ReadInt32(this.Section, this.Name, this.Value);
-            this.Value = Math.Snap(this.Value, this.Min, this.Max, this.Increment);
+            Value = ini.ReadInt32(Section, Name, Value);
+            Value = Math.Snap(Value, Min, Max, Increment);
         }
 
         /// <summary>
@@ -81,7 +84,7 @@ namespace IPT.Common.User.Settings
         /// <param name="ini">The INI object used to save the value.</param>
         public override void Save(InitializationFile ini)
         {
-            ini.Write(this.Section, this.Name, this.Value);
+            ini.Write(Section, Name, Value);
         }
     }
 }

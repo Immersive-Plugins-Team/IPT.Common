@@ -58,13 +58,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LSPD First Response">
-      <HintPath>..\..\..\..\lib\LSPD First Response.dll</HintPath>
+      <HintPath>..\..\lib\LSPD First Response.dll</HintPath>
     </Reference>
-    <Reference Include="RAGENativeUI, Version=1.9.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\RAGENativeUI.1.9.2\lib\net472\RAGENativeUI.dll</HintPath>
+    <Reference Include="RAGENativeUI, Version=1.9.3.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\RAGENativeUI.1.9.3\lib\net472\RAGENativeUI.dll</HintPath>
     </Reference>
     <Reference Include="RagePluginHook, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\RagePluginHook.1.98.0\lib\net472\RagePluginHook.dll</HintPath>
+      <HintPath>..\packages\RagePluginHook.1.109.1\lib\net472\RagePluginHook.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -78,7 +78,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\Events.cs" />
+    <Compile Include="API\Dependency.cs" />
+    <Compile Include="API\DependencyManager.cs" />
     <Compile Include="API\Functions.cs" />
     <Compile Include="API\Logging.cs" />
     <Compile Include="API\Math.cs" />
@@ -89,7 +90,6 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Fibers\GenericFiber.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Handlers\InputHandler.cs" />
     <Compile Include="CommonPlugin.cs" />
     <Compile Include="Handlers\PlayerHandler.cs" />
@@ -97,7 +97,6 @@
     <Compile Include="User\Configuration.cs" />
     <Compile Include="User\Inputs\ButtonCombo.cs" />
     <Compile Include="User\Inputs\GenericCombo.cs" />
-    <Compile Include="Fibers\ComboFiber.cs" />
     <Compile Include="User\Inputs\HoldableButtonCombo.cs" />
     <Compile Include="User\Inputs\HoldableCombo.cs" />
     <Compile Include="User\Inputs\HoldableKeyCombo.cs" />
@@ -117,10 +116,6 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
