@@ -1,4 +1,5 @@
-﻿using IPT.Common.User.Inputs;
+﻿using System;
+using IPT.Common.User.Inputs;
 
 namespace IPT.Common.API
 {
@@ -29,22 +30,26 @@ namespace IPT.Common.API
         /// <summary>
         /// Event for user input changes.
         /// </summary>
+        [Obsolete("This event is deprecated. Please subscribe to InputHandler events directly.")]
         public static event UserInputChangedEventHandler OnUserInputChanged;
 
         /// <summary>
         ///  Event for holdable user inputs.
         /// </summary>
+        [Obsolete("This event is deprecated. Please subscribe to InputHandler events directly.")]
         public static event HoldableUserInputEventHandler OnHoldableUserInput;
 
         /// <summary>
         /// Event for player status changes.
         /// </summary>
+        [Obsolete("This event is deprecated. Please subscribe to PlayerStateManager events directly.")]
         public static event PlayerStatusChangeEventHandler OnPlayerStatusChange;
 
         /// <summary>
         /// Fires an event for a user input change.
         /// </summary>
         /// <param name="combo">The key or controller combo that has changed.</param>
+        [Obsolete("This method is deprecated.")]
         internal static void FireUserInputChanged(GenericCombo combo)
         {
             OnUserInputChanged?.Invoke(combo);
@@ -55,6 +60,7 @@ namespace IPT.Common.API
         /// </summary>
         /// <param name="combo">The key or controller combo.</param>
         /// <param name="isLongPress">True if it was a long press, otherwise false.</param>
+        [Obsolete("This method is deprecated.")]
         internal static void FireHoldableUserInput(HoldableCombo combo, bool isLongPress)
         {
             OnHoldableUserInput?.Invoke(combo, isLongPress);
@@ -64,6 +70,7 @@ namespace IPT.Common.API
         /// Fires an event for a player status change.
         /// </summary>
         /// <param name="playerStatus">The new player status.</param>
+        [Obsolete("This method is deprecated.")]
         internal static void FirePlayerStatusChange(PlayerStatus playerStatus)
         {
             OnPlayerStatusChange?.Invoke(playerStatus);
