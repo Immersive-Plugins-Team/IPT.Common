@@ -52,7 +52,7 @@ namespace IPT.Common.User.Settings
         /// <param name="ini">The INI object used to load the value.</param>
         public override void Load(InitializationFile ini)
         {
-            Value = ini.ReadBoolean(this.Section, this.Name, this.Value);
+            Value = ini.ReadBoolean(Section, Name, Value);
         }
 
         /// <summary>
