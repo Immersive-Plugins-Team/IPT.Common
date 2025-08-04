@@ -1,4 +1,3 @@
-﻿using System.Windows.Forms;
 
 namespace IPT.Common.User.Inputs
 {
