@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using IPT.Common.Fibers;
 using IPT.Common.User;
 using IPT.Common.User.Inputs;
@@ -37,13 +36,22 @@ namespace IPT.Common.Handlers
             if (API.Functions.IsGamePaused()) return;
             foreach (var combo in _combos)
             {
-                var state = combo.Check();
-                switch (state)
+                if (combo is HoldableCombo holdable)
                 {
-                    case InputState.Pressed: OnInputPressed?.Invoke(combo); break;
-                    case InputState.Released: OnInputReleased?.Invoke(combo); break;
-                    case InputState.LongPress: OnHoldableInput?.Invoke(combo as HoldableCombo, true); break;
-                    case InputState.ShortPress: OnHoldableInput?.Invoke(combo as HoldableCombo, false); break;
+                    switch (holdable.Check())
+                    {
+                        case InputState.ShortPress: OnHoldableInput?.Invoke(holdable, false); break;
+                        case InputState.LongPress: OnHoldableInput?.Invoke(holdable, true); break;
+                    }
+
+                }
+                else
+                {
+                    switch (combo.Check())
+                    {
+                        case InputState.Pressed: OnInputPressed?.Invoke(combo); break;
+                        case InputState.Released: OnInputReleased?.Invoke(combo); break;
+                    }
                 }
             }
         }
