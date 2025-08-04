@@ -10,6 +10,8 @@ namespace IPT.Common.Fibers
     [Obsolete("This class is deprecated. Use input handler.")]
     public class ComboFiber : GenericFiber
     {
+        private readonly GenericCombo _combo;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ComboFiber"/> class.
         /// </summary>
@@ -17,22 +19,29 @@ namespace IPT.Common.Fibers
         public ComboFiber(GenericCombo combo)
             : base($"combo-{combo}", 0)
         {
-            this.Combo = combo;
+            _combo = combo;
         }
 
         /// <summary>
         /// Gets the key or button combination being monitored.
         /// </summary>
-        public GenericCombo Combo { get; }
+        public GenericCombo Combo => _combo;
 
         /// <summary>
         /// Checks every tick to see if the combo has changed its status.
         /// </summary>
         protected override void DoSomething()
         {
-            if (!Game.IsPaused && !Rage.Native.NativeFunction.Natives.IS_PAUSE_MENU_ACTIVE<bool>())
+            if (API.Functions.IsGamePaused()) return;
+            if (Combo is HoldableCombo holdable)
             {
-                this.Combo.Check();
+                var holdableState = holdable.Check();
+                if (holdableState != InputState.None) API.Events.FireHoldableUserInput(holdable, holdableState == InputState.LongPress);
+            }
+            else
+            {
+                var state = Combo.Check();
+                if (state != InputState.None) API.Events.FireUserInputChanged(Combo);
             }
         }
     }
