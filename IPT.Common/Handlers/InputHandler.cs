@@ -16,7 +16,7 @@ namespace IPT.Common.Handlers
         public event Action<GenericCombo> OnInputReleased;
         public event Action<HoldableCombo, bool> OnHoldableInput;
 
-        private readonly List<GenericCombo> _combos = new List<GenericCombo>();
+        private readonly Configuration _config;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InputHandler"/> class.
@@ -25,7 +25,7 @@ namespace IPT.Common.Handlers
         public InputHandler(Configuration config)
             : base("InputHandler", 0)
         {
-            _combos.AddRange(config.GetInputCombos());
+            _config = config;
         }
 
         /// <summary>
@@ -34,14 +34,24 @@ namespace IPT.Common.Handlers
         protected override void DoSomething()
         {
             if (API.Functions.IsGamePaused()) return;
-            foreach (var combo in _combos)
+
+            // we have to retrieve the actual combos every time because
+            // originally I was using reference comparisons instead of
+            // value comparisons because I'm a fucking idiot
+            foreach (var combo in _config.GetInputCombos())
             {
                 if (combo is HoldableCombo holdable)
                 {
                     switch (holdable.Check())
                     {
-                        case InputState.ShortPress: OnHoldableInput?.Invoke(holdable, false); break;
-                        case InputState.LongPress: OnHoldableInput?.Invoke(holdable, true); break;
+                        case InputState.ShortPress:
+                            OnHoldableInput?.Invoke(holdable, false);
+                            API.Events.FireHoldableUserInput(holdable, false); // legacy
+                            break;
+                        case InputState.LongPress:
+                            OnHoldableInput?.Invoke(holdable, true);
+                            API.Events.FireHoldableUserInput(holdable, true);  // legacy
+                            break;
                     }
 
                 }
@@ -49,8 +59,14 @@ namespace IPT.Common.Handlers
                 {
                     switch (combo.Check())
                     {
-                        case InputState.Pressed: OnInputPressed?.Invoke(combo); break;
-                        case InputState.Released: OnInputReleased?.Invoke(combo); break;
+                        case InputState.Pressed:
+                            OnInputPressed?.Invoke(combo);
+                            API.Events.FireUserInputChanged(combo);
+                            break;
+                        case InputState.Released:
+                            OnInputReleased?.Invoke(combo);
+                            API.Events.FireUserInputChanged(combo);
+                            break;
                     }
                 }
             }

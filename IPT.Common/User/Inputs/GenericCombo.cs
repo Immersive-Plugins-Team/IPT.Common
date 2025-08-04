@@ -1,4 +1,6 @@
-﻿namespace IPT.Common.User.Inputs
+﻿using System.Windows.Forms;
+
+namespace IPT.Common.User.Inputs
 {
     /// <summary>
     /// A generic class for defining combinations of keys or controller buttons.
@@ -15,6 +17,28 @@
             Primary = primary;
             Secondary = secondary;
             IsPressed = false;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is GenericCombo other) return ToString() == other.ToString();
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+
+        public static bool operator ==(GenericCombo left, GenericCombo right)
+        {
+            if (left is null) return right is null;
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(GenericCombo left, GenericCombo right)
+        {
+            return !(left == right);
         }
 
         /// <summary>
