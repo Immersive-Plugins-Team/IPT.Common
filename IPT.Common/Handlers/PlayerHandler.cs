@@ -14,25 +14,25 @@ namespace IPT.Common.Handlers
     {
         internal static void SetCallsign(string playerCallsign, int priority = 0)
         {
-            StatusHandler.Instance.SetCallsign(playerCallsign, priority);
+            PlayerStateManager.Instance.SetCallsign(playerCallsign, priority);
         }   
 
         internal static void SetStatus(PlayerStatus playerStatus, bool sendNotification = true, bool handleAvailability = true)
         {
-            if (StatusHandler.Instance.Status == playerStatus) return;
-            StatusHandler.Instance.SetStatus(playerStatus, sendNotification, handleAvailability);
+            if (PlayerStateManager.Instance.Status == playerStatus) return;
+            PlayerStateManager.Instance.SetStatus(playerStatus, sendNotification, handleAvailability);
             API.Events.FirePlayerStatusChange(playerStatus);
         }
 
 
         public static string GetCallsign()
         {
-            return StatusHandler.Instance.Callsign;
+            return PlayerStateManager.Instance.Callsign;
         }
 
         public static PlayerStatus GetStatus()
         {
-            return StatusHandler.Instance.Status;
+            return PlayerStateManager.Instance.Status;
         }
     }
 }
