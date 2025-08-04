@@ -11,16 +11,16 @@ namespace IPT.Common.Handlers
     /// <summary>
     /// Used for managing player status.
     /// </summary>
-    public sealed class StatusHandler
+    public sealed class PlayerStateManager
     {
-        private static readonly Lazy<StatusHandler> lazyInstance = new Lazy<StatusHandler>(() => new StatusHandler());
+        private static readonly Lazy<PlayerStateManager> lazyInstance = new Lazy<PlayerStateManager>(() => new PlayerStateManager());
         private PlayerStatus _status = PlayerStatus.Available;
         private string _callsign = "1-LINCOLN-18";
         private int _callsignSetterPriority = -1;
 
-        private StatusHandler() { }
+        private PlayerStateManager() { }
 
-        public static StatusHandler Instance => lazyInstance.Value;
+        public static PlayerStateManager Instance => lazyInstance.Value;
         public event Action<PlayerStatus> OnStatusChanged;
         public string Callsign => _callsign;
         public PlayerStatus Status => _status;
@@ -44,7 +44,7 @@ namespace IPT.Common.Handlers
         /// </summary>
         /// <param name="playerStatus">The new status.</param>
         /// <param name="sendNotification">Sends a notification when true.</param>
-        /// <param name="handleAvailability">Update the availability based on the status..</param>
+        /// <param name="handleAvailability">Update the availability based on the status.</param>
         internal void SetStatus(PlayerStatus playerStatus, bool sendNotification = true, bool handleAvailability = true)
         {
             if (_status == playerStatus) return;
