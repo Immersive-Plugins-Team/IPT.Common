@@ -10,8 +10,8 @@
 
         public Dependency(string name, string version)
         {
-            this.Name = name;
-            this.Version = version;
+            Name = name;
+            Version = version;
         }
     }
 }
