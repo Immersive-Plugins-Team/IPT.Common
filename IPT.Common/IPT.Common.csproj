@@ -35,8 +35,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <CodeAnalysisRuleSet>
     </CodeAnalysisRuleSet>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Release\IPT.Common.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
