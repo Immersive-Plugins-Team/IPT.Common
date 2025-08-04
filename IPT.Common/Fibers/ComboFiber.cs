@@ -1,4 +1,5 @@
-﻿using IPT.Common.User.Inputs;
+﻿using System;
+using IPT.Common.User.Inputs;
 using Rage;
 
 namespace IPT.Common.Fibers
@@ -6,6 +7,7 @@ namespace IPT.Common.Fibers
     /// <summary>
     /// A fiber for monitoring keyboard and controller inputs.
     /// </summary>
+    [Obsolete("This class is deprecated. Use input handler.")]
     public class ComboFiber : GenericFiber
     {
         /// <summary>
