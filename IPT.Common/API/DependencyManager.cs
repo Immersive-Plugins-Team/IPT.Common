@@ -36,7 +36,7 @@ namespace IPT.Common.API
             try
             {
                 // We assume the dependency DLL is in the root GTA V folder
-                var assembly = AssemblyName.GetAssemblyName($"{AppDomain.CurrentDomain.BaseDirectory}/{dependency.Name}.dll");
+                var assembly = AssemblyName.GetAssemblyName(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{dependency.Name}.dll"));
                 if (assembly.Version >= new Version(dependency.Version))
                 {
                     Logging.Info($"{callingPluginName} dependency '{dependency.Name}' is available (v{assembly.Version}).");
