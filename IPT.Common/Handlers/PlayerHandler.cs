@@ -20,7 +20,7 @@ namespace IPT.Common.Handlers
         internal static void SetStatus(PlayerStatus playerStatus, bool sendNotification = true, bool handleAvailability = true)
         {
             if (StatusHandler.Instance.Status == playerStatus) return;
-            StatusHandler.Instance.SetStatus(playerStatus);
+            StatusHandler.Instance.SetStatus(playerStatus, sendNotification, handleAvailability);
             API.Events.FirePlayerStatusChange(playerStatus);
         }
 
