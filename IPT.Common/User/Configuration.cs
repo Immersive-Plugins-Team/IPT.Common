@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using IPT.Common.API;
 using IPT.Common.User.Inputs;
 using IPT.Common.User.Settings;
@@ -11,32 +13,26 @@ namespace IPT.Common.User
     /// <summary>
     /// A base class for generating a plugin-specific Configuration class.
     /// </summary>
-    public abstract class Configuration
+    public abstract class Configuration : INotifyPropertyChanged
     {
-        #pragma warning disable S1104, SA1401, CS1591, SA1600
+        public event PropertyChangedEventHandler PropertyChanged;
         public SettingInt LogLevel = Logging.GetLogLevelSetting();
-        #pragma warning restore S1104, SA1401, CS1591, SA1600
 
-        private readonly List<Setting> allSettings;
+        private readonly List<Setting> _allSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Configuration"/> class.
         /// </summary>
         protected Configuration()
         {
-            this.allSettings = this.GetAllSettings();
+            _allSettings = GetAllSettings();
+            SubscribeToSettings();
         }
 
         /// <summary>
         /// Gets a list of all settings objects.
         /// </summary>
-        public List<Setting> AllSettings
-        {
-            get
-            {
-                return this.allSettings;
-            }
-        }
+        public List<Setting> AllSettings { get => _allSettings; }
 
         /// <summary>
         /// Gets a list of generic combos defined in the settings.
@@ -131,6 +127,21 @@ namespace IPT.Common.User
             }
 
             return settings;
+        }
+
+        private void OnSettingValueChanged(Setting setting)
+        {
+            OnPropertyChanged(setting.Name);
+        }
+
+        private void SubscribeToSettings()
+        {
+            foreach (var setting in _allSettings) setting.OnValueChanged += this.OnSettingValueChanged;
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

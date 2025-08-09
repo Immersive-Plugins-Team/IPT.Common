@@ -65,7 +65,7 @@ namespace IPT.Common.User.Settings
             var newValue = Math.Snap((int)value, Min, Max, Increment);
             if (Value == newValue) return;
             Value = newValue;
-            ValueChanged(Value);
+            ValueChanged();
         }
 
         /// <summary>

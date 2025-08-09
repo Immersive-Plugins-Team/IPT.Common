@@ -44,7 +44,7 @@ namespace IPT.Common.User.Settings
             var newValue = (HoldableKeyCombo)value;
             if (Value == newValue) return;
             Value = newValue;
-            ValueChanged(Value);
+            ValueChanged();
         }
 
         /// <summary>

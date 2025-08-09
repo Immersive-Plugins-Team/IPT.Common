@@ -43,7 +43,7 @@ namespace IPT.Common.User.Settings
             var newValue = (ButtonCombo)value;
             if (Value == newValue) return;
             Value = newValue;
-            ValueChanged(Value);
+            ValueChanged();
         }
 
         /// <summary>

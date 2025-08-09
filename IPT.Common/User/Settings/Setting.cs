@@ -11,7 +11,7 @@ namespace IPT.Common.User.Settings
         /// <summary>
         /// An event that is triggered when the value of the setting changes.
         /// </summary>
-        public event Action<object> OnValueChanged;
+        public event Action<Setting> OnValueChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Setting"/> class.
@@ -69,9 +69,9 @@ namespace IPT.Common.User.Settings
         /// Fires the OnValueChanged event. To be called by subclasses.
         /// </summary>
         /// <param name="newValue">The new value being assigned.</param>
-        protected void ValueChanged(object newValue)
+        protected void ValueChanged()
         {
-            OnValueChanged?.Invoke(newValue);
+            OnValueChanged?.Invoke(this);
         }
     }
 }
