@@ -87,7 +87,9 @@
     <Compile Include="API\MathHelperExtensions.cs" />
     <Compile Include="API\Notifications.cs" />
     <Compile Include="API\Player.cs" />
+    <Compile Include="BasePlugin.cs" />
     <Compile Include="Callouts.cs" />
+    <Compile Include="Core\EventAggregator.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Fibers\ComboFiber.cs" />
