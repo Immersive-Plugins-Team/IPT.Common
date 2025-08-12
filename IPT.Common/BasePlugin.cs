@@ -6,7 +6,7 @@ namespace IPT.Common
     /// <summary>
     /// A robust base class for LSPDFR plugins that correctly handles the RPH/LSPDFR lifecycle.
     /// </summary>
-    public abstract class PluginBase : Plugin
+    public abstract class BasePlugin : Plugin
     {
         /// <summary>
         /// Called once by RPH when the plugin is first loaded. This is the only time this method is called.
