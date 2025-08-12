@@ -8,62 +8,40 @@ using Rage;
 
 namespace IPT.Common.User
 {
-    /// <summary>
-    /// A base class for generating a plugin-specific Configuration class.
-    /// </summary>
-    public abstract class Configuration
+    public abstract class Configuration : IDisposable
     {
-        #pragma warning disable S1104, SA1401, CS1591, SA1600
+        public delegate void SettingChangedEventHandler(Setting setting);
+        public event SettingChangedEventHandler SettingChanged;
         public SettingInt LogLevel = Logging.GetLogLevelSetting();
-        #pragma warning restore S1104, SA1401, CS1591, SA1600
 
-        private readonly List<Setting> allSettings;
+        private readonly List<Setting> _allSettings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Configuration"/> class.
-        /// </summary>
         protected Configuration()
         {
-            this.allSettings = this.GetAllSettings();
+            _allSettings = GetAllSettings();
+            foreach (var setting in _allSettings) setting.OnValueChanged += OnSettingValueChanged;
         }
 
-        /// <summary>
-        /// Gets a list of all settings objects.
-        /// </summary>
-        public List<Setting> AllSettings
+        public List<Setting> AllSettings { get => _allSettings; }
+
+        public void Dispose()
         {
-            get
-            {
-                return this.allSettings;
-            }
+            foreach (var setting in _allSettings) setting.OnValueChanged -= OnSettingValueChanged;
         }
 
-        /// <summary>
-        /// Gets a list of generic combos defined in the settings.
-        /// </summary>
-        /// <returns>A list of combos.</returns>
         public List<GenericCombo> GetInputCombos()
         {
             var combos = new List<GenericCombo>();
             foreach (var setting in this.AllSettings)
             {
-                if (setting.GetValue() is GenericCombo combo)
-                {
-                    combos.Add(combo);
-                }
+                if (setting.GetValue() is GenericCombo combo) combos.Add(combo);
             }
 
             return combos;
         }
 
-        /// <summary>
-        /// Load the settings.
-        /// </summary>
         public abstract void Load();
 
-        /// <summary>
-        /// Logs all of the settings.
-        /// </summary>
         public void Log()
         {
             Logging.Info("============================================================");
@@ -77,10 +55,6 @@ namespace IPT.Common.User
             Logging.Info("============================================================");
         }
 
-        /// <summary>
-        /// Loads settings from INI file.
-        /// </summary>
-        /// <param name="filename">The filename of the INI file.  Expects path relative to the GTAV folder.</param>
         protected void LoadINI(string filename)
         {
             var ini = new InitializationFile(filename);
@@ -100,23 +74,12 @@ namespace IPT.Common.User
             }
         }
 
-        /// <summary>
-        /// Saves settings to the INI file.
-        /// </summary>
-        /// <param name="filename">The filename of the INI file.  Expects path relative to the GTAV folder.</param>
         protected void SaveINI(string filename)
         {
             InitializationFile ini = new InitializationFile(filename);
-            if (ini.Exists())
-            {
-                ini.Delete();
-            }
-
+            if (ini.Exists()) ini.Delete();
             ini.Create();
-            foreach (var entry in this.AllSettings)
-            {
-                entry.Save(ini);
-            }
+            foreach (var entry in this.AllSettings) entry.Save(ini);
         }
 
         private List<Setting> GetAllSettings()
@@ -124,13 +87,12 @@ namespace IPT.Common.User
             var settings = new List<Setting>();
             foreach (var field in this.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
             {
-                if (field.GetValue(this) is Setting setting)
-                {
-                    settings.Add(setting);
-                }
+                if (field.GetValue(this) is Setting setting) settings.Add(setting);
             }
 
             return settings;
         }
+
+        private void OnSettingValueChanged(Setting setting) => SettingChanged?.Invoke(setting);
     }
 }

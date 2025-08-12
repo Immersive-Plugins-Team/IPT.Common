@@ -87,7 +87,9 @@
     <Compile Include="API\MathHelperExtensions.cs" />
     <Compile Include="API\Notifications.cs" />
     <Compile Include="API\Player.cs" />
+    <Compile Include="BasePlugin.cs" />
     <Compile Include="Callouts.cs" />
+    <Compile Include="Core\EventAggregator.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Fibers\ComboFiber.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="CommonPlugin.cs" />
     <Compile Include="Handlers\PlayerHandler.cs" />
     <Compile Include="Handlers\PlayerStateManager.cs" />
+    <Compile Include="Fibers\ObservableFiber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User\Configuration.cs" />
     <Compile Include="User\Inputs\ButtonCombo.cs" />
@@ -121,7 +124,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Internal\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

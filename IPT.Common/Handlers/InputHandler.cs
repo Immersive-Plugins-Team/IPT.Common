@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using IPT.Common.Fibers;
 using IPT.Common.User;
 using IPT.Common.User.Inputs;
-using Rage;
 
 namespace IPT.Common.Handlers
 {
@@ -12,9 +10,9 @@ namespace IPT.Common.Handlers
     /// </summary>
     public class InputHandler : GenericFiber
     {
-        public event Action<GenericCombo> OnInputPressed;
-        public event Action<GenericCombo> OnInputReleased;
-        public event Action<HoldableCombo, bool> OnHoldableInput;
+        public event Action<GenericCombo> ComboPressed;
+        public event Action<GenericCombo> ComboReleased;
+        public event Action<HoldableCombo, bool> HoldableComboInput;
 
         private readonly Configuration _config;
 
@@ -45,11 +43,11 @@ namespace IPT.Common.Handlers
                     switch (holdable.Check())
                     {
                         case InputState.ShortPress:
-                            OnHoldableInput?.Invoke(holdable, false);
+                            HoldableComboInput?.Invoke(holdable, false);
                             API.Events.FireHoldableUserInput(holdable, false); // legacy
                             break;
                         case InputState.LongPress:
-                            OnHoldableInput?.Invoke(holdable, true);
+                            HoldableComboInput?.Invoke(holdable, true);
                             API.Events.FireHoldableUserInput(holdable, true);  // legacy
                             break;
                     }
@@ -60,11 +58,11 @@ namespace IPT.Common.Handlers
                     switch (combo.Check())
                     {
                         case InputState.Pressed:
-                            OnInputPressed?.Invoke(combo);
+                            ComboPressed?.Invoke(combo);
                             API.Events.FireUserInputChanged(combo);
                             break;
                         case InputState.Released:
-                            OnInputReleased?.Invoke(combo);
+                            ComboReleased?.Invoke(combo);
                             API.Events.FireUserInputChanged(combo);
                             break;
                     }
