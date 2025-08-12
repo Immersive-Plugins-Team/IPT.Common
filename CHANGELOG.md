@@ -1,11 +1,12 @@
 # Changelog
 _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/)._
 
-## [1.5.0] - 2025-08-03
+## [1.5.0] - 2025-08-12
 ### Added
 - Settings now raise OnValueChanged event when value changes
-- New DependencyManager static class, utilized by CommonPlugin
 - PlayerStateManager replaces PlayerHandler which is deprecated
+- Added BasePlugin class for common plugin functionality
+- Added EventAggregator - all aboard the Event Bus!
 
 ### Changed
 - InputHandler now uses a single fiber to handle all inputs
