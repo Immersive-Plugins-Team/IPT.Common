@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using IPT.Common.Fibers;
 
-namespace IPT.Common.Models
+namespace IPT.Common.Fibers
 {
     /// <summary>
     /// A base class for models that implements the INotifyPropertyChanged interface.
